@@ -14,6 +14,7 @@ class Provider(Protocol):
 
     All LLM backends must implement this interface.
     """
+    name = ""
 
     @abstractmethod
     def generate(self, prompt: str) -> AsyncGenerator[str, None, None]:

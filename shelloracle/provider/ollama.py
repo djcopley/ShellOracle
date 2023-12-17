@@ -1,24 +1,10 @@
 import json
 from collections.abc import AsyncGenerator
 from dataclasses import dataclass, asdict
-from typing import Any
 
 import httpx
 
 from . import Provider, ProviderError
-
-
-def dataclass_to_json(obj: Any) -> dict[str, Any]:
-    """Convert dataclass to a json dict
-
-    This function filters out 'None' values.
-
-    :param obj: the dataclass to serialize
-    :return: serialized dataclass
-    :raises TypeError: if obj is not a dataclass
-    """
-    return {k: v for k, v in asdict(obj).items() if v is not None}
-
 
 
 @dataclass
@@ -47,30 +33,29 @@ class GenerateRequest:
     the raw parameter if you are specifying a full templated prompt in your request to the API, and are managing 
     history yourself. JSON mode"""
 
+    def to_json(self):
+        return json.dumps(asdict(self))
+
 
 class Ollama(Provider):
+    name = "Ollama"
+
     host = "localhost"
     port = 11434
-    model = "codellama:13b"
-    system_prompt = (
-        "Based on the following user description, generate a corresponding Bash command. Focus solely "
-        "on interpreting the requirements and translating them into a single, executable Bash command. "
-        "Ensure accuracy and relevance to the user's description. The output should be a valid Bash "
-        "command that directly aligns with the user's intent, ready for execution in a command-line "
-        "environment. Output nothing except for the command. No code block, no English explanation, "
-        "no start/end tags."
-    )
+    endpoint = f"http://{host}:{port}/api/generate"
 
-    @property
-    def endpoint(self):
-        return f"http://{self.host}:{self.port}/api/generate"
+    model = "codellama:13b"
+    system_prompt = """Based on the following user description, generate a corresponding Bash command. Focus solely on 
+    interpreting the requirements and translating them into a single, executable Bash command. Ensure accuracy and 
+    relevance to the user's description. The output should be a valid Bash command that directly aligns with the user's 
+    intent, ready for execution in a command-line environment. Output nothing except for the command. No code block, no 
+    English explanation, no start/end tags."""
 
     async def generate(self, prompt: str) -> AsyncGenerator[str, None, None]:
-        request = GenerateRequest(self.model, prompt, system=self.system_prompt, stream=True)
-        data = dataclass_to_json(request)
         try:
+            request = GenerateRequest(self.model, prompt, system=self.system_prompt, stream=True).to_json()
             async with httpx.AsyncClient() as client:
-                async with client.stream("POST", self.endpoint, json=data, timeout=20.0) as stream:
+                async with client.stream("POST", self.endpoint, content=request, timeout=20.0) as stream:
                     async for line in stream.aiter_lines():
                         yield json.loads(line)["response"]
         except (httpx.HTTPError, httpx.StreamError) as e:

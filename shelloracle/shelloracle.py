@@ -1,19 +1,18 @@
 import asyncio
 import os
 import sys
-from pathlib import Path
 
 from prompt_toolkit import PromptSession
 from prompt_toolkit.application import create_app_session_from_tty
 from prompt_toolkit.history import FileHistory
 
 from .provider import get_provider
+from .config import Configuration, data_home
 
 
 async def prompt_user(default_prompt: str | None = None) -> str:
     with create_app_session_from_tty():
-        history_file = Path.home() / ".shelloracle_history"
-        prompt_session = PromptSession(history=FileHistory(str(history_file)))
+        prompt_session = PromptSession(history=FileHistory(data_home / ".shelloracle_history"))
         # Can I do this with one of the builtin methods?
         # I tried a few (including cursor_down) with limited success
         prompt_session.output.write_raw("\033[E")
@@ -48,7 +47,8 @@ async def shell_oracle() -> None:
 
     :returns: None
     """
-    provider = get_provider("ollama")()
+    config = Configuration()
+    provider = get_provider(config.provider)()
 
     if not (prompt := get_query_from_pipe()):
         default_prompt = os.environ.get("SHOR_DEFAULT_PROMPT")
