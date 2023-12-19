@@ -6,8 +6,8 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.application import create_app_session_from_tty
 from prompt_toolkit.history import FileHistory
 
-from .provider import get_provider
 from .config import Configuration, data_home
+from .provider import get_provider
 
 
 async def prompt_user(default_prompt: str | None = None) -> str:

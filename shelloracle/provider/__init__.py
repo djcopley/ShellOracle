@@ -14,7 +14,7 @@ class Provider(Protocol):
 
     All LLM backends must implement this interface.
     """
-    name = ""
+    name: str
 
     @abstractmethod
     def generate(self, prompt: str) -> AsyncGenerator[str, None, None]:
@@ -36,6 +36,6 @@ def get_provider(name: str) -> type[Provider]:
     """
     from .ollama import Ollama
     providers = {
-        "ollama": Ollama
+        "Ollama": Ollama
     }
     return providers[name]
