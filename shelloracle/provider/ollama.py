@@ -71,7 +71,7 @@ class Ollama(Provider):
         return f"http://{self.host}:{self.port}/api/generate"
 
     async def generate(self, prompt: str) -> AsyncGenerator[str, None, None]:
-        request = GenerateRequest(self.model, prompt, system=system_prompt, stream=True)
+        request = GenerateRequest(self.model, prompt, system=self.system_prompt, stream=True)
         data = dataclass_to_json(request)
         try:
             async with httpx.AsyncClient() as client:
