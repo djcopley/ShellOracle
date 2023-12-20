@@ -1,12 +1,12 @@
 import asyncio
 import os
 import sys
+from pathlib import Path
 
 from prompt_toolkit import PromptSession
 from prompt_toolkit.application import create_app_session_from_tty
 from prompt_toolkit.history import FileHistory
 
-from .config import data_home
 from .provider import get_provider
 
 from .config import config
@@ -14,7 +14,8 @@ from .config import config
 
 async def prompt_user(default_prompt: str | None = None) -> str:
     with create_app_session_from_tty():
-        prompt_session = PromptSession(history=FileHistory(data_home / ".shelloracle_history"))
+        history_file = Path.home() / ".shelloracle_history"
+        prompt_session = PromptSession(history=FileHistory(str(history_file)))
         # Can I do this with one of the builtin methods?
         # I tried a few (including cursor_down) with limited success
         prompt_session.output.write_raw("\033[E")
