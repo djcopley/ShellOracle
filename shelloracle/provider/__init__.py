@@ -3,6 +3,11 @@ from collections.abc import AsyncGenerator
 from typing import Protocol
 
 
+class ProviderError(Exception):
+    """LLM providers raise this error to gracefully indicate something has gone wrong."""
+    ...
+
+
 class Provider(Protocol):
     """
     LLM Provider Protocol
@@ -23,6 +28,11 @@ class Provider(Protocol):
 
 
 def get_provider(name: str) -> type[Provider]:
+    """Imports and loads a requested provider
+
+    :param name: the provider name
+    :return: the requested provider
+    """
     from .ollama import Ollama
     providers = {
         "ollama": Ollama
