@@ -1,11 +1,7 @@
 name: Build distribution
 run-name: ${{ github.actor }} is building python distribution
 
-on:
-  push:
-    branches:
-      - main
-      - gh-actions  # for testing
+on: pull_request
 
 jobs:
   build:
@@ -17,6 +13,8 @@ jobs:
 
     - name: Set up Python
       uses: actions/setup-python@v5
+      with:
+        python-version: 3.12
 
     - name: Install dependencies
       run: |
