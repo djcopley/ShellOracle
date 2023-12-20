@@ -48,22 +48,22 @@ class GenerateRequest:
     history yourself. JSON mode"""
 
 
-system_prompt = (
-    "Based on the following user description, generate a corresponding Bash command. Focus solely on interpreting "
-    "the requirements and translating them into a single, executable Bash command. Ensure accuracy and relevance "
-    "to the user's description. The output should be a valid Bash command that directly aligns with the user's "
-    "intent, ready for execution in a command-line environment. Output nothing except for the command. No code "
-    "block, no English explanation, no start/end tags."
-)
-
-
 class Ollama(Provider):
     name = "Ollama"
 
     host = Setting(default="localhost")
     port = Setting(default=11434)
     model = Setting(default="codellama:13b")
-    system_prompt = Setting(default=system_prompt)
+    system_prompt = Setting(
+        default=(
+            "Based on the following user description, generate a corresponding Bash command. Focus solely "
+            "on interpreting the requirements and translating them into a single, executable Bash command. "
+            "Ensure accuracy and relevance to the user's description. The output should be a valid Bash "
+            "command that directly aligns with the user's intent, ready for execution in a command-line "
+            "environment. Output nothing except for the command. No code block, no English explanation, "
+            "no start/end tags."
+        )
+    )
 
     @property
     def endpoint(self):

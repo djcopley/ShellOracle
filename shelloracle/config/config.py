@@ -1,43 +1,58 @@
+from collections.abc import MutableMapping
 from pathlib import Path
-from typing import TextIO
 
-from tomlkit import document, table, load
+import tomlkit
 
 data_home = Path.home() / "Library/Application Support" / "shelloracle"
 
 
-def _default_config():
-    doc = document()
-    shelloracle = table()
-    shelloracle.add("provider", "ollama")
-    doc.add("shelloracle", shelloracle)
-    return doc
+def _default_config() -> tomlkit.TOMLDocument:
+    config = tomlkit.document()
+    shor_table = tomlkit.table()
+    shor_table.add("provider", "Ollama")
+    config.add("shelloracle", shor_table)
+    return config
 
 
-class SingletonMeta(type):
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            cls._instances[cls] = super().__call__(*args, **kwargs)
-        return cls._instances[cls]
-
-
-class Configuration(metaclass=SingletonMeta):
+class Configuration(MutableMapping):
     filepath = data_home / "config.toml"
 
-    def __init__(self):
-        self.file: TextIO | None = None
+    def __init__(self) -> None:
         self._ensure_config_exists()
 
-    def _ensure_config_exists(self):
-        if not self.filepath.exists():
-            data_home.mkdir(exist_ok=True)
-            self.filepath.write_text(_default_config())
+    def __getitem__(self, item):
+        with self.filepath.open("r") as file:
+            config = tomlkit.load(file)
+        return config[item]
+
+    def __setitem__(self, key, value):
+        with self.filepath.open("r") as file:
+            config = tomlkit.load(file)
+        config[key] = value
+        config.multiline = True
+        with self.filepath.open("w") as file:
+            tomlkit.dump(config, file)
+
+    def __delitem__(self, key):
+        raise NotImplementedError()
+
+    def __iter__(self):
+        raise NotImplementedError()
+
+    def __len__(self) -> int:
+        raise NotImplementedError()
+
+    def _ensure_config_exists(self) -> None:
+        if self.filepath.exists():
+            return
+        data_home.mkdir(exist_ok=True)
+        config = _default_config()
+        with self.filepath.open("w") as file:
+            tomlkit.dump(config, file)
 
     @property
     def provider(self) -> str | None:
-        with self.filepath.open("r") as config_file:
-            file = load(config_file)
-        return file.get("shelloracle", {}).get("provider", None)
+        return self["shelloracle"]["provider"]
 
+
+global_config = Configuration()

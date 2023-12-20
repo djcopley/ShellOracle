@@ -6,8 +6,10 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.application import create_app_session_from_tty
 from prompt_toolkit.history import FileHistory
 
-from .config import Configuration, data_home
+from .config import data_home
 from .provider import get_provider
+
+from .config import config
 
 
 async def prompt_user(default_prompt: str | None = None) -> str:
@@ -47,8 +49,7 @@ async def shell_oracle() -> None:
 
     :returns: None
     """
-    config = Configuration()
-    provider = get_provider(config.provider)()
+    provider = get_provider(config.global_config.provider)()
 
     if not (prompt := get_query_from_pipe()):
         default_prompt = os.environ.get("SHOR_DEFAULT_PROMPT")
