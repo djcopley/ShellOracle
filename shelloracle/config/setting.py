@@ -16,7 +16,7 @@ class Setting(Generic[T]):
 
     def __set_name__(self, owner: type[Provider], name: str) -> None:
         self.name = name
-        # Set the default value in the config dictionary
+        # Set the default value in the config dictionary if it doesn't exist
         provider_table = config.global_config.get("provider", {})
         provider_table.setdefault(owner.name, {}).setdefault(name, self.default)
         config.global_config["provider"] = provider_table

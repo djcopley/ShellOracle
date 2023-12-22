@@ -1,9 +1,10 @@
 from collections.abc import MutableMapping
 from pathlib import Path
+from typing import Any
 
 import tomlkit
 
-data_home = Path.home() / "Library/Application Support" / "shelloracle"
+data_home = Path.home() / ".shelloracle"
 
 
 def _default_config() -> tomlkit.TOMLDocument:
@@ -20,12 +21,12 @@ class Configuration(MutableMapping):
     def __init__(self) -> None:
         self._ensure_config_exists()
 
-    def __getitem__(self, item):
+    def __getitem__(self, item: str) -> dict:
         with self.filepath.open("r") as file:
             config = tomlkit.load(file)
         return config[item]
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: str, value: Any) -> None:
         with self.filepath.open("r") as file:
             config = tomlkit.load(file)
         config[key] = value
@@ -33,14 +34,22 @@ class Configuration(MutableMapping):
         with self.filepath.open("w") as file:
             tomlkit.dump(config, file)
 
-    def __delitem__(self, key):
-        raise NotImplementedError()
+    def __delitem__(self, key: str) -> None:
+        with self.filepath.open("r") as file:
+            config = tomlkit.load(file)
+        del config[key]
+        with self.filepath.open("w") as file:
+            tomlkit.dump(config, file)
 
-    def __iter__(self):
-        raise NotImplementedError()
+    def __iter__(self) -> None:
+        with self.filepath.open("r") as file:
+            config = tomlkit.load(file)
+        return iter(config)
 
     def __len__(self) -> int:
-        raise NotImplementedError()
+        with self.filepath.open("r") as file:
+            config = tomlkit.load(file)
+        return len(config)
 
     def _ensure_config_exists(self) -> None:
         if self.filepath.exists():
