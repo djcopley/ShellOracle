@@ -8,8 +8,12 @@ Currently, ShellOracle only supports zsh on macOS. The installation process is n
 general steps to get it up and running.
 
 1. Install [Ollama](https://ollama.ai/)
-2. Source the zsh configuration
+2. Install shelloracle
+   ```zsh
+   pip3 install shelloracle
+   ``` 
+3. Source the zsh configuration
    ```zsh
    source shell/shelloracle.zsh
    ```
-3. Use ctrl+f to open the prompt
+4. Use ctrl+f to open the prompt
