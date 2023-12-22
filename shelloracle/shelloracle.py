@@ -9,6 +9,8 @@ from prompt_toolkit.history import FileHistory
 
 from .provider import get_provider
 
+from .config import config
+
 
 async def prompt_user(default_prompt: str | None = None) -> str:
     with create_app_session_from_tty():
@@ -45,7 +47,7 @@ async def shell_oracle() -> None:
 
     :returns: None
     """
-    provider = get_provider("ollama")()
+    provider = get_provider(config.global_config.provider)()
 
     if not (prompt := get_query_from_pipe()):
         default_prompt = os.environ.get("SHOR_DEFAULT_PROMPT")

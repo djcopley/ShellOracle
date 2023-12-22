@@ -6,6 +6,7 @@ from typing import Any
 import httpx
 
 from . import Provider, ProviderError
+from ..config import Setting
 
 
 def dataclass_to_json(obj: Any) -> dict[str, Any]:
@@ -18,7 +19,6 @@ def dataclass_to_json(obj: Any) -> dict[str, Any]:
     :raises TypeError: if obj is not a dataclass
     """
     return {k: v for k, v in asdict(obj).items() if v is not None}
-
 
 
 @dataclass
@@ -49,20 +49,25 @@ class GenerateRequest:
 
 
 class Ollama(Provider):
-    host = "localhost"
-    port = 11434
-    model = "codellama:13b"
-    system_prompt = (
-        "Based on the following user description, generate a corresponding Bash command. Focus solely "
-        "on interpreting the requirements and translating them into a single, executable Bash command. "
-        "Ensure accuracy and relevance to the user's description. The output should be a valid Bash "
-        "command that directly aligns with the user's intent, ready for execution in a command-line "
-        "environment. Output nothing except for the command. No code block, no English explanation, "
-        "no start/end tags."
+    name = "Ollama"
+
+    host = Setting(default="localhost")
+    port = Setting(default=11434)
+    model = Setting(default="codellama:13b")
+    system_prompt = Setting(
+        default=(
+            "Based on the following user description, generate a corresponding Bash command. Focus solely "
+            "on interpreting the requirements and translating them into a single, executable Bash command. "
+            "Ensure accuracy and relevance to the user's description. The output should be a valid Bash "
+            "command that directly aligns with the user's intent, ready for execution in a command-line "
+            "environment. Output nothing except for the command. No code block, no English explanation, "
+            "no start/end tags."
+        )
     )
 
     @property
     def endpoint(self):
+        # computed property because python descriptors need to be bound to an instance before access
         return f"http://{self.host}:{self.port}/api/generate"
 
     async def generate(self, prompt: str) -> AsyncGenerator[str, None, None]:
