@@ -4,7 +4,7 @@ shelloracle-widget() {
   setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2> /dev/null
 
   # Run the shelloracle python module and store the result in the "selected" array
-  local selected=( $(SHOR_DEFAULT_QUERY="${(qqq)LBUFFER}" python3 -m shelloracle) )
+  local selected=( $(SHOR_DEFAULT_PROMPT=${LBUFFER} python3 -m shelloracle) )
 
   # Get the return status of the last executed command
   local ret=$?

@@ -37,9 +37,6 @@ def get_query_from_pipe() -> str | None:
 
 async def shell_oracle() -> None:
     """
-    This is the core function of the application.
-
-    It accepts queries either through a standard input pipe or an interactive prompt.
     If there is a query from the input pipe, it processes the query to generate a response.
     If there isn't a query from the input pipe, it prompts the user for input.
 
