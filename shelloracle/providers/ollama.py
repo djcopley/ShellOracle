@@ -5,7 +5,7 @@ from typing import Any
 
 import httpx
 
-from . import Provider, ProviderError
+from ..provider import Provider, ProviderError
 from ..config import Setting
 
 
@@ -66,7 +66,7 @@ class Ollama(Provider):
     )
 
     @property
-    def endpoint(self):
+    def endpoint(self) -> str:
         # computed property because python descriptors need to be bound to an instance before access
         return f"http://{self.host}:{self.port}/api/generate"
 

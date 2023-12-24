@@ -5,7 +5,7 @@ from typing import TypeVar, Generic, TYPE_CHECKING
 from . import config
 
 if TYPE_CHECKING:
-    from ..provider import Provider
+    from ..providers import Provider
 
 T = TypeVar("T")
 

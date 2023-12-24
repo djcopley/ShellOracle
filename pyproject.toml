@@ -25,7 +25,7 @@ classifiers = [
 ]
 
 [tool.setuptools]
-packages = ["shelloracle", "shelloracle.config", "shelloracle.provider"]
+packages = ["shelloracle", "shelloracle.config", "shelloracle.providers"]
 
 [project.scripts]
 shor = "shelloracle.shelloracle:cli"
