@@ -1,11 +1,12 @@
 import os
-import subprocess
 import shutil
+import subprocess
 from pathlib import Path
 
 from prompt_toolkit import print_formatted_text
-from prompt_toolkit.shortcuts import confirm
+from prompt_toolkit.application import create_app_session_from_tty
 from prompt_toolkit.formatted_text import FormattedText
+from prompt_toolkit.shortcuts import confirm
 
 shelloracle_zsh = """\
 # Define the function shelloracle-widget
@@ -101,11 +102,12 @@ def update_zshrc():
 
 
 if __name__ == "__main__":
-    ensure_zsh()
-    install_shelloracle()
+    with create_app_session_from_tty():
+        ensure_zsh()
+        install_shelloracle()
 
-    if (install_shell_scripts := confirm("Install zsh scripts?", suffix=" ([y]/n) ")) is False:
-        exit(0)
+        if (install_shell_scripts := confirm("Install zsh scripts?", suffix=" ([y]/n) ")) is False:
+            exit(0)
 
-    write_shelloracle_zsh()
-    update_zshrc()
+        write_shelloracle_zsh()
+        update_zshrc()
