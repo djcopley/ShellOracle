@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=64.0", "setuptools_scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "shelloracle"
-version = "0.0.2"
+dynamic = ["version"]
 dependencies = [
     "httpx",
     "prompt-toolkit",
@@ -26,6 +26,8 @@ classifiers = [
 
 [tool.setuptools]
 packages = ["shelloracle", "shelloracle.config", "shelloracle.providers"]
+
+[tool.setuptools_scm]
 
 [project.scripts]
 shor = "shelloracle.shelloracle:cli"
