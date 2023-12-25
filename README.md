@@ -12,10 +12,6 @@ general steps to get it up and running.
 1. Install [Ollama](https://ollama.ai/)
 2. Install shelloracle
    ```zsh
-   pip3 install shelloracle
+   curl -sSL https://raw.githubusercontent.com/djcopley/ShellOracle/master/install.py | python3 -
    ``` 
-3. Source the zsh configuration
-   ```zsh
-   source shell/shelloracle.zsh
-   ```
-4. Use ctrl+f to open the prompt
+3. Use ctrl+f to open the prompt
