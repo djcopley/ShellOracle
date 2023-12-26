@@ -5,7 +5,6 @@ from typing import Protocol
 
 class ProviderError(Exception):
     """LLM providers raise this error to gracefully indicate something has gone wrong."""
-    ...
 
 
 class Provider(Protocol):
