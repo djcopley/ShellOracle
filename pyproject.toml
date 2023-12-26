@@ -30,6 +30,9 @@ classifiers = [
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 ]
 
+[project.optional-dependencies]
+openai = ["openai"]
+
 [tool.setuptools]
 packages = ["shelloracle", "shelloracle.config", "shelloracle.providers"]
 

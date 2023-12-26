@@ -35,8 +35,9 @@ def get_provider(name: str) -> type[Provider]:
     :param name: the provider name
     :return: the requested provider
     """
-    from .providers import Ollama
+    from .providers import Ollama, OpenAI
     providers = {
         Ollama.name: Ollama,
+        OpenAI.name: OpenAI
     }
     return providers[name]
