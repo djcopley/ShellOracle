@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from collections.abc import AsyncGenerator
+from collections.abc import AsyncIterator
 from typing import Protocol
 
 
@@ -17,7 +17,7 @@ class Provider(Protocol):
     name: str
 
     @abstractmethod
-    def generate(self, prompt: str) -> AsyncGenerator[str, None, None]:
+    async def generate(self, prompt: str) -> AsyncIterator[str]:
         """
         This is an asynchronous generator method which defines the protocol that a provider implementation
         should adhere to. The method takes a prompt as an argument and produces an asynchronous stream
@@ -36,6 +36,6 @@ def get_provider(name: str) -> type[Provider]:
     """
     from .providers import Ollama
     providers = {
-        "Ollama": Ollama
+        Ollama.name: Ollama,
     }
     return providers[name]

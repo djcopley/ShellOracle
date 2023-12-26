@@ -1,7 +1,6 @@
 import json
-from collections.abc import AsyncGenerator
 from dataclasses import dataclass, asdict
-from typing import Any
+from typing import Any, AsyncIterator
 
 import httpx
 
@@ -70,7 +69,7 @@ class Ollama(Provider):
         # computed property because python descriptors need to be bound to an instance before access
         return f"http://{self.host}:{self.port}/api/generate"
 
-    async def generate(self, prompt: str) -> AsyncGenerator[str, None, None]:
+    async def generate(self, prompt: str) -> AsyncIterator[str]:
         request = GenerateRequest(self.model, prompt, system=self.system_prompt, stream=True)
         data = dataclass_to_json(request)
         try:
