@@ -81,19 +81,19 @@ def install_shelloracle():
 
 
 zshrc_path = Path.home() / ".zshrc"
-shelloracle_zsh_path = Path.home() / ".shelloracle.zsh"
+shelloracle_zsh_dest = Path.home() / ".shelloracle.zsh"
 
 
 def write_shelloracle_zsh():
-    with shelloracle_zsh_path.open("w") as f:
-        f.write(shelloracle_zsh)
-    print_info(f"Successfully wrote key bindings to {replace_home_with_tilde(shelloracle_zsh_path)}")
+    with shelloracle_zsh_dest.open("w") as dest:
+        dest.write(shelloracle_zsh)
+    print_info(f"Successfully wrote key bindings to {replace_home_with_tilde(shelloracle_zsh_dest)}")
 
 
 def update_zshrc():
     with zshrc_path.open("r") as file:
         zshrc = file.read()
-    line = f"[ -f {shelloracle_zsh_path} ] && source {shelloracle_zsh_path}"
+    line = f"[ -f {shelloracle_zsh_dest} ] && source {shelloracle_zsh_dest}"
     if line not in zshrc:
         with zshrc_path.open("a") as file:
             file.write("\n")
@@ -101,13 +101,17 @@ def update_zshrc():
     print_info(f"Successfully updated {replace_home_with_tilde(zshrc_path)}")
 
 
-if __name__ == "__main__":
+def install():
     with create_app_session_from_tty():
         ensure_zsh()
         install_shelloracle()
 
-        if (install_shell_scripts := confirm("Install zsh scripts?", suffix=" ([y]/n) ")) is False:
+        if confirm("Install zsh scripts?", suffix=" ([y]/n) ") is False:
             exit(0)
 
         write_shelloracle_zsh()
         update_zshrc()
+
+
+if __name__ == '__main__':
+    install()
