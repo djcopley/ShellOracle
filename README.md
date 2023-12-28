@@ -1,6 +1,6 @@
 # ShellOracle 
 
-![ShellOracle](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdnJncm1mc2N5dzYxMDZyZXQ0ZWdudHZqY2YyMThqZHdvcW1ldHRzOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bvHanmQMfOe3sVq4jM/giphy.gif)
+![ShellOracle](https://i.imgur.com/QM2LkAf.gif)
 
 ### Usage
 
