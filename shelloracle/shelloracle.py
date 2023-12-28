@@ -28,9 +28,7 @@ def get_query_from_pipe() -> str | None:
     :raises ValueError: If the input is more than one line
     :return: The query from the stdin pipe
     """
-    if os.isatty(0):  # Return 'None' if fd 0 is a tty (no pipe)
-        return None
-    if not (lines := sys.stdin.readlines()):
+    if os.isatty(0) or not (lines := sys.stdin.readlines()):  # Return 'None' if fd 0 is a tty (no pipe)
         return None
     if len(lines) > 1:
         raise ValueError("Multi-line input not supported")
