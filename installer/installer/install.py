@@ -1,44 +1,13 @@
 import os
 import shutil
 import subprocess
+import zipfile
 from pathlib import Path
 
 from prompt_toolkit import print_formatted_text
 from prompt_toolkit.application import create_app_session_from_tty
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.shortcuts import confirm
-
-shelloracle_zsh = """\
-# Define the function shelloracle-widget
-shelloracle-widget() {
-  # Set options and suppress any error messages
-  setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2> /dev/null
-
-  # Run the shelloracle python module and store the result in the "selected" array
-  local selected=( $(SHOR_DEFAULT_PROMPT=${LBUFFER} python3 -m shelloracle) )
-
-  # Get the return status of the last executed command
-  local ret=$?
-
-  # Reset the prompt
-  zle reset-prompt
-
-  # Set the BUFFER variable to the selected result
-  BUFFER=$selected
-
-  # Set the CURSOR position at the end of BUFFER
-  CURSOR=$#BUFFER
-
-  # Return the status
-  return $ret
-}
-
-# Register the function as a ZLE widget
-zle -N shelloracle-widget
-
-# Install the ZLE widget as a keyboard shortcut Ctrl+F
-bindkey '^F' shelloracle-widget
-"""
 
 
 def print_info(info: str) -> None:
@@ -84,8 +53,20 @@ zshrc_path = Path.home() / ".zshrc"
 shelloracle_zsh_dest = Path.home() / ".shelloracle.zsh"
 
 
+def read_shelloracle_zsh():
+    working_dir = Path(__file__).parent.absolute()
+    zsh_path = "shelloracle.zsh"
+    if working_dir.suffix == ".pyz":
+        with zipfile.ZipFile(working_dir, "r") as zip_app:
+            shelloracle_zsh = zip_app.read(zsh_path)
+    else:
+        shelloracle_zsh = (working_dir / zsh_path).read_bytes()
+    return shelloracle_zsh
+
+
 def write_shelloracle_zsh():
-    with shelloracle_zsh_dest.open("w") as dest:
+    shelloracle_zsh = read_shelloracle_zsh()
+    with shelloracle_zsh_dest.open("wb") as dest:
         dest.write(shelloracle_zsh)
     print_info(f"Successfully wrote key bindings to {replace_home_with_tilde(shelloracle_zsh_dest)}")
 

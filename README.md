@@ -9,6 +9,6 @@ More exciting stuff coming soon so ⭐ and 👀️ to stay in the loop.
 1. Install [Ollama](https://ollama.ai/)
 2. Install shelloracle
    ```zsh
-   curl -sSL https://raw.githubusercontent.com/djcopley/ShellOracle/master/install.py | python3 -
+   curl -sSL https://raw.githubusercontent.com/djcopley/ShellOracle/master/installer.pyz | python3 -
    ``` 
 3. Use ctrl+f to open the prompt
