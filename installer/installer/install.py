@@ -66,8 +66,7 @@ def read_shelloracle_zsh():
 
 def write_shelloracle_zsh():
     shelloracle_zsh = read_shelloracle_zsh()
-    with shelloracle_zsh_dest.open("wb") as dest:
-        dest.write(shelloracle_zsh)
+    shelloracle_zsh_dest.write_bytes(shelloracle_zsh)
     print_info(f"Successfully wrote key bindings to {replace_home_with_tilde(shelloracle_zsh_dest)}")
 
 
