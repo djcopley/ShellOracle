@@ -86,11 +86,11 @@ def install():
         ensure_zsh()
         install_shelloracle()
 
-        if confirm("Install zsh scripts?", suffix=" ([y]/n) ") is False:
+        if confirm("Do you want to enable key bindings?", suffix=" ([y]/n) ") is False:
             exit(0)
-
         write_shelloracle_zsh()
         update_zshrc()
+        print_info("Success! Restart your shell or re-source your ~/.zshrc")
 
 
 if __name__ == '__main__':
