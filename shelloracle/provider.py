@@ -16,7 +16,7 @@ class Provider(Protocol):
     name: str
 
     @abstractmethod
-    async def generate(self, prompt: str) -> AsyncIterator[str]:
+    def generate(self, prompt: str) -> AsyncIterator[str]:
         """
         This is an asynchronous generator method which defines the protocol that a provider implementation
         should adhere to. The method takes a prompt as an argument and produces an asynchronous stream
@@ -25,6 +25,8 @@ class Provider(Protocol):
         :param prompt: A string value which serves as input to the provider's process of generating results.
         :return: An asynchronous generator yielding string results.
         """
+        # If you are wondering why the 'generate' signature doesn't include 'async', see
+        # https://mypy.readthedocs.io/en/stable/more_types.html#asynchronous-iterators
 
 
 def get_provider(name: str) -> type[Provider]:

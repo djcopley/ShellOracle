@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import MutableMapping
+from collections.abc import MutableMapping, Iterator
 from pathlib import Path
 from typing import Any
 
@@ -43,7 +43,7 @@ class Configuration(MutableMapping):
         with self.filepath.open("w") as file:
             tomlkit.dump(config, file)
 
-    def __iter__(self) -> None:
+    def __iter__(self) -> Iterator[str]:
         with self.filepath.open("r") as file:
             config = tomlkit.load(file)
         return iter(config)
@@ -62,7 +62,7 @@ class Configuration(MutableMapping):
             tomlkit.dump(config, file)
 
     @property
-    def provider(self) -> str | None:
+    def provider(self) -> str:
         return self["shelloracle"]["provider"]
 
 
