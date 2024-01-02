@@ -7,6 +7,7 @@ name = "shelloracle"
 dynamic = ["version"]
 dependencies = [
     "httpx",
+    "openai",
     "prompt-toolkit",
     "tomlkit"
 ]
@@ -29,6 +30,8 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 ]
+
+[project.optional-dependencies]
 
 [tool.setuptools]
 packages = ["shelloracle", "shelloracle.config", "shelloracle.providers"]
