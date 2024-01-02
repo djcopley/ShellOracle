@@ -14,6 +14,7 @@ Explore our dynamic features and look forward to more exciting updates by giving
 - [Installation](#installation)
 - [Usage](#usage)
 - [Configuration](#configuration)
+- [System Requirements](#system-requirements)
 - [Feedback](#feedback)
 
 ## Introduction
@@ -73,7 +74,7 @@ ShellOracle is designed to be used as a ZSH Line Editor widget activated by the 
 
 The generated command will be inserted into your shell prompt after a brief processing period.
 
-#### Ollama
+**Ollama**
 
 Before using ShellOracle with Ollama, pull the model you want to use. The default model is `codellama:13b`. To pull the
 default model, run:
@@ -82,31 +83,24 @@ default model, run:
 ollama pull codellama:13b
 ```
 
-#### OpenAI
+**OpenAI**
 
 To use ShellOracle with the OpenAI provider, create an [API key](https://platform.openai.com/account/api-keys). Edit
 your `~/.shelloracle/config.toml` to change your provider and enter your API key.
 
-#### Other ways to run ShellOracle
+**Other ways to run ShellOracle**
 
 ShellOracle can be run as a Python module with `python3 -m shelloracle` or using its entrypoint `shor`; however,
 there are a few caveats with this method:
 - Ensure your `~/.local/bin` directory is added to your PATH variable for the entrypoint to work.
 - Running ShellOracle with this method will not automatically insert the result into your shell prompt.
 
-#### Tips
+**Tips**
 
 1. If you press CTRL+F with text in your ZLE buffer, all text left of your cursor will carry over to your ShellOracle
    prompt.
 2. UP_ARROW and DOWN_ARROW cycle through your prompt history.
 3. ShellOracle can be chained with other commands; try: `echo "find all the python files in my cwd" | shor`
-
-## System Requirements
-
-For cloud providers like OpenAI, there are no specific system requirements.
-
-If self-hosting, system requirements vary based on the model used. Refer to the Ollama model registry for more
-information.
 
 ## Configuration
 
@@ -123,8 +117,8 @@ The `[shelloracle]` section in the configuration file lets you define global set
 provider = "Ollama"
 ```
 
-Set the `provider` key to specify the Language Model (LLM) backend, with options currently including "Ollama" and "
-OpenAI."
+Set the `provider` key to specify the Language Model (LLM) backend, with options currently including "Ollama" and 
+"OpenAI."
 
 ### Provider Settings
 
@@ -152,6 +146,14 @@ system_prompt = "..."
 
 *The provided configuration options are not exhaustive, and your default configuration may vary slightly.
 Nevertheless, the fundamental concept remains the same.*
+
+
+## System Requirements
+
+For cloud providers like OpenAI, there are no specific system requirements.
+
+If self-hosting, system requirements vary based on the model used. Refer to the Ollama model registry for more
+information.
 
 ## Feedback
 
