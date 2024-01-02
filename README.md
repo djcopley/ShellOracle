@@ -87,20 +87,19 @@ ollama pull codellama:13b
 To use ShellOracle with the OpenAI provider, create an [API key](https://platform.openai.com/account/api-keys). Edit
 your `~/.shelloracle/config.toml` to change your provider and enter your API key.
 
+#### Other ways to run ShellOracle
+
+ShellOracle can be run as a Python module with `python3 -m shelloracle` or using its entrypoint `shor`; however,
+there are a few caveats with this method:
+- Ensure your `~/.local/bin` directory is added to your PATH variable for the entrypoint to work.
+- Running ShellOracle with this method will not automatically insert the result into your shell prompt.
+
 #### Tips
 
 1. If you press CTRL+F with text in your ZLE buffer, all text left of your cursor will carry over to your ShellOracle
    prompt.
 2. UP_ARROW and DOWN_ARROW cycle through your prompt history.
 3. ShellOracle can be chained with other commands; try: `echo "find all the python files in my cwd" | shor`
-
-#### Other ways to run ShellOracle
-
-ShellOracle can be run as a Python module with `python3 -m shelloracle` or using its entrypoint `shor`.
-
-> [!NOTE]
-> Ensure your `~/.local/bin` directory is added to your [PATH]() for the entrypoint to work. Running ShellOracle this
-> way won't automatically insert the result into your shell prompt.
 
 ## System Requirements
 
