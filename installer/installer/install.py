@@ -86,7 +86,7 @@ def install():
         ensure_zsh()
         install_shelloracle()
 
-        if confirm("Install zsh scripts?", suffix=" ([y]/n) ") is False:
+        if confirm("Enable terminal keybindings?", suffix=" ([y]/n) ") is False:
             exit(0)
 
         write_shelloracle_zsh()
