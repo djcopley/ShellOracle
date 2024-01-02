@@ -61,8 +61,8 @@ curl -sSL https://raw.githubusercontent.com/djcopley/ShellOracle/master/installe
 ```
 
 > [!NOTE]  
-> ShellOracle uses Ollama as its default Language Model (LLM) provider. Follow the installation
-> instructions [here](https://ollama.ai/).
+> ShellOracle uses Ollama as its default Language Model (LLM) provider. If you are going to use it, follow the 
+> installation instructions [here](https://ollama.ai/).
 
 ## Usage
 
