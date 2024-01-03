@@ -135,7 +135,8 @@ system_prompt = "..."
 
 Change these options to match your desired configuration.
 
-For OpenAI, if you opt for this provider, you'll need to provide your API key and specify the desired model:
+For OpenAI, if you opt for this provider, you'll need to provide
+your [API key](https://platform.openai.com/account/api-keys):
 
 ```toml
 [provider.OpenAI]
@@ -143,10 +144,6 @@ api_key = "your-api-key-here"
 model = "gpt-3.5-turbo"
 system_prompt = "..."
 ```
-
-*The provided configuration options are not exhaustive, and your default configuration may vary slightly.
-Nevertheless, the fundamental concept remains the same.*
-
 
 ## System Requirements
 
