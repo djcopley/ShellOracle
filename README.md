@@ -150,6 +150,13 @@ system_prompt = "..."
 
 ## System Requirements
 
+### Software
+
+ShellOracle supports ZSH on macOS and Linux. Bash support is planned; however, it is not currently 
+supported.
+
+### Hardware
+
 For cloud providers like OpenAI, there are no specific system requirements.
 
 If self-hosting, system requirements vary based on the model used. Refer to the Ollama model registry for more
