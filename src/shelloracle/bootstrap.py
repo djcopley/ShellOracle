@@ -21,7 +21,12 @@ def replace_home_with_tilde(path: Path) -> Path:
 
 
 def ensure_zsh() -> None:
-    if not (shell := os.environ.get("SHELL")) or "zsh" not in shell:
+    shell = os.environ.get("SHELL")
+    if shell is None:
+        print_error("Unable to determine shell environment. If you are confident "
+                    "that you are running in zsh, run again with `SHELL=zsh python3 -m shelloracle --init`")
+        exit(1)
+    if "zsh" not in shell:
         print_error(f"'{shell}' is currently unsupported. "
                     f"Please open an issue https://github.com/djcopley/ShellOracle/issues.")
         exit(1)
@@ -38,7 +43,7 @@ def write_shelloracle_zsh() -> None:
     print_info(f"Successfully wrote key bindings to {replace_home_with_tilde(shelloracle_zsh_dest)}")
 
 
-def update_zshrc():
+def update_zshrc() -> None:
     zshrc_path.touch(exist_ok=True)
     with zshrc_path.open("r") as file:
         zshrc = file.read()
@@ -50,7 +55,7 @@ def update_zshrc():
     print_info(f"Successfully updated {replace_home_with_tilde(zshrc_path)}")
 
 
-def bootstrap():
+def bootstrap() -> None:
     with create_app_session_from_tty():
         ensure_zsh()
 
