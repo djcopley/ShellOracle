@@ -1,2 +1,0 @@
-prompt-toolkit==3.0.41
-wcwidth==0.2.12

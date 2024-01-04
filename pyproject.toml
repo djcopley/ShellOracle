@@ -23,6 +23,8 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Environment :: Console",
     "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -34,10 +36,13 @@ classifiers = [
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+shelloracle = ["shelloracle.txt"]
+
 [tool.setuptools_scm]
 
 [project.scripts]
-shor = "shelloracle.shelloracle:cli"
+shor = "shelloracle.__main__:main"
 
 [project.urls]
 Homepage = "https://github.com/djcopley/ShellOracle"
