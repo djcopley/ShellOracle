@@ -31,10 +31,8 @@ classifiers = [
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 ]
 
-[project.optional-dependencies]
-
-[tool.setuptools]
-packages = ["shelloracle", "shelloracle.config", "shelloracle.providers"]
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.setuptools_scm]
 
