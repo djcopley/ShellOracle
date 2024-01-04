@@ -59,9 +59,9 @@ Installing ShellOracle is easy!
     ```zsh
     python3 -m pip install shelloracle
     ```
-2. Next, run `shelloracle init` and follow the prompts
+2. Next, run `shelloracle --init` and follow the prompts
     ```zsh
-    python3 -m shelloracle init
+    python3 -m shelloracle --init
     ```
 
 > [!NOTE]  
