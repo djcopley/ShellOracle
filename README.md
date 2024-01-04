@@ -53,16 +53,19 @@ Key features of ShellOracle include:
 
 ## Installation
 
-To experience the power of ShellOracle, use the following one-liner to download and run the installer Python zip
-application:
+Installing ShellOracle is easy!
 
-```zsh
-curl -sSL https://raw.githubusercontent.com/djcopley/ShellOracle/master/installer.pyz -o /tmp/installer.pyz && python3 /tmp/installer.pyz
-```
+1. First, pip install the `shelloracle` package
+    ```zsh
+    python3 -m pip install shelloracle
+    ```
+2. Next, run `shelloracle init` and follow the prompts
+    ```zsh
+    python3 -m shelloracle init
+    ```
 
 > [!NOTE]  
-> ShellOracle uses Ollama as its default Language Model (LLM) provider. If you are going to use it, follow the 
-> installation instructions [here](https://ollama.ai/).
+> If you chose Ollama as your LLM provider, you will need to install it from [here](https://ollama.ai/).
 
 ## Usage
 
