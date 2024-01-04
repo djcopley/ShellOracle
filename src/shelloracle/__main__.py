@@ -21,4 +21,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    shelloracle.cli()
+    main()
