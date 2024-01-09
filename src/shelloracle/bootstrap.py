@@ -1,4 +1,4 @@
-import os
+import subprocess
 from pathlib import Path
 
 from prompt_toolkit import print_formatted_text
@@ -20,50 +20,70 @@ def replace_home_with_tilde(path: Path) -> Path:
     return Path("~") / relative_path
 
 
-def ensure_zsh() -> None:
-    shell = os.environ.get("SHELL")
-    if shell is None:
-        print_error("Unable to determine shell environment. If you are confident "
-                    "that you are running in zsh, run again with `SHELL=zsh python3 -m shelloracle --init`")
-        exit(1)
-    if "zsh" not in shell:
-        print_error(f"'{shell}' is currently unsupported. "
-                    f"Please open an issue https://github.com/djcopley/ShellOracle/issues.")
-        exit(1)
+supported_shells = ["zsh", "bash"]
 
 
-zshrc_path = Path.home() / ".zshrc"
-shelloracle_zsh_dest = Path.home() / ".shelloracle.zsh"
+def get_installed_shells() -> list[str]:
+    shells = []
+    for shell in supported_shells:
+        if subprocess.run(["command", "-v", shell], stdout=subprocess.DEVNULL):
+            shells.append(shell)
+    return shells
 
 
-def write_shelloracle_zsh() -> None:
-    zsh_path = Path(__file__).parent.absolute() / "shelloracle.zsh"
-    shelloracle_zsh = zsh_path.read_bytes()
-    shelloracle_zsh_dest.write_bytes(shelloracle_zsh)
-    print_info(f"Successfully wrote key bindings to {replace_home_with_tilde(shelloracle_zsh_dest)}")
+def get_bundled_script_path(shell: str) -> Path:
+    parent = Path(__file__).parent
+    if shell == "zsh":
+        return parent / "shelloracle.zsh"
+    elif shell == "bash":
+        return parent / "shelloracle.bash"
 
 
-def update_zshrc() -> None:
-    zshrc_path.touch(exist_ok=True)
-    with zshrc_path.open("r") as file:
+def get_script_path(shell: str) -> Path:
+    if shell == "zsh":
+        return Path.home() / ".shelloracle.zsh"
+    elif shell == "bash":
+        return Path.home() / ".shelloracle.bash"
+
+
+def get_rc_path(shell: str) -> Path:
+    if shell == "zsh":
+        return Path.home() / ".zshrc"
+    elif shell == "bash":
+        return Path.home() / ".bashrc"
+
+
+def write_script_home(shell: str) -> None:
+    shelloracle = get_bundled_script_path(shell).read_bytes()
+    destination = get_script_path(shell)
+    destination.write_bytes(shelloracle)
+    print_info(f"Successfully wrote key bindings to {replace_home_with_tilde(destination)}")
+
+
+def update_rc(shell: str) -> None:
+    rc_path = get_rc_path(shell)
+    rc_path.touch(exist_ok=True)
+    with rc_path.open("r") as file:
         zshrc = file.read()
-    line = f"[ -f {shelloracle_zsh_dest} ] && source {shelloracle_zsh_dest}"
+    shelloracle_script = get_script_path(shell)
+    line = f"[ -f {shelloracle_script} ] && source {shelloracle_script}"
     if line not in zshrc:
-        with zshrc_path.open("a") as file:
+        with rc_path.open("a") as file:
             file.write("\n")
             file.write(line)
-    print_info(f"Successfully updated {replace_home_with_tilde(zshrc_path)}")
+    print_info(f"Successfully updated {replace_home_with_tilde(rc_path)}")
 
 
 def bootstrap() -> None:
     with create_app_session_from_tty():
-        ensure_zsh()
-
-        if confirm("Enable terminal keybindings?", suffix=" ([y]/n) ") is False:
+        if not (shells := get_installed_shells()):
+            print_error(f"No compatible shells found. Supported shells: {', '.join(supported_shells)}")
             return
-
-        write_shelloracle_zsh()
-        update_zshrc()
+        if confirm("Enable terminal keybindings and update rc ?", suffix=" ([y]/n) ") is False:
+            return
+        for shell in shells:
+            write_script_home(shell)
+            update_rc(shell)
 
 
 if __name__ == '__main__':
