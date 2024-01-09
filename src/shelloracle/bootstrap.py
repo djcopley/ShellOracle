@@ -86,5 +86,11 @@ def bootstrap() -> None:
             update_rc(shell)
 
 
+def uninstall() -> None:
+    if confirm("Are you sure you want to uninstall", suffix=" ([y]/n) ") is False:
+        return
+    subprocess.run(["python3", "-m", "pip", "uninstall", __package__], check=True)
+
+
 if __name__ == '__main__':
     bootstrap()
