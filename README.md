@@ -56,11 +56,11 @@ Key features of ShellOracle include:
 Installing ShellOracle is easy!
 
 1. First, pip install the `shelloracle` package
-    ```zsh
+    ```shell
     python3 -m pip install shelloracle
     ```
 2. Next, run `shelloracle --init` and follow the prompts
-    ```zsh
+    ```shell
     python3 -m shelloracle --init
     ```
 
@@ -69,7 +69,7 @@ Installing ShellOracle is easy!
 
 ## Usage
 
-ShellOracle is designed to be used as a ZSH Line Editor widget activated by the CTRL+F keyboard shortcut.
+ShellOracle is designed to be used as a BASH/ZSH widget activated by the CTRL+F keyboard shortcut.
 
 1. Press CTRL+F
 2. Describe your command or goal
@@ -82,7 +82,7 @@ The generated command will be inserted into your shell prompt after a brief proc
 Before using ShellOracle with Ollama, pull the model you want to use. The default model is `codellama:13b`. To pull the
 default model, run:
 
-```zsh
+```shell
 ollama pull codellama:13b
 ```
 
@@ -152,8 +152,7 @@ system_prompt = "..."
 
 ### Software
 
-ShellOracle supports ZSH on macOS and Linux. Bash support is planned; however, it is not currently 
-supported.
+ShellOracle supports BASH and ZSH on macOS and Linux.
 
 ### Hardware
 
