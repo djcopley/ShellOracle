@@ -20,7 +20,7 @@ def replace_home_with_tilde(path: Path) -> Path:
     return Path("~") / relative_path
 
 
-supported_shells = ["zsh", "bash"]
+supported_shells = ("zsh", "bash")
 
 
 def get_installed_shells() -> list[str]:
@@ -79,7 +79,7 @@ def bootstrap() -> None:
         if not (shells := get_installed_shells()):
             print_error(f"No compatible shells found. Supported shells: {', '.join(supported_shells)}")
             return
-        if confirm("Enable terminal keybindings and update rc ?", suffix=" ([y]/n) ") is False:
+        if confirm("Enable terminal keybindings and update rc?", suffix=" ([y]/n) ") is False:
             return
         for shell in shells:
             write_script_home(shell)
