@@ -1,4 +1,5 @@
 import argparse
+from importlib.metadata import version
 
 from . import shelloracle
 from .bootstrap import bootstrap
@@ -7,6 +8,7 @@ from .bootstrap import bootstrap
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--init", help="install %(prog)s keybindings", action="store_true")
+    parser.add_argument('--version', action='version', version=f'%(prog)s {version(__package__)}')
     return parser.parse_args()
 
 
