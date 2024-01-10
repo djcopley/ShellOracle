@@ -64,8 +64,17 @@ Installing ShellOracle is easy!
     python3 -m shelloracle --init
     ```
 
-> [!NOTE]  
-> If you chose Ollama as your LLM provider, you will need to install it from [here](https://ollama.ai/).
+**Ollama**
+
+> [!IMPORTANT]
+> ShellOracle uses [Ollama](https://ollama.ai/) as its default LLM provider. If you are using the default configuration,
+> the following steps are required.
+
+3. Install [Ollama](https://ollama.ai/)
+4. Download the default model
+    ```shell
+    ollama pull codellama:13b
+    ```
 
 ## Usage
 
