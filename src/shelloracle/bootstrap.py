@@ -1,4 +1,4 @@
-import subprocess
+import shutil
 from pathlib import Path
 
 from prompt_toolkit import print_formatted_text
@@ -26,7 +26,7 @@ supported_shells = ("zsh", "bash")
 def get_installed_shells() -> list[str]:
     shells = []
     for shell in supported_shells:
-        if subprocess.run(["command", "-v", shell], stdout=subprocess.DEVNULL):
+        if shutil.which(shell):
             shells.append(shell)
     return shells
 
