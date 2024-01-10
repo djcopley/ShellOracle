@@ -6,8 +6,7 @@ from .bootstrap import bootstrap
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--init", help="initialize shelloracle with scripts",
-                        action="store_true")
+    parser.add_argument("--init", help="install %(prog)s keybindings", action="store_true")
     return parser.parse_args()
 
 
