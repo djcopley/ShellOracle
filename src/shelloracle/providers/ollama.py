@@ -78,6 +78,9 @@ class Ollama(Provider):
             async with httpx.AsyncClient() as client:
                 async with client.stream("POST", self.endpoint, json=data, timeout=20.0) as stream:
                     async for line in stream.aiter_lines():
+                        response = json.loads(line)
+                        if "error" in response:
+                            raise ProviderError(response["error"])
                         yield json.loads(line)["response"]
         except (httpx.HTTPError, httpx.StreamError) as e:
             raise ProviderError(f"Something went wrong while querying Ollama: {e}") from e
