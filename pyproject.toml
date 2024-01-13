@@ -41,6 +41,12 @@ where = ["src"]
 
 [tool.setuptools_scm]
 
+[tool.pytest.ini_options]
+pythonpath = "src"
+addopts = [
+    "--import-mode=importlib",
+]
+
 [project.scripts]
 shor = "shelloracle.__main__:main"
 
