@@ -11,11 +11,13 @@ T = TypeVar("T")
 
 
 class Setting(Generic[T]):
-    def __init__(self, *, default: T | None = None) -> None:
+    def __init__(self, *, name: str | None = None, default: T | None = None) -> None:
+        self.name = name
         self.default = default
 
     def __set_name__(self, owner: type[Provider], name: str) -> None:
-        self.name = name
+        if not self.name:
+            self.name = name
         # Set the default value in the config dictionary if it doesn't exist
         provider_table = config.global_config.get("provider", {})
         provider_table.setdefault(owner.name, {}).setdefault(name, self.default)
