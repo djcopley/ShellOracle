@@ -12,7 +12,7 @@ dependencies = [
     "tomlkit"
 ]
 authors = [
-    { name = "Daniel Copley", email = "djcopley@users.noreply.github.com" },
+    { name = "Daniel Copley", email = "djcopley@proton.me" },
 ]
 description = """ShellOracle is a pluggable terminal utility that takes a natural language description of a \
 command and substitutes it into your terminal buffer."""
