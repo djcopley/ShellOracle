@@ -12,7 +12,7 @@ class LocalAI(Provider):
 
     host = Setting(default="localhost")
     port = Setting(default=8080)
-    model = Setting(default="lunademo")
+    model = Setting(default="mistral-openorca")
     system_prompt = Setting(
         default=(
             "Based on the following user description, generate a corresponding Bash command. Focus solely "
@@ -26,11 +26,11 @@ class LocalAI(Provider):
 
     @property
     def endpoint(self) -> str:
-        # computed property because python descriptors need to be bound to an instance before access
-        return f"http://{self.host}:{self.port}/api/generate"
+        return f"http://{self.host}:{self.port}"
 
     def __init__(self):
-        self.client = OpenAIClient(base_url=self.endpoint)
+        # Use a placeholder API key so the client will work
+        self.client = OpenAIClient(api_key="sk-xxx", base_url=self.endpoint)
 
     async def generate(self, prompt: str) -> AsyncIterator[str]:
         try:
@@ -46,4 +46,4 @@ class LocalAI(Provider):
                 if chunk.choices[0].delta.content is not None:
                     yield chunk.choices[0].delta.content
         except APIError as e:
-            raise ProviderError(f"Something went wrong while querying OpenAI: {e}") from e
+            raise ProviderError(f"Something went wrong while querying LocalAI: {e}") from e
