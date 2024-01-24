@@ -4,7 +4,7 @@ from openai import APIError
 from openai import AsyncOpenAI as OpenAIClient
 
 from ..config import Setting
-from ..provider import Provider, ProviderError
+from ..provider import Provider, ProviderError, system_prompt
 
 
 class LocalAI(Provider):
@@ -13,16 +13,6 @@ class LocalAI(Provider):
     host = Setting(default="localhost")
     port = Setting(default=8080)
     model = Setting(default="mistral-openorca")
-    system_prompt = Setting(
-        default=(
-            "Based on the following user description, generate a corresponding Bash command. Focus solely "
-            "on interpreting the requirements and translating them into a single, executable Bash command. "
-            "Ensure accuracy and relevance to the user's description. The output should be a valid Bash "
-            "command that directly aligns with the user's intent, ready for execution in a command-line "
-            "environment. Output nothing except for the command. No code block, no English explanation, "
-            "no start/end tags."
-        )
-    )
 
     @property
     def endpoint(self) -> str:
@@ -37,7 +27,7 @@ class LocalAI(Provider):
             stream = await self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    {"role": "system", "content": self.system_prompt},
+                    {"role": "system", "content": system_prompt},
                     {"role": "user", "content": prompt}
                 ],
                 stream=True,

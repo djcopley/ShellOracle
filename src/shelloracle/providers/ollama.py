@@ -6,8 +6,8 @@ from typing import Any, AsyncIterator
 
 import httpx
 
-from ..provider import Provider, ProviderError
 from ..config import Setting
+from ..provider import Provider, ProviderError, system_prompt
 
 
 def dataclass_to_json(obj: Any) -> dict[str, Any]:
@@ -55,16 +55,6 @@ class Ollama(Provider):
     host = Setting(default="localhost")
     port = Setting(default=11434)
     model = Setting(default="codellama:13b")
-    system_prompt = Setting(
-        default=(
-            "Based on the following user description, generate a corresponding Bash command. Focus solely "
-            "on interpreting the requirements and translating them into a single, executable Bash command. "
-            "Ensure accuracy and relevance to the user's description. The output should be a valid Bash "
-            "command that directly aligns with the user's intent, ready for execution in a command-line "
-            "environment. Output nothing except for the command. No code block, no English explanation, "
-            "no start/end tags."
-        )
-    )
 
     @property
     def endpoint(self) -> str:
@@ -72,7 +62,7 @@ class Ollama(Provider):
         return f"http://{self.host}:{self.port}/api/generate"
 
     async def generate(self, prompt: str) -> AsyncIterator[str]:
-        request = GenerateRequest(self.model, prompt, system=self.system_prompt, stream=True)
+        request = GenerateRequest(self.model, prompt, system=system_prompt, stream=True)
         data = dataclass_to_json(request)
         try:
             async with httpx.AsyncClient() as client:
