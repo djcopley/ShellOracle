@@ -132,12 +132,12 @@ The `[shelloracle]` section in the configuration file lets you define global set
 provider = "Ollama"
 ```
 
-Set the `provider` key to specify the Language Model (LLM) backend, with options currently including "Ollama" and 
-"OpenAI."
+Set the `provider` key to specify the Language Model (LLM) backend, with options currently including "Ollama", 
+"LocalAI", and "OpenAI."
 
 ### Provider Settings
 
-Provider-specific configurations are handled through tags such as `[provider.Ollama]` or `[provider.OpenAI]`. Here's an
+Provider-specific configurations are handled through the `[provider.*]` keys. Here's an
 example for the Ollama provider:
 
 ```toml
