@@ -10,7 +10,7 @@ from prompt_toolkit.application import create_app_session_from_tty
 from prompt_toolkit.history import FileHistory
 
 from .config import config
-from .provider import get_provider
+from .providers import get_provider
 
 
 async def prompt_user(default_prompt: str | None = None) -> str:

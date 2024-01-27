@@ -4,7 +4,7 @@ from openai import APIError
 from openai import AsyncOpenAI as OpenAIClient
 
 from ..config import Setting
-from ..provider import Provider, ProviderError, system_prompt
+from . import Provider, ProviderError, system_prompt
 
 
 class LocalAI(Provider):

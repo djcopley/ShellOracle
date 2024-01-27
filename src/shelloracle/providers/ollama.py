@@ -7,7 +7,7 @@ from typing import Any, AsyncIterator
 import httpx
 
 from ..config import Setting
-from ..provider import Provider, ProviderError, system_prompt
+from . import Provider, ProviderError, system_prompt
 
 
 def dataclass_to_json(obj: Any) -> dict[str, Any]:
