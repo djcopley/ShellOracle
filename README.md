@@ -6,7 +6,7 @@
 # ShellOracle
 
 ShellOracle is an innovative terminal utility designed for intelligent shell command generation, bringing a new level of
-efficiency to your command-line interactions.
+efficiency to your command-line interactions. ShellOracle currently supports Ollama, LocalAI, and OpenAI!
 
 ![ShellOracle](https://i.imgur.com/mg1rCzd.gif)
 
@@ -62,9 +62,9 @@ Installing ShellOracle is easy!
     ```shell
     python3 -m pip install shelloracle
     ```
-2. Next, run `shelloracle --init` and follow the prompts
+2. Next, run `shelloracle init` and follow the prompts
     ```shell
-    python3 -m shelloracle --init
+    python3 -m shelloracle init
     ```
 
 **Ollama**
@@ -84,7 +84,7 @@ Installing ShellOracle is easy!
 ShellOracle is designed to be used as a BASH/ZSH widget activated by the CTRL+F keyboard shortcut.
 
 1. Press CTRL+F
-2. Describe your command or goal
+2. Describe your command
 3. Press Enter
 
 The generated command will be inserted into your shell prompt after a brief processing period.
@@ -102,6 +102,10 @@ ollama pull codellama:13b
 
 To use ShellOracle with the OpenAI provider, create an [API key](https://platform.openai.com/account/api-keys). Edit
 your `~/.shelloracle/config.toml` to change your provider and enter your API key.
+
+### LocalAI
+
+
 
 ### Other ways to run ShellOracle
 

@@ -1,18 +1,22 @@
+import inspect
 import shutil
 from pathlib import Path
 
-from prompt_toolkit import print_formatted_text
-from prompt_toolkit.application import create_app_session_from_tty
+from prompt_toolkit import print_formatted_text, prompt
+from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.shortcuts import confirm
+
+from .config import Setting, Configuration
+from .providers import list_providers, get_provider, Provider
 
 
 def print_info(info: str) -> None:
     print_formatted_text(FormattedText([("ansiblue", info)]))
 
 
-def print_error(error: str) -> None:
-    print_formatted_text(FormattedText([("ansired", error)]))
+def print_warning(warning: str) -> None:
+    print_formatted_text(FormattedText([("ansiyellow", warning)]))
 
 
 def replace_home_with_tilde(path: Path) -> Path:
@@ -74,17 +78,59 @@ def update_rc(shell: str) -> None:
     print_info(f"Successfully updated {replace_home_with_tilde(rc_path)}")
 
 
-def bootstrap() -> None:
-    with create_app_session_from_tty():
-        if not (shells := get_installed_shells()):
-            print_error(f"No compatible shells found. Supported shells: {', '.join(supported_shells)}")
-            return
-        if confirm("Enable terminal keybindings and update rc?", suffix=" ([y]/n) ") is False:
-            return
-        for shell in shells:
-            write_script_home(shell)
-            update_rc(shell)
+def get_settings(provider: Provider) -> list[tuple[str, Setting]]:
+    settings = inspect.getmembers(provider, predicate=lambda p: isinstance(p, Setting))
+    return settings
 
 
-if __name__ == '__main__':
-    bootstrap()
+def write_shelloracle_config(provider, settings):
+    configuration = (
+                        "[shelloracle]\n"
+                        "provider = %(provider)s\n"
+                        "\n"
+                        "[provider.%(provider)s]\n"
+                    ) % {"provider": provider.name}
+
+    for setting in settings:
+        s = "%(name)s = %(value)s\n" % {"name": setting[0], "value": setting[1]}
+        configuration += s
+
+    Configuration.filepath.write_text(configuration)
+
+
+def install_keybindings() -> None:
+    if not (shells := get_installed_shells()):
+        print_warning("Cannot install keybindings: no compatible shells found. "
+                      f"Supported shells: {', '.join(supported_shells)}")
+        return
+    if confirm("Enable terminal keybindings and update rc?", suffix=" ([y]/n) ") is False:
+        return
+    for shell in shells:
+        write_script_home(shell)
+        update_rc(shell)
+
+
+def user_configure_settings(provider: Provider) -> list[tuple[str, str]]:
+    settings = []
+    for name, setting in get_settings(provider):
+        value = prompt(f"{name}: ", default=str(setting.default))
+        settings.append((name, value))
+    return settings
+
+
+def user_select_provider() -> Provider:
+    providers = list_providers()
+    completer = WordCompleter(providers, ignore_case=True)
+    selected_provider = prompt(f"Choose your LLM provider ({', '.join(providers)}): ", completer=completer)
+    case_insensitive_map = {p.lower(): p for p in providers}
+    selected_provider = case_insensitive_map[selected_provider.lower()]
+    provider = get_provider(selected_provider)
+    return provider
+
+
+def bootstrap_shelloracle() -> None:
+    """Bootstrap shelloracle"""
+    provider = user_select_provider()
+    settings = user_configure_settings(provider)
+    write_shelloracle_config(provider, settings)
+    install_keybindings()
