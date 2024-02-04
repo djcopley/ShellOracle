@@ -1,6 +1,10 @@
+from __future__ import annotations
+
 from abc import abstractmethod
 from collections.abc import AsyncIterator
-from typing import Protocol, runtime_checkable
+from typing import Protocol, TypeVar, Generic, runtime_checkable
+
+from ..config import get_config
 
 system_prompt = (
     "Based on the following user description, generate a corresponding Bash command. Focus solely "
@@ -37,6 +41,23 @@ class Provider(Protocol):
         """
         # If you are wondering why the 'generate' signature doesn't include 'async', see
         # https://mypy.readthedocs.io/en/stable/more_types.html#asynchronous-iterators
+
+
+T = TypeVar("T")
+
+
+class Setting(Generic[T]):
+    def __init__(self, *, name: str | None = None, default: T | None = None) -> None:
+        self.name = name
+        self.default = default
+
+    def __set_name__(self, owner: type[Provider], name: str) -> None:
+        if not self.name:
+            self.name = name
+
+    def __get__(self, instance: Provider, owner: type[Provider]) -> T:
+        config = get_config()
+        return config["provider"][instance.name][self.name]
 
 
 def _providers() -> dict[str, type[Provider]]:
