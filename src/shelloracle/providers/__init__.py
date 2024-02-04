@@ -39,7 +39,7 @@ class Provider(Protocol):
         # https://mypy.readthedocs.io/en/stable/more_types.html#asynchronous-iterators
 
 
-def _providers() -> dict[str, Provider]:
+def _providers() -> dict[str, type[Provider]]:
     from .ollama import Ollama
     from .openai import OpenAI
     from .localai import LocalAI
