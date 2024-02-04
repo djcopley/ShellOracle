@@ -7,8 +7,8 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.shortcuts import confirm
 
-from .config import Setting, Configuration
-from .providers import list_providers, get_provider, Provider
+from .config import Configuration
+from .providers import Provider, Setting, list_providers, get_provider
 
 
 def print_info(info: str) -> None:
@@ -85,15 +85,15 @@ def get_settings(provider: Provider) -> list[tuple[str, Setting]]:
 
 def write_shelloracle_config(provider, settings):
     configuration = (
-                        "[shelloracle]\n"
-                        "provider = %(provider)s\n"
-                        "\n"
-                        "[provider.%(provider)s]\n"
-                    ) % {"provider": provider.name}
+        "[shelloracle]\n"
+        "provider = %(provider)s\n"
+        "\n"
+        "[provider.%(provider)s]\n"
+    ) % {"provider": provider.name}
 
     for setting in settings:
-        s = "%(name)s = %(value)s\n" % {"name": setting[0], "value": setting[1]}
-        configuration += s
+        setting_line = "%(name)s = %(value)s\n" % {"name": setting[0], "value": setting[1]}
+        configuration += setting_line
 
     Configuration.filepath.write_text(configuration)
 
