@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import sys
 from collections.abc import Mapping, Iterator
 from pathlib import Path
@@ -14,7 +15,15 @@ data_home = Path.home() / ".shelloracle"
 
 
 class Configuration(Mapping):
-    filepath = data_home / "config.toml"
+    """ShellOracle application configuration
+
+    The configuration is loaded at program startup, and persisted for the life of the application. Any changes made
+    to the configuration while the application is running, will have no effect.
+    """
+    if env_path := os.environ.get("SHELLORACLE_CONFIG"):
+        filepath = Path(env_path).absolute()
+    else:
+        filepath = data_home / "config.toml"
 
     def __init__(self) -> None:
         with self.filepath.open("rb") as config_file:
