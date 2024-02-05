@@ -2,7 +2,7 @@ import argparse
 from importlib.metadata import version
 
 from . import shelloracle
-from .bootstrap import bootstrap_shelloracle
+from .bootstrap import configure_shelloracle
 
 
 def parse_args() -> argparse.Namespace:
@@ -11,7 +11,7 @@ def parse_args() -> argparse.Namespace:
 
     subparsers = parser.add_subparsers()
     configure_subparser = subparsers.add_parser("configure", help="install %(prog)s keybindings")
-    configure_subparser.set_defaults(subparser=configure_subparser, action=bootstrap_shelloracle)
+    configure_subparser.set_defaults(subparser=configure_subparser, action=configure_shelloracle)
 
     return parser.parse_args()
 

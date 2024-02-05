@@ -56,8 +56,10 @@ class Setting(Generic[T]):
             self.name = name
 
     def __get__(self, instance: Provider, owner: type[Provider]) -> T:
+        if instance is None:
+            raise AttributeError("Can't get value when Setting is unbound")
         config = get_config()
-        return config["provider"][instance.name][self.name]
+        return config["provider"][owner.name][self.name]
 
 
 def _providers() -> dict[str, type[Provider]]:

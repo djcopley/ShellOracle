@@ -1,7 +1,10 @@
 import inspect
 import shutil
+from collections.abc import Iterator
 from pathlib import Path
+from typing import Any
 
+import tomlkit
 from prompt_toolkit import print_formatted_text, prompt
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.formatted_text import FormattedText
@@ -78,24 +81,35 @@ def update_rc(shell: str) -> None:
     print_info(f"Successfully updated {replace_home_with_tilde(rc_path)}")
 
 
-def get_settings(provider: Provider) -> list[tuple[str, Setting]]:
+def get_settings(provider: Provider) -> Iterator[Setting]:
     settings = inspect.getmembers(provider, predicate=lambda p: isinstance(p, Setting))
-    return settings
+
+    def correct_name_setting():
+        for name, setting in settings:
+            if setting.name:
+                name = setting.name
+            yield name, setting
+
+    yield from correct_name_setting()
 
 
-def write_shelloracle_config(provider, settings):
-    configuration = (
-        "[shelloracle]\n"
-        "provider = %(provider)s\n"
-        "\n"
-        "[provider.%(provider)s]\n"
-    ) % {"provider": provider.name}
+def write_shelloracle_config(provider: Provider, settings: dict[str, Any]) -> None:
+    config = tomlkit.document()
 
-    for setting in settings:
-        setting_line = "%(name)s = %(value)s\n" % {"name": setting[0], "value": setting[1]}
-        configuration += setting_line
+    shor_table = tomlkit.table()
+    shor_table.add("provider", provider.name)
+    config.add("shelloracle", shor_table)
 
-    Configuration.filepath.write_text(configuration)
+    provider_table = tomlkit.table()
+    config.add("provider", provider_table)
+
+    provider_configuration_table = tomlkit.table()
+    for setting, value in settings.items():
+        provider_configuration_table.add(setting, value)
+    provider_table.add(provider.name, provider_configuration_table)
+
+    with Configuration.filepath.open("w") as config_file:
+        tomlkit.dump(config, config_file)
 
 
 def install_keybindings() -> None:
@@ -110,11 +124,13 @@ def install_keybindings() -> None:
         update_rc(shell)
 
 
-def user_configure_settings(provider: Provider) -> list[tuple[str, str]]:
-    settings = []
+def user_configure_settings(provider: Provider) -> dict[str, Any]:
+    settings = {}
     for name, setting in get_settings(provider):
-        value = prompt(f"{name}: ", default=str(setting.default))
-        settings.append((name, value))
+        user_input = prompt(f"{name}: ", default=str(setting.default))
+        type_ = type(setting.default) if setting.default else str
+        value = type_(user_input)
+        settings[name] = value
     return settings
 
 
@@ -128,8 +144,7 @@ def user_select_provider() -> Provider:
     return provider
 
 
-def bootstrap_shelloracle() -> None:
-    """Bootstrap shelloracle"""
+def configure_shelloracle() -> None:
     provider = user_select_provider()
     settings = user_configure_settings(provider)
     write_shelloracle_config(provider, settings)
