@@ -9,7 +9,7 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.application import create_app_session_from_tty
 from prompt_toolkit.history import FileHistory
 
-from .config import config
+from .config import get_config
 from .providers import get_provider
 
 
@@ -46,7 +46,8 @@ async def shell_oracle() -> None:
 
     :returns: None
     """
-    provider = get_provider(config.global_config.provider)()
+    config = get_config()
+    provider = get_provider(config.provider)()
 
     if not (prompt := get_query_from_pipe()):
         default_prompt = os.environ.get("SHOR_DEFAULT_PROMPT")
