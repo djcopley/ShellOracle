@@ -57,7 +57,9 @@ class Setting(Generic[T]):
 
     def __get__(self, instance: Provider, owner: type[Provider]) -> T:
         if instance is None:
-            raise AttributeError("Can't get value when Setting is unbound")
+            # Accessing settings as a class attribute is not supported because it prevents
+            # inspect.get_members from determining the object type
+            raise AttributeError("Settings must be accessed through a provider instance.")
         config = get_config()
         return config["provider"][owner.name][self.name]
 
