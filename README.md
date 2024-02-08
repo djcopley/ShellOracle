@@ -18,6 +18,7 @@ Explore our dynamic features and look forward to more exciting updates by giving
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Providers](#providers)
 - [Configuration](#configuration)
 - [System Requirements](#system-requirements)
 - [Feedback](#feedback)
@@ -58,26 +59,15 @@ Key features of ShellOracle include:
 
 Installing ShellOracle is easy!
 
-1. First, pip install the `shelloracle` package
+1. Pip install the `shelloracle` package
     ```shell
     python3 -m pip install shelloracle
     ```
-2. Next, run `shelloracle init` and follow the prompts
+2. Configure ShellOracle with `shelloracle configure` and follow the prompts
     ```shell
-    python3 -m shelloracle init
+    python3 -m shelloracle configure
     ```
-
-**Ollama**
-
-> [!IMPORTANT]
-> ShellOracle uses [Ollama](https://ollama.ai/) as its default LLM provider. If you are using the default configuration,
-> the following steps are required.
-
-3. Install [Ollama](https://ollama.ai/)
-4. Download the default model
-    ```shell
-    ollama pull codellama:13b
-    ```
+3. Refer to the [providers](#providers) section for specific details regarding your chosen provider.
 
 ## Usage
 
@@ -89,14 +79,18 @@ ShellOracle is designed to be used as a BASH/ZSH widget activated by the CTRL+F 
 
 The generated command will be inserted into your shell prompt after a brief processing period.
 
+## Providers
+
 ### Ollama
 
-Before using ShellOracle with Ollama, pull the model you want to use. The default model is `codellama:13b`. To pull the
-default model, run:
+Before using ShellOracle with Ollama, pull the model you chose in the configure step.
+For example, if you chose `codellama:13b`, run:
 
 ```shell
 ollama pull codellama:13b
 ```
+
+Refer to the [Ollama docs](https://ollama.ai) for installation, available models, and usage.
 
 ### OpenAI
 
@@ -105,7 +99,7 @@ your `~/.shelloracle/config.toml` to change your provider and enter your API key
 
 ### LocalAI
 
-
+Refer to the [LocalAI docs](https://localai.io/) for installation, available models, and usage.
 
 ### Other ways to run ShellOracle
 
@@ -126,43 +120,6 @@ there are a few caveats with this method:
 ShellOracle's configuration is your gateway to tailoring the utility to match your preferences and requirements.
 The `~/.shelloracle/config.toml` file serves as the control center for customizing various aspects of ShellOracle's
 behavior.
-
-### ShellOracle Settings
-
-The `[shelloracle]` section in the configuration file lets you define global settings for ShellOracle:
-
-```toml
-[shelloracle]
-provider = "Ollama"
-```
-
-Set the `provider` key to specify the Language Model (LLM) backend, with options currently including "Ollama", 
-"LocalAI", and "OpenAI."
-
-### Provider Settings
-
-Provider-specific configurations are handled through the `[provider.*]` keys. Here's an
-example for the Ollama provider:
-
-```toml
-[provider.Ollama]
-host = "localhost"
-port = 11434
-model = "codellama:13b"
-system_prompt = "..."
-```
-
-Change these options to match your desired configuration.
-
-For OpenAI, if you opt for this provider, you'll need to provide
-your [API key](https://platform.openai.com/account/api-keys):
-
-```toml
-[provider.OpenAI]
-api_key = "your-api-key-here"
-model = "gpt-3.5-turbo"
-system_prompt = "..."
-```
 
 ## System Requirements
 
