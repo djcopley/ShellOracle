@@ -32,11 +32,11 @@ def get_installed_shells() -> list[str]:
 
 
 def get_bundled_script_path(shell: str) -> Path:
-    parent = Path(__file__).parent
+    shell_dir = Path(__file__).parent / "shell"
     if shell == "zsh":
-        return parent / "shelloracle.zsh"
+        return shell_dir / "shelloracle.zsh"
     elif shell == "bash":
-        return parent / "shelloracle.bash"
+        return shell_dir / "shelloracle.bash"
 
 
 def get_script_path(shell: str) -> Path:
