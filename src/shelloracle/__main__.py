@@ -6,7 +6,7 @@ from . import shelloracle
 
 def configure():
     # nest this import in a function to avoid expensive module loads
-    from .bootstrap import configure_shelloracle
+    from .configure import configure_shelloracle
     configure_shelloracle()
 
 
