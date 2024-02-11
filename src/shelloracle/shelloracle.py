@@ -14,6 +14,7 @@ from .providers import get_provider
 
 
 async def prompt_user(default_prompt: str | None = None) -> str:
+    # stdin doesn't exist when running as a zle widget
     with create_app_session_from_tty():
         history_file = Path.home() / ".shelloracle_history"
         prompt_session: PromptSession = PromptSession(history=FileHistory(str(history_file)))
