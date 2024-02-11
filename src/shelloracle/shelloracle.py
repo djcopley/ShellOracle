@@ -8,6 +8,7 @@ from pathlib import Path
 from prompt_toolkit import PromptSession
 from prompt_toolkit.application import create_app_session_from_tty
 from prompt_toolkit.history import FileHistory
+from prompt_toolkit.patch_stdout import patch_stdout
 
 from .config import get_config
 from .providers import get_provider
@@ -15,7 +16,7 @@ from .providers import get_provider
 
 async def prompt_user(default_prompt: str | None = None) -> str:
     # stdin doesn't exist when running as a zle widget
-    with create_app_session_from_tty():
+    with create_app_session_from_tty(), patch_stdout():
         history_file = Path.home() / ".shelloracle_history"
         prompt_session: PromptSession = PromptSession(history=FileHistory(str(history_file)))
         # Can I do this with one of the builtin methods?
