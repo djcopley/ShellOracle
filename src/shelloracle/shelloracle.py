@@ -67,5 +67,5 @@ def cli() -> None:
     """
     try:
         asyncio.run(shelloracle())
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, asyncio.exceptions.CancelledError):
         return
