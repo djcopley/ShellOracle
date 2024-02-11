@@ -52,21 +52,21 @@ def get_bundled_script_path(shell: str) -> Path:
     shell_dir = Path(__file__).parent / "shell"
     if shell == "zsh":
         return shell_dir / "shelloracle.zsh"
-    elif shell == "bash":
+    else:
         return shell_dir / "shelloracle.bash"
 
 
 def get_script_path(shell: str) -> Path:
     if shell == "zsh":
         return Path.home() / ".shelloracle.zsh"
-    elif shell == "bash":
+    else:
         return Path.home() / ".shelloracle.bash"
 
 
 def get_rc_path(shell: str) -> Path:
     if shell == "zsh":
         return Path.home() / ".zshrc"
-    elif shell == "bash":
+    else:
         return Path.home() / ".bashrc"
 
 
@@ -91,7 +91,7 @@ def update_rc(shell: str) -> None:
     print_info(f"Successfully updated {replace_home_with_tilde(rc_path)}")
 
 
-def get_settings(provider: Provider) -> Iterator[tuple[str, Setting]]:
+def get_settings(provider: type[Provider]) -> Iterator[tuple[str, Setting]]:
     settings = inspect.getmembers(provider, predicate=lambda p: isinstance(p, Setting))
 
     def correct_name_setting():
@@ -103,7 +103,7 @@ def get_settings(provider: Provider) -> Iterator[tuple[str, Setting]]:
     yield from correct_name_setting()
 
 
-def write_shelloracle_config(provider: Provider, settings: dict[str, Any]) -> None:
+def write_shelloracle_config(provider: type[Provider], settings: dict[str, Any]) -> None:
     config = tomlkit.document()
 
     shor_table = tomlkit.table()
@@ -134,11 +134,14 @@ def install_keybindings() -> None:
         update_rc(shell)
 
 
-def user_configure_settings(provider: Provider) -> dict[str, Any]:
+def user_configure_settings(provider: type[Provider]) -> dict[str, Any]:
     settings = {}
     for name, setting in get_settings(provider):
         user_input = prompt(f"{name}: ", default=str(setting.default))
-        type_ = type(setting.default) if setting.default else str
+        if setting.default:
+            type_ = type(setting.default)
+        else:
+            type_ = str
         value = type_(user_input)
         settings[name] = value
     return settings
@@ -151,7 +154,7 @@ def case_correct_user_input(user_input: str, options: Sequence[str]) -> str | No
     return None
 
 
-def user_select_provider() -> Provider:
+def user_select_provider() -> type[Provider]:
     providers = list_providers()
     completer = WordCompleter(providers, ignore_case=True)
     user_selected_provider = prompt(f"Choose your LLM provider ({', '.join(providers)}): ", completer=completer)
