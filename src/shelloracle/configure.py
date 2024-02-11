@@ -145,9 +145,10 @@ def user_configure_settings(provider: Provider) -> dict[str, Any]:
 
 
 def case_correct_user_input(user_input: str, options: Sequence[str]) -> str | None:
-    lowercase_options_map = {o.lower(): o for o in options}
-    lowercase_user_input = user_input.lower()
-    return lowercase_options_map.get(lowercase_user_input)
+    for option in options:
+        if user_input.lower() == option.lower():
+            return option
+    return None
 
 
 def user_select_provider() -> Provider:
