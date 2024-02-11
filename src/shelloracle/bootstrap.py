@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import inspect
 import shutil
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -14,12 +16,20 @@ from .config import Configuration
 from .providers import Provider, Setting, list_providers, get_provider
 
 
+class UserError(Exception):
+    ...
+
+
 def print_info(info: str) -> None:
     print_formatted_text(FormattedText([("ansiblue", info)]))
 
 
 def print_warning(warning: str) -> None:
     print_formatted_text(FormattedText([("ansiyellow", warning)]))
+
+
+def print_error(error: str) -> None:
+    print_formatted_text(FormattedText([("ansired", error)]))
 
 
 def replace_home_with_tilde(path: Path) -> Path:
@@ -134,13 +144,19 @@ def user_configure_settings(provider: Provider) -> dict[str, Any]:
     return settings
 
 
+def case_correct_user_input(user_input: str, options: Sequence[str]) -> str | None:
+    lowercase_options_map = {o.lower(): o for o in options}
+    lowercase_user_input = user_input.lower()
+    return lowercase_options_map.get(lowercase_user_input)
+
+
 def user_select_provider() -> Provider:
     providers = list_providers()
     completer = WordCompleter(providers, ignore_case=True)
-    selected_provider = prompt(f"Choose your LLM provider ({', '.join(providers)}): ", completer=completer)
-    case_insensitive_map = {p.lower(): p for p in providers}
-    selected_provider = case_insensitive_map[selected_provider.lower()]
-    provider = get_provider(selected_provider)
+    user_selected_provider = prompt(f"Choose your LLM provider ({', '.join(providers)}): ", completer=completer)
+    if (provider_name := case_correct_user_input(user_selected_provider, providers)) is None:
+        raise UserError(f"Invalid provider: {user_selected_provider or 'no input'}")
+    provider = get_provider(provider_name)
     return provider
 
 
@@ -148,6 +164,9 @@ def configure_shelloracle() -> None:
     try:
         provider = user_select_provider()
         settings = user_configure_settings(provider)
+    except UserError as e:
+        print_error(str(e))
+        return
     except KeyboardInterrupt:
         return
     write_shelloracle_config(provider, settings)
