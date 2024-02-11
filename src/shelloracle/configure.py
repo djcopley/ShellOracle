@@ -91,7 +91,7 @@ def update_rc(shell: str) -> None:
     print_info(f"Successfully updated {replace_home_with_tilde(rc_path)}")
 
 
-def get_settings(provider: Provider) -> Iterator[Setting]:
+def get_settings(provider: Provider) -> Iterator[tuple[str, Setting]]:
     settings = inspect.getmembers(provider, predicate=lambda p: isinstance(p, Setting))
 
     def correct_name_setting():
