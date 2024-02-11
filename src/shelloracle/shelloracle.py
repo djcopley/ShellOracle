@@ -38,7 +38,8 @@ def get_query_from_pipe() -> str | None:
 
 
 async def shelloracle() -> None:
-    """
+    """ShellOracle program entrypoint
+
     If there is a query from the input pipe, it processes the query to generate a response.
     If there isn't a query from the input pipe, it prompts the user for input.
 
@@ -46,6 +47,7 @@ async def shelloracle() -> None:
         - SHOR_DEFAULT_PROMPT: This is the initial user prompt that can be configured via this environment variable.
 
     :returns: None
+    :raises KeyboardInterrupt: if the user presses CTRL+C
     """
     config = get_config()
     provider = get_provider(config.provider)()
@@ -59,12 +61,11 @@ async def shelloracle() -> None:
 
 
 def cli() -> None:
-    """
-    Run shell oracle.
+    """Run the ShellOracle command line interface
 
-    Handles KeyboardInterrupt and EOFError.
+    :returns: None
     """
     try:
         asyncio.run(shelloracle())
-    except (EOFError, KeyboardInterrupt):
-        exit(0)
+    except KeyboardInterrupt:
+        return
