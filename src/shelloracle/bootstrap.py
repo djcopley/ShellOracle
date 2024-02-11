@@ -145,7 +145,10 @@ def user_select_provider() -> Provider:
 
 
 def configure_shelloracle() -> None:
-    provider = user_select_provider()
-    settings = user_configure_settings(provider)
+    try:
+        provider = user_select_provider()
+        settings = user_configure_settings(provider)
+    except KeyboardInterrupt:
+        return
     write_shelloracle_config(provider, settings)
     install_keybindings()
