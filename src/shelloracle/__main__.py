@@ -12,10 +12,10 @@ def configure():
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument('--version', action='version', version=f'%(prog)s {version(__package__)}')
+    parser.add_argument('--version', action='version', version=f'{__package__} {version(__package__)}')
 
     subparsers = parser.add_subparsers()
-    configure_subparser = subparsers.add_parser("configure", help="install %(prog)s keybindings")
+    configure_subparser = subparsers.add_parser("configure", help=f"install {__package__} keybindings")
     configure_subparser.set_defaults(action=configure)
 
     return parser.parse_args()
