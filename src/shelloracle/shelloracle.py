@@ -37,7 +37,7 @@ def get_query_from_pipe() -> str | None:
     return lines[0].rstrip()
 
 
-async def shell_oracle() -> None:
+async def shelloracle() -> None:
     """
     If there is a query from the input pipe, it processes the query to generate a response.
     If there isn't a query from the input pipe, it prompts the user for input.
@@ -65,6 +65,6 @@ def cli() -> None:
     Handles KeyboardInterrupt and EOFError.
     """
     try:
-        asyncio.run(shell_oracle())
+        asyncio.run(shelloracle())
     except (EOFError, KeyboardInterrupt):
         exit(0)
