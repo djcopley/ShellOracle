@@ -6,7 +6,6 @@ import sys
 from pathlib import Path
 
 from yaspin import yaspin
-from yaspin.spinners import Spinners
 from prompt_toolkit import PromptSession
 from prompt_toolkit.application import create_app_session_from_tty
 from prompt_toolkit.history import FileHistory
