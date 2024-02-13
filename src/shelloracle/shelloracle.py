@@ -5,6 +5,8 @@ import os
 import sys
 from pathlib import Path
 
+from yaspin import yaspin
+from yaspin.spinners import Spinners
 from prompt_toolkit import PromptSession
 from prompt_toolkit.application import create_app_session_from_tty
 from prompt_toolkit.history import FileHistory
@@ -57,8 +59,12 @@ async def shelloracle() -> None:
         default_prompt = os.environ.get("SHOR_DEFAULT_PROMPT")
         prompt = await prompt_user(default_prompt)
 
-    async for token in provider.generate(prompt):
-        sys.stdout.write(token)
+    shell_command = ""
+    with create_app_session_from_tty(), patch_stdout(raw=True), yaspin() as sp:
+        async for token in provider.generate(prompt):
+            shell_command += token
+            sp.text = shell_command
+    sys.stdout.write(shell_command)
 
 
 def cli() -> None:
