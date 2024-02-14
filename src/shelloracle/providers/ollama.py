@@ -53,7 +53,7 @@ class Ollama(Provider):
 
     host = Setting(default="localhost")
     port = Setting(default=11434)
-    model = Setting(default="codellama:13b")
+    model = Setting(default="dolphin-mistral")
 
     @property
     def endpoint(self) -> str:
