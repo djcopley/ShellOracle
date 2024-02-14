@@ -11,8 +11,8 @@ system_prompt = (
     "on interpreting the requirements and translating them into a single, executable Bash command. "
     "Ensure accuracy and relevance to the user's description. The output should be a valid Bash "
     "command that directly aligns with the user's intent, ready for execution in a command-line "
-    "environment. Output nothing except for the command. No code block, no English explanation, "
-    "no start/end tags."
+    "environment. Do not output anything except for the command. No code block, no English explanation, "
+    "no newlines, and no start/end tags."
 )
 
 

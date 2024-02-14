@@ -61,6 +61,8 @@ async def shelloracle() -> None:
     shell_command = ""
     with create_app_session_from_tty(), patch_stdout(raw=True), yaspin() as sp:
         async for token in provider.generate(prompt):
+            # some models may erroneously return a newline, which causes issues with the status spinner
+            token = token.replace("\n", "")
             shell_command += token
             sp.text = shell_command
     sys.stdout.write(shell_command)
