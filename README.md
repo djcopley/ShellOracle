@@ -1,7 +1,7 @@
 [![Tests](https://github.com/djcopley/ShellOracle/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/djcopley/ShellOracle/actions/workflows/tests.yml)
 [![PyPI version](https://badge.fury.io/py/shelloracle.svg)](https://badge.fury.io/py/shelloracle)
 [![PyPI Supported Python Versions](https://img.shields.io/pypi/pyversions/shelloracle.svg)](https://pypi.python.org/pypi/shelloracle/)
-[![Downloads](https://static.pepy.tech/badge/shelloracle/month)](https://pepy.tech/project/shelloracle)
+[![Downloads](https://static.pepy.tech/badge/shelloracle)](https://pepy.tech/project/shelloracle)
 
 # ShellOracle
 
