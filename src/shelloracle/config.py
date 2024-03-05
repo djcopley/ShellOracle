@@ -11,7 +11,7 @@ if sys.version_info < (3, 11):
 else:
     import tomllib
 
-data_home = Path.home() / ".shelloracle"
+shelloracle_home = Path.home() / ".shelloracle"
 
 
 class Configuration(Mapping):
@@ -20,17 +20,17 @@ class Configuration(Mapping):
     The configuration is loaded at program startup, and persisted for the life of the application. Any changes made
     to the configuration while the application is running, will have no effect.
     """
-    if env_path := os.environ.get("SHELLORACLE_CONFIG"):
-        filepath = Path(env_path).absolute()
+    if "SHELLORACLE_CONFIG" in os.environ:
+        filepath = Path(os.environ["SHELLORACLE_CONFIG"]).absolute()
     else:
-        filepath = data_home / "config.toml"
+        filepath = shelloracle_home / "config.toml"
 
     def __init__(self) -> None:
         with self.filepath.open("rb") as config_file:
             self._config = tomllib.load(config_file)
 
-    def __getitem__(self, __key) -> Any:
-        return self._config[__key]
+    def __getitem__(self, key) -> Any:
+        return self._config[key]
 
     def __len__(self) -> int:
         return len(self._config)
