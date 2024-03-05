@@ -1,7 +1,21 @@
 import argparse
+import logging
 from importlib.metadata import version
 
 from . import shelloracle
+from .config import shelloracle_home
+
+
+def configure_logging():
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.DEBUG)
+
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
+    handler = logging.FileHandler(shelloracle_home / "shelloracle.log")
+    handler.setLevel(logging.DEBUG)
+    handler.setFormatter(formatter)
+
+    root_logger.addHandler(handler)
 
 
 def configure():
@@ -22,6 +36,8 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    configure_logging()
+
     args = parse_args()
     if action := getattr(args, "action", None):
         action()

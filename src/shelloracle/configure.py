@@ -12,7 +12,7 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.shortcuts import confirm
 
-from .config import Configuration
+from .config import Configuration, shelloracle_home
 from .providers import Provider, Setting, list_providers, get_provider
 
 
@@ -58,9 +58,9 @@ def get_bundled_script_path(shell: str) -> Path:
 
 def get_script_path(shell: str) -> Path:
     if shell == "zsh":
-        return Path.home() / ".shelloracle.zsh"
+        return shelloracle_home / ".shelloracle.zsh"
     else:
-        return Path.home() / ".shelloracle.bash"
+        return shelloracle_home / ".shelloracle.bash"
 
 
 def get_rc_path(shell: str) -> Path:

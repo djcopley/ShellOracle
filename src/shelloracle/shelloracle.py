@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import logging
 import os
 import sys
 from pathlib import Path
@@ -13,6 +14,8 @@ from yaspin import yaspin
 
 from .config import get_config
 from .providers import get_provider
+
+logger = logging.getLogger(__name__)
 
 
 async def prompt_user(default_prompt: str | None = None) -> str:
@@ -35,7 +38,8 @@ def get_query_from_pipe() -> str | None:
     if os.isatty(0) or not (lines := sys.stdin.readlines()):  # Return 'None' if fd 0 is a tty (no pipe)
         return None
     if len(lines) > 1:
-        raise ValueError("Multi-line input not supported")
+        raise ValueError("Multi-line input is not supported")
+    logger.debug("using query from stdin: %s", lines)
     return lines[0].rstrip()
 
 
@@ -57,6 +61,7 @@ async def shelloracle() -> None:
     if not (prompt := get_query_from_pipe()):
         default_prompt = os.environ.get("SHOR_DEFAULT_PROMPT")
         prompt = await prompt_user(default_prompt)
+    logger.info("user prompt: %s", prompt)
 
     shell_command = ""
     with create_app_session_from_tty(), patch_stdout(raw=True), yaspin() as sp:
@@ -65,6 +70,7 @@ async def shelloracle() -> None:
             token = token.replace("\n", "")
             shell_command += token
             sp.text = shell_command
+    logger.info("generated shell command: %s", shell_command)
     sys.stdout.write(shell_command)
 
 
