@@ -1,9 +1,23 @@
-[![Tests](https://github.com/djcopley/ShellOracle/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/djcopley/ShellOracle/actions/workflows/tests.yml)
-[![PyPI version](https://badge.fury.io/py/shelloracle.svg)](https://badge.fury.io/py/shelloracle)
-[![PyPI Supported Python Versions](https://img.shields.io/pypi/pyversions/shelloracle.svg)](https://pypi.python.org/pypi/shelloracle/)
-[![Downloads](https://static.pepy.tech/badge/shelloracle)](https://pepy.tech/project/shelloracle)
+<p align="center">
+  <img src="https://i.imgur.com/IsQYInJ.png" alt="ShellOracle logo"/>
+</p>
 
-# ShellOracle
+<h1 align="center">ShellOracle</h1>
+
+<p align="center">
+  <a href="https://github.com/djcopley/ShellOracle/actions/workflows/tests.yml">
+      <img src="https://github.com/djcopley/ShellOracle/actions/workflows/tests.yml/badge.svg?branch=main" alt="Tests">
+  </a>
+  <a href="https://badge.fury.io/py/shelloracle">
+      <img src="https://badge.fury.io/py/shelloracle.svg" alt="PyPI version">
+  </a>
+  <a href="https://pypi.python.org/pypi/shelloracle/">
+      <img src="https://img.shields.io/pypi/pyversions/shelloracle.svg" alt="PyPI Supported Python Versions">
+  </a>
+  <a href="https://pepy.tech/project/shelloracle">
+      <img src="https://static.pepy.tech/badge/shelloracle" alt="Downloads">
+  </a>
+</p>
 
 ShellOracle is an innovative terminal utility designed for intelligent shell command generation, bringing a new level of
 efficiency to your command-line interactions. ShellOracle currently supports Ollama, LocalAI, and OpenAI!
