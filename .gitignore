@@ -160,3 +160,6 @@ cython_debug/
 
 # Demo scripts
 demo/
+
+# Experimental scripts
+experiments/
