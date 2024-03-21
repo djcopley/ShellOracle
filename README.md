@@ -24,11 +24,10 @@ efficiency to your command-line interactions. ShellOracle currently supports Oll
 
 ![ShellOracle](https://i.imgur.com/GJX3eEq.gif)
 
-Explore our dynamic features and look forward to more exciting updates by giving us a ⭐ and a 👀
+Show your support for ShellOracle and keep an eye out for exciting new developments by clicking the ⭐ and a 👀!
 
 ## Table of Contents
 
-- [Introduction](#introduction)
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -36,28 +35,6 @@ Explore our dynamic features and look forward to more exciting updates by giving
 - [Configuration](#configuration)
 - [System Requirements](#system-requirements)
 - [Feedback](#feedback)
-
-## Introduction
-
-Meet ShellOracle—a handy tool that makes working with the command line a bit smoother. This terminal utility lets you
-create shell commands by describing what you want to do in plain language. ShellOracle simplifies the process of
-crafting complex commands by removing the need to google and comb man pages.
-
-**Why ShellOracle?**
-
-* **No More Memorizing:** Forget about remembering complex shell commands. Just tell ShellOracle what you need, and
-  it'll generate the command for you.
-
-* **Save Time, Stay Focused:** Say goodbye to manual command crafting. ShellOracle helps you save time and concentrate
-  on what really matters by using natural language descriptions.
-
-* **Adaptable to Your Needs:** Whether it's a quick one-liner or a sequence of commands, ShellOracle is flexible. It
-  supports Unix pipes and keeps track of your command history.
-
-* **Your Control, Your Way:** Run ShellOracle as a self-hosted utility to have complete control. Tailor it to your
-  preferences and make it work just the way you want.
-
-Give it a try and see how it fits into your workflow!
 
 ## Features
 
@@ -73,15 +50,26 @@ Key features of ShellOracle include:
 
 Installing ShellOracle is easy!
 
-1. Pip install the `shelloracle` package
+1. [pipx](https://pipx.pypa.io/latest/) install the `shelloracle` package
     ```shell
-    python3 -m pip install shelloracle
+    pipx install shelloracle
     ```
-2. Configure ShellOracle with `shelloracle configure` and follow the prompts
+2. Configure ShellOracle and follow the prompts
     ```shell
-    python3 -m shelloracle configure
+    shor configure
     ```
 3. Refer to the [providers](#providers) section for specific details regarding your chosen provider.
+
+* pipx is the recommended installation method, however, 
+
+Upgrading to the latest version of ShellOracle is just as simple!
+
+1. pipx upgrade the `shelloracle` package
+    ```shell
+   pipx upgrade shelloracle
+   ```
+
+*Installation with `pip` is supported, however, `pipx` is preferred for its automatic environment isolation.*
 
 ## Usage
 
@@ -93,15 +81,27 @@ ShellOracle is designed to be used as a BASH/ZSH widget activated by the CTRL+F 
 
 The generated command will be inserted into your shell prompt after a brief processing period.
 
+### Other ways to run ShellOracle
+
+ShellOracle can be run as a Python module with `python3 -m shelloracle` or using its entrypoint `shor`, however,
+running ShellOracle with this method will not automatically insert the result into your shell prompt.
+
+### Tips
+
+1. If you press CTRL+F with text in your ZLE buffer, all text left of your cursor will carry over to your ShellOracle
+   prompt.
+2. ⬆️ arrow and ⬇️ arrow cycle through your prompt history.
+3. ShellOracle can be chained with other commands; try: `echo "find all the python files in my cwd" | shor`
+
 ## Providers
 
 ### Ollama
 
 Before using ShellOracle with Ollama, pull the model you chose in the configure step.
-For example, if you chose `codellama:13b`, run:
+For example, if you chose `dolphin-mistral`, run:
 
 ```shell
-ollama pull codellama:13b
+ollama pull dolphin-mistral
 ```
 
 Refer to the [Ollama docs](https://ollama.ai) for installation, available models, and usage.
@@ -114,20 +114,6 @@ your `~/.shelloracle/config.toml` to change your provider and enter your API key
 ### LocalAI
 
 Refer to the [LocalAI docs](https://localai.io/) for installation, available models, and usage.
-
-### Other ways to run ShellOracle
-
-ShellOracle can be run as a Python module with `python3 -m shelloracle` or using its entrypoint `shor`; however,
-there are a few caveats with this method:
-- Ensure your `~/.local/bin` directory is added to your PATH variable for the entrypoint to work.
-- Running ShellOracle with this method will not automatically insert the result into your shell prompt.
-
-### Tips
-
-1. If you press CTRL+F with text in your ZLE buffer, all text left of your cursor will carry over to your ShellOracle
-   prompt.
-2. UP_ARROW and DOWN_ARROW cycle through your prompt history.
-3. ShellOracle can be chained with other commands; try: `echo "find all the python files in my cwd" | shor`
 
 ## Configuration
 
@@ -143,12 +129,15 @@ ShellOracle supports BASH and ZSH on macOS and Linux.
 
 ### Hardware
 
-For cloud providers like OpenAI, there are no specific system requirements.
+For cloud providers like OpenAI, there are no hardware requirements.
 
-If self-hosting, system requirements vary based on the model used. Refer to the Ollama model registry for more
-information.
+If running locally, refer to your model for hardware requirements.
 
 ## Feedback
 
 Encountered problems? [File an issue](https://github.com/djcopley/ShellOracle/issues/new). Feature requests are welcome,
 and contributions can be made by opening a pull request.
+
+## License
+
+This software is licensed under the GPLv3 license.
