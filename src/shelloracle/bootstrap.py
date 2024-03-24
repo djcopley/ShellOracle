@@ -58,9 +58,9 @@ def get_bundled_script_path(shell: str) -> Path:
 
 def get_script_path(shell: str) -> Path:
     if shell == "zsh":
-        return shelloracle_home / ".shelloracle.zsh"
+        return shelloracle_home / "shelloracle.zsh"
     else:
-        return shelloracle_home / ".shelloracle.bash"
+        return shelloracle_home / "shelloracle.bash"
 
 
 def get_rc_path(shell: str) -> Path:
@@ -164,7 +164,7 @@ def user_select_provider() -> type[Provider]:
     return provider
 
 
-def configure_shelloracle() -> None:
+def bootstrap_shelloracle() -> None:
     try:
         provider = user_select_provider()
         settings = user_configure_settings(provider)
