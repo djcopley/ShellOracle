@@ -20,8 +20,8 @@ def configure_logging():
 
 def configure():
     # nest this import in a function to avoid expensive module loads
-    from .configure import configure_shelloracle
-    configure_shelloracle()
+    from .bootstrap import bootstrap_shelloracle
+    bootstrap_shelloracle()
 
 
 def parse_args() -> argparse.Namespace:

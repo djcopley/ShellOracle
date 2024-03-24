@@ -165,7 +165,7 @@ def user_select_provider() -> type[Provider]:
     return provider
 
 
-def configure_shelloracle() -> None:
+def bootstrap_shelloracle() -> None:
     try:
         provider = user_select_provider()
         settings = user_configure_settings(provider)
