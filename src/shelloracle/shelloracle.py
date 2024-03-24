@@ -4,7 +4,6 @@ import asyncio
 import logging
 import os
 import sys
-from pathlib import Path
 
 from prompt_toolkit import PromptSession, print_formatted_text
 from prompt_toolkit.application import create_app_session_from_tty
@@ -13,7 +12,7 @@ from prompt_toolkit.history import FileHistory
 from prompt_toolkit.patch_stdout import patch_stdout
 from yaspin import yaspin
 
-from .config import get_config
+from .config import get_config, shelloracle_home
 from .providers import get_provider
 
 logger = logging.getLogger(__name__)
@@ -22,7 +21,7 @@ logger = logging.getLogger(__name__)
 async def prompt_user(default_prompt: str | None = None) -> str:
     # stdin doesn't exist when running as a zle widget
     with create_app_session_from_tty(), patch_stdout():
-        history_file = Path.home() / ".shelloracle_history"
+        history_file = shelloracle_home / "shelloracle_history"
         prompt_session: PromptSession = PromptSession(history=FileHistory(str(history_file)))
         # Can I do this with one of the builtin methods?
         # I tried a few (including cursor_down) with limited success
