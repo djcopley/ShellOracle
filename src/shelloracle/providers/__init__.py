@@ -61,7 +61,10 @@ class Setting(Generic[T]):
             # inspect.get_members from determining the object type
             raise AttributeError("Settings must be accessed through a provider instance.")
         config = get_config()
-        return config["provider"][owner.name][self.name]
+        try:
+            return config["provider"][owner.name][self.name]
+        except KeyError:
+            return self.default
 
 
 def _providers() -> dict[str, type[Provider]]:
