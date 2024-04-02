@@ -1,16 +1,19 @@
 from __future__ import annotations
 
+import logging
 import os
 import sys
 from collections.abc import Mapping, Iterator
 from pathlib import Path
 from typing import Any
+from yaspin.spinners import SPINNERS_DATA
 
 if sys.version_info < (3, 11):
     import tomli as tomllib
 else:
     import tomllib
 
+logger = logging.getLogger(__name__)
 shelloracle_home = Path.home() / ".shelloracle"
 
 
@@ -41,6 +44,16 @@ class Configuration(Mapping):
     @property
     def provider(self) -> str:
         return self["shelloracle"]["provider"]
+
+    @property
+    def spinner_style(self) -> str | None:
+        style = self["shelloracle"].get("spinner_style", None)
+        if not style:
+            return None
+        if style not in SPINNERS_DATA:
+            logger.warning("invalid spinner style: %s", style)
+            return None
+        return style
 
 
 _config: Configuration | None = None

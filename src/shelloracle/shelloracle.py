@@ -4,6 +4,7 @@ import asyncio
 import logging
 import os
 import sys
+from typing import TYPE_CHECKING
 
 from prompt_toolkit import PromptSession, print_formatted_text
 from prompt_toolkit.application import create_app_session_from_tty
@@ -11,9 +12,13 @@ from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.patch_stdout import patch_stdout
 from yaspin import yaspin
+from yaspin.spinners import Spinners
 
 from .config import get_config, shelloracle_home
 from .providers import get_provider
+
+if TYPE_CHECKING:
+    from yaspin.core import Yaspin
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +48,18 @@ def get_query_from_pipe() -> str | None:
     return lines[0].rstrip()
 
 
+def spinner() -> Yaspin:
+    """Get the correct spinner based on the user's configuration
+
+    :returns: yaspin object
+    """
+    config = get_config()
+    if not config.spinner_style:
+        return yaspin()
+    style = getattr(Spinners, config.spinner_style)
+    return yaspin(style)
+
+
 async def shelloracle() -> None:
     """ShellOracle program entrypoint
 
@@ -64,7 +81,7 @@ async def shelloracle() -> None:
     logger.info("user prompt: %s", prompt)
 
     shell_command = ""
-    with create_app_session_from_tty(), patch_stdout(raw=True), yaspin() as sp:
+    with create_app_session_from_tty(), patch_stdout(raw=True), spinner() as sp:
         async for token in provider.generate(prompt):
             # some models may erroneously return a newline, which causes issues with the status spinner
             token = token.replace("\n", "")
