@@ -1,27 +1,42 @@
+from __future__ import annotations
+
 import os
 import sys
+from dataclasses import dataclass
 from unittest.mock import MagicMock, call
 
 import pytest
 from yaspin.spinners import Spinners
 
-from shelloracle.config import Configuration
 from shelloracle.shelloracle import get_query_from_pipe, spinner
 
 
-def test_spinner(monkeypatch):
+@dataclass
+class MockConfig:
+    provider: str
+    spinner_style: str | None
+
+
+@pytest.fixture
+def set_config(monkeypatch):
+    def setter(config):
+        return monkeypatch.setattr("shelloracle.config._config", config)
+    return setter
+
+
+def test_spinner(monkeypatch, set_config):
     yaspin_mock = MagicMock()
     monkeypatch.setattr("shelloracle.shelloracle.yaspin", yaspin_mock)
 
-    monkeypatch.setattr(Configuration, "spinner_style", None)
+    set_config(MockConfig(provider="Ollama", spinner_style=None))
     spinner()
     assert yaspin_mock.call_args == call()
 
-    monkeypatch.setattr(Configuration, "spinner_style", "earth")
+    set_config(MockConfig(provider="Ollama", spinner_style="earth"))
     spinner()
     assert yaspin_mock.call_args == call(Spinners.earth)
 
-    monkeypatch.setattr(Configuration, "spinner_style", "not a real spinner")
+    set_config(MockConfig(provider="Ollama", spinner_style="not a real spinner"))
     with pytest.raises(AttributeError):
         spinner()
 
