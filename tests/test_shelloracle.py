@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import os
 import sys
-from dataclasses import dataclass
 from unittest.mock import MagicMock, call
 
 import pytest
@@ -11,51 +10,44 @@ from yaspin.spinners import Spinners
 from shelloracle.shelloracle import get_query_from_pipe, spinner
 
 
-@dataclass
-class MockConfig:
-    provider: str
-    spinner_style: str | None
+@pytest.fixture
+def mock_yaspin(monkeypatch):
+    mock = MagicMock()
+    monkeypatch.setattr("shelloracle.shelloracle.yaspin", mock)
+    return mock
 
 
 @pytest.fixture
-def set_config(monkeypatch):
-    def setter(config):
-        return monkeypatch.setattr("shelloracle.config._config", config)
-    return setter
+def mock_config(monkeypatch):
+    config = MagicMock()
+    monkeypatch.setattr("shelloracle.config._config", config)
+    return config
 
 
-def test_spinner(monkeypatch, set_config):
-    yaspin_mock = MagicMock()
-    monkeypatch.setattr("shelloracle.shelloracle.yaspin", yaspin_mock)
-
-    set_config(MockConfig(provider="Ollama", spinner_style=None))
+@pytest.mark.parametrize("spinner_style,expected", [(None, call()), ("earth", call(Spinners.earth))])
+def test_spinner(spinner_style, expected, mock_config, mock_yaspin):
+    mock_config.spinner_style = spinner_style
     spinner()
-    assert yaspin_mock.call_args == call()
+    assert mock_yaspin.call_args == expected
 
-    set_config(MockConfig(provider="Ollama", spinner_style="earth"))
-    spinner()
-    assert yaspin_mock.call_args == call(Spinners.earth)
 
-    set_config(MockConfig(provider="Ollama", spinner_style="not a real spinner"))
+def test_spinner_fail(mock_yaspin, mock_config):
+    mock_config.spinner_style = "not a spinner style"
     with pytest.raises(AttributeError):
         spinner()
 
 
-def test_get_query_from_pipe(monkeypatch):
-    # Is a TTY
-    monkeypatch.setattr(os, "isatty", lambda _: True)
-    assert get_query_from_pipe() is None
+@pytest.mark.parametrize("isatty,readlines,expected", [
+    (True, None, None), (False, [], None), (False, ["what is up"], "what is up")
+])
+def test_get_query_from_pipe(isatty, readlines, expected, monkeypatch):
+    monkeypatch.setattr(os, "isatty", lambda _: isatty)
+    monkeypatch.setattr(sys.stdin, "readlines", lambda: readlines)
+    assert get_query_from_pipe() == expected
 
-    # Not a TTY and no lines in the pipe
+
+def test_get_query_from_pipe_fail(monkeypatch):
     monkeypatch.setattr(os, "isatty", lambda _: False)
-    monkeypatch.setattr(sys.stdin, "readlines", lambda: [])
-    assert get_query_from_pipe() is None
-
-    # Not TTY and one line in the pipe
-    monkeypatch.setattr(sys.stdin, "readlines", lambda: ["what is up"])
-    assert get_query_from_pipe() == "what is up"
-
-    # Not a TTY and multiple lines in the pipe
     monkeypatch.setattr(sys.stdin, "readlines", lambda: ["what is up", "what is down"])
     with pytest.raises(ValueError):
         get_query_from_pipe()
