@@ -15,6 +15,7 @@ else:
 
 logger = logging.getLogger(__name__)
 shelloracle_home = Path.home() / ".shelloracle"
+shelloracle_home.mkdir(exist_ok=True)
 
 
 class Configuration(Mapping):

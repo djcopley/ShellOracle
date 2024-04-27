@@ -118,7 +118,6 @@ def write_shelloracle_config(provider: type[Provider], settings: dict[str, Any])
         provider_configuration_table.add(setting, value)
     provider_table.add(provider.name, provider_configuration_table)
 
-    shelloracle_home.mkdir(exist_ok=True)
     with Configuration.filepath.open("w") as config_file:
         tomlkit.dump(config, config_file)
 
