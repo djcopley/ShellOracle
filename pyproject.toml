@@ -35,6 +35,14 @@ classifiers = [
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 ]
 
+[project.scripts]
+shor = "shelloracle.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/djcopley/ShellOracle"
+Repository = "https://github.com/djcopley/ShellOracle.git"
+Issues = "https://github.com/djcopley/ShellOracle/issues"
+
 [tool.setuptools]
 include-package-data = true
 
@@ -48,11 +56,3 @@ pythonpath = "src"
 addopts = [
     "--import-mode=importlib",
 ]
-
-[project.scripts]
-shor = "shelloracle.__main__:main"
-
-[project.urls]
-Homepage = "https://github.com/djcopley/ShellOracle"
-Repository = "https://github.com/djcopley/ShellOracle.git"
-Issues = "https://github.com/djcopley/ShellOracle/issues"
