@@ -12,7 +12,7 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.shortcuts import confirm
 
-from .config import Configuration
+from .config import Configuration, data_home
 from .providers import Provider, Setting, list_providers, get_provider
 
 
@@ -118,6 +118,7 @@ def write_shelloracle_config(provider: type[Provider], settings: dict[str, Any])
         provider_configuration_table.add(setting, value)
     provider_table.add(provider.name, provider_configuration_table)
 
+    data_home.mkdir(exist_ok=True)
     with Configuration.filepath.open("w") as config_file:
         tomlkit.dump(config, config_file)
 
