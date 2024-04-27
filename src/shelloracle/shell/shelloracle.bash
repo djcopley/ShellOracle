@@ -1,6 +1,6 @@
 __shelloracle__() {
   local output
-  output=$(python3 -m shelloracle) || return
+  output=$(shor) || return
   READLINE_LINE=${output#*$'\t'}
   if [[ -z "$READLINE_POINT" ]]; then
     echo "$READLINE_LINE"
