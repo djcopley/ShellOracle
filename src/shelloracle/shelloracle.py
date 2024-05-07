@@ -29,8 +29,6 @@ async def prompt_user(default_prompt: str | None = None) -> str:
     with create_app_session_from_tty(), patch_stdout():
         history_file = Path.home() / ".shelloracle_history"
         prompt_session: PromptSession = PromptSession(history=FileHistory(str(history_file)))
-        # Can I do this with one of the builtin methods?
-        # I tried a few (including cursor_down) with limited success
         prompt_session.output.write_raw("\033[E")
         return await prompt_session.prompt_async("> ", default=default_prompt or "")
 

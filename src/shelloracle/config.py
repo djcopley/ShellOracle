@@ -6,6 +6,7 @@ import sys
 from collections.abc import Mapping, Iterator
 from pathlib import Path
 from typing import Any
+
 from yaspin.spinners import SPINNERS_DATA
 
 if sys.version_info < (3, 11):
