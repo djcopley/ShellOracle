@@ -7,9 +7,8 @@ import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from prompt_toolkit import PromptSession, print_formatted_text
+from prompt_toolkit import PromptSession
 from prompt_toolkit.application import create_app_session_from_tty
-from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.patch_stdout import patch_stdout
 from yaspin import yaspin
@@ -100,6 +99,4 @@ def cli() -> None:
     except (KeyboardInterrupt, asyncio.exceptions.CancelledError):
         return
     except Exception as err:
-        logger.exception("An unhandled exception occurred")
-        with create_app_session_from_tty():
-            print_formatted_text(FormattedText([("ansired", f"\n{err}")]))
+        logger.error("An error occurred: %s", err)

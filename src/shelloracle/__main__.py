@@ -2,21 +2,30 @@ import argparse
 import logging
 from importlib.metadata import version
 
-from shelloracle.config import initialize_config
 from . import shelloracle
+from .config import initialize_config
 from .settings import Settings
+from .tty_log_handler import TtyLogHandler
+
+logger = logging.getLogger(__name__)
 
 
 def configure_logging():
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.DEBUG)
 
-    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
-    handler = logging.FileHandler(Settings.shelloracle_home / "shelloracle.log")
-    handler.setLevel(logging.DEBUG)
-    handler.setFormatter(formatter)
+    file_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
+    file_handler = logging.FileHandler(Settings.shelloracle_home / "shelloracle.log")
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(file_formatter)
 
-    root_logger.addHandler(handler)
+    tty_formatter = logging.Formatter("%(message)s")
+    tty_handler = TtyLogHandler()
+    tty_handler.setLevel(logging.WARNING)
+    tty_handler.setFormatter(tty_formatter)
+
+    root_logger.addHandler(file_handler)
+    root_logger.addHandler(tty_handler)
 
 
 def configure():
@@ -37,13 +46,18 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    args = parse_args()
     configure_logging()
 
-    args = parse_args()
     if action := getattr(args, "action", None):
         action()
         exit(0)
-    initialize_config()
+
+    try:
+        initialize_config()
+    except FileNotFoundError:
+        logger.warning("ShellOracle configuration not found. Run `shor configure` to initialize.")
+        exit(1)
 
     shelloracle.cli()
 
