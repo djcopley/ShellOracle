@@ -2,6 +2,7 @@ import argparse
 import logging
 from importlib.metadata import version
 
+from shelloracle.config import initialize_config
 from . import shelloracle
 from .settings import Settings
 
@@ -42,6 +43,7 @@ def main() -> None:
     if action := getattr(args, "action", None):
         action()
         exit(0)
+    initialize_config()
 
     shelloracle.cli()
 
