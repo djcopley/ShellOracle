@@ -14,9 +14,9 @@ if sys.version_info < (3, 11):
 else:
     import tomllib
 
+from .settings import Settings
+
 logger = logging.getLogger(__name__)
-shelloracle_home = Path.home() / ".shelloracle"
-shelloracle_home.mkdir(exist_ok=True)
 
 
 class Configuration(Mapping):
@@ -28,7 +28,7 @@ class Configuration(Mapping):
     if "SHELLORACLE_CONFIG" in os.environ:
         filepath = Path(os.environ["SHELLORACLE_CONFIG"]).absolute()
     else:
-        filepath = shelloracle_home / "config.toml"
+        filepath = Settings.shelloracle_home / "config.toml"
 
     def __init__(self) -> None:
         with self.filepath.open("rb") as config_file:

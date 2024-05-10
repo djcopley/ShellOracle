@@ -12,7 +12,7 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.shortcuts import confirm
 
-from .config import Configuration, shelloracle_home
+from .config import Configuration
 from .providers import Provider, Setting, list_providers, get_provider
 
 

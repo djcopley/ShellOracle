@@ -3,7 +3,7 @@ import logging
 from importlib.metadata import version
 
 from . import shelloracle
-from .config import shelloracle_home
+from .settings import Settings
 
 
 def configure_logging():
@@ -11,7 +11,7 @@ def configure_logging():
     root_logger.setLevel(logging.DEBUG)
 
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
-    handler = logging.FileHandler(shelloracle_home / "shelloracle.log")
+    handler = logging.FileHandler(Settings.shelloracle_home / "shelloracle.log")
     handler.setLevel(logging.DEBUG)
     handler.setFormatter(formatter)
 
