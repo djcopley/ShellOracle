@@ -1,17 +1,45 @@
-import textwrap
+from unittest.mock import MagicMock
 
+import openai
+import openai.resources
 import pytest
 
 
+def split_with_delimiter(string, delim):
+    result = []
+    last_split = 0
+    for index, character in enumerate(string):
+        if character == delim:
+            result.append(string[last_split:index + 1])
+            last_split = index + 1
+    if last_split != len(string):
+        result.append(string[last_split:])
+    return result
+
+
 @pytest.fixture
-def ollama_config(set_config):
-    config = textwrap.dedent("""\
-    [shelloracle]
-    provider = "Ollama"
-    
-    [provider.Ollama]
-    host = "localhost"
-    port = 11434
-    model = "dolphin-mistral"
-    """)
-    set_config(config)
+def mock_asyncopenai(monkeypatch):
+    class AsyncChatCompletionIterator:
+        def __init__(self, answer: str):
+            self.answer_index = 0
+            self.answer_deltas = split_with_delimiter(answer, " ")
+
+        def __aiter__(self):
+            return self
+
+        async def __anext__(self):
+            if self.answer_index < len(self.answer_deltas):
+                answer_chunk = self.answer_deltas[self.answer_index]
+                self.answer_index += 1
+                chunk = MagicMock()
+                chunk.delta.content = answer_chunk
+                answer = MagicMock()
+                answer.choices = [chunk]
+                return answer
+            else:
+                raise StopAsyncIteration
+
+    async def mock_acreate(*args, **kwargs):
+        return AsyncChatCompletionIterator("cat test.py")
+
+    monkeypatch.setattr(openai.resources.chat.AsyncCompletions, "create", mock_acreate)

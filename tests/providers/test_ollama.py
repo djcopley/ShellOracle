@@ -9,7 +9,7 @@ class TestOllama:
     def ollama_config(self, set_config):
         config = {'shelloracle': {'provider': 'Ollama'},
                   'provider': {'Ollama': {'host': 'localhost', 'port': 11434, 'model': 'dolphin-mistral'}}}
-        return set_config(config)
+        set_config(config)
 
     @pytest.fixture
     def ollama_instance(self, ollama_config):

@@ -1,7 +1,6 @@
 from collections.abc import AsyncIterator
 
-from openai import APIError
-from openai import AsyncOpenAI as OpenAIClient
+from openai import AsyncOpenAI, APIError
 
 from . import Provider, ProviderError, Setting, system_prompt
 
@@ -15,7 +14,7 @@ class OpenAI(Provider):
     def __init__(self):
         if not self.api_key:
             raise ProviderError("No API key provided")
-        self.client = OpenAIClient(api_key=self.api_key)
+        self.client = AsyncOpenAI(api_key=self.api_key)
 
     async def generate(self, prompt: str) -> AsyncIterator[str]:
         try:
