@@ -14,14 +14,13 @@ def tmp_shelloracle_home(monkeypatch, tmp_path):
 def set_config(monkeypatch, tmp_shelloracle_home):
     config_path = tmp_shelloracle_home / "config.toml"
 
-    def setter(config: dict) -> Configuration:
+    def _set_config(config: dict) -> Configuration:
         with config_path.open("w") as f:
             tomlkit.dump(config, f)
         configuration = Configuration(config_path)
         monkeypatch.setattr("shelloracle.config._config", configuration)
-        return configuration
 
-    yield setter
+    yield _set_config
 
     config_path.unlink()
 

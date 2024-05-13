@@ -25,4 +25,4 @@ class TestOpenAI:
         result = ""
         async for response in localai_instance.generate(""):
             result += response
-        assert result == "cat test.py"
+        assert result == "head -c 100 /dev/urandom | hexdump -C"

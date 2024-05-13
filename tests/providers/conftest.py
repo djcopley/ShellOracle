@@ -1,7 +1,5 @@
 from unittest.mock import MagicMock
 
-import openai
-import openai.resources
 import pytest
 
 
@@ -31,15 +29,15 @@ def mock_asyncopenai(monkeypatch):
             if self.answer_index < len(self.answer_deltas):
                 answer_chunk = self.answer_deltas[self.answer_index]
                 self.answer_index += 1
+                choice = MagicMock()
+                choice.delta.content = answer_chunk
                 chunk = MagicMock()
-                chunk.delta.content = answer_chunk
-                answer = MagicMock()
-                answer.choices = [chunk]
-                return answer
+                chunk.choices = [choice]
+                return chunk
             else:
                 raise StopAsyncIteration
 
     async def mock_acreate(*args, **kwargs):
-        return AsyncChatCompletionIterator("cat test.py")
+        return AsyncChatCompletionIterator("head -c 100 /dev/urandom | hexdump -C")
 
-    monkeypatch.setattr(openai.resources.chat.AsyncCompletions, "create", mock_acreate)
+    monkeypatch.setattr("openai.resources.chat.AsyncCompletions.create", mock_acreate)
