@@ -12,8 +12,8 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.shortcuts import confirm
 
-from .config import get_config
 from .providers import Provider, Setting, list_providers, get_provider
+from .settings import Settings
 
 
 class UserError(Exception):
@@ -118,7 +118,8 @@ def write_shelloracle_config(provider: type[Provider], settings: dict[str, Any])
         provider_configuration_table.add(setting, value)
     provider_table.add(provider.name, provider_configuration_table)
 
-    with get_config().filepath.open("w") as config_file:
+    filepath = Settings.shelloracle_home / "config.toml"
+    with filepath.open("w") as config_file:
         tomlkit.dump(config, config_file)
 
 
