@@ -1,7 +1,7 @@
 from collections.abc import AsyncIterator
 
 from openai import APIError
-from openai import AsyncOpenAI as OpenAIClient
+from openai import AsyncOpenAI
 
 from . import Provider, ProviderError, Setting, system_prompt
 
@@ -19,7 +19,7 @@ class LocalAI(Provider):
 
     def __init__(self):
         # Use a placeholder API key so the client will work
-        self.client = OpenAIClient(api_key="sk-xxx", base_url=self.endpoint)
+        self.client = AsyncOpenAI(api_key="sk-xxx", base_url=self.endpoint)
 
     async def generate(self, prompt: str) -> AsyncIterator[str]:
         try:

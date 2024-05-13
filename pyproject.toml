@@ -35,6 +35,15 @@ classifiers = [
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 ]
 
+[project.optional-dependencies]
+tests = [
+    "tox",
+    "pytest",
+    "pytest-sugar",
+    "pytest-asyncio",
+    "pytest-httpx"
+]
+
 [project.scripts]
 shor = "shelloracle.__main__:main"
 
