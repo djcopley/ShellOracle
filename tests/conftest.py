@@ -14,7 +14,7 @@ def tmp_shelloracle_home(monkeypatch, tmp_path):
 def set_config(monkeypatch, tmp_shelloracle_home):
     config_path = tmp_shelloracle_home / "config.toml"
 
-    def _set_config(config: dict) -> Configuration:
+    def _set_config(config: dict) -> None:
         with config_path.open("w") as f:
             tomlkit.dump(config, f)
         configuration = Configuration(config_path)
@@ -23,4 +23,3 @@ def set_config(monkeypatch, tmp_shelloracle_home):
     yield _set_config
 
     config_path.unlink()
-
