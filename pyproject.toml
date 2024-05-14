@@ -65,3 +65,6 @@ pythonpath = "src"
 addopts = [
     "--import-mode=importlib",
 ]
+
+[tool.ruff]
+line-length = 120
