@@ -36,7 +36,9 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-tests = [
+dev = [
+    "build",
+    "mypy",
     "tox",
     "pytest",
     "pytest-sugar",
