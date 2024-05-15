@@ -64,6 +64,8 @@ class Setting(Generic[T]):
         try:
             return config["provider"][owner.name][self.name]
         except KeyError:
+            if self.default is None:
+                raise
             return self.default
 
 
