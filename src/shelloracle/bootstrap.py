@@ -134,7 +134,7 @@ def user_configure_settings(provider: type[Provider]) -> dict[str, Any]:
     for name, setting in get_settings(provider):
         user_input = prompt(f"{name}: ", default=str(setting.default))
         type_ = type(setting.default) if setting.default else str
-        value = type_(user_input)
+        value = type_(user_input)  # type: ignore[operator]
         settings[name] = value
     return settings
 
