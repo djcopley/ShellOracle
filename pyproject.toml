@@ -1,25 +1,17 @@
 [build-system]
-requires = ["setuptools>=64.0", "setuptools_scm>=8"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
 
 [project]
 name = "shelloracle"
+description = """ShellOracle is a pluggable terminal utility that takes a natural language description of a \
+command and substitutes it into your terminal buffer."""
+readme = "README.md"
+license = { file = "LICENSE" }
 dynamic = ["version"]
-dependencies = [
-    "httpx",
-    "openai",
-    "prompt-toolkit",
-    "yaspin",
-    "tomlkit",
-    "tomli >= 1.1.0; python_version < '3.11'"
-]
 authors = [
     { name = "Daniel Copley", email = "djcopley@proton.me" },
 ]
-description = """ShellOracle is a pluggable terminal utility that takes a natural language description of a \
-command and substitutes it into your terminal buffer."""
-
-readme = "README.md"
 requires-python = ">=3.9"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -34,14 +26,13 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 ]
-
-[project.optional-dependencies]
-tests = [
-    "tox",
-    "pytest",
-    "pytest-sugar",
-    "pytest-asyncio",
-    "pytest-httpx"
+dependencies = [
+    "httpx",
+    "openai",
+    "prompt-toolkit",
+    "yaspin",
+    "tomlkit",
+    "tomli >= 1.1.0; python_version < '3.11'"
 ]
 
 [project.scripts]
@@ -52,13 +43,8 @@ Homepage = "https://github.com/djcopley/ShellOracle"
 Repository = "https://github.com/djcopley/ShellOracle.git"
 Issues = "https://github.com/djcopley/ShellOracle/issues"
 
-[tool.setuptools]
-include-package-data = true
-
-[tool.setuptools.packages.find]
-where = ["src"]
-
-[tool.setuptools_scm]
+[tool.hatch.version]
+source = "vcs"
 
 [tool.pytest.ini_options]
 pythonpath = "src"
