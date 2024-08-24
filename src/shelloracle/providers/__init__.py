@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from collections.abc import AsyncIterator
-from typing import Protocol, TypeVar, Generic, runtime_checkable
+from typing import Generic, Protocol, TypeVar, runtime_checkable
 
 from ..config import get_config
 
@@ -70,9 +70,9 @@ class Setting(Generic[T]):
 
 
 def _providers() -> dict[str, type[Provider]]:
+    from .localai import LocalAI
     from .ollama import Ollama
     from .openai import OpenAI
-    from .localai import LocalAI
     providers = {
         Ollama.name: Ollama,
         OpenAI.name: OpenAI,

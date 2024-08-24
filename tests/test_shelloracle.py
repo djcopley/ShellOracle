@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 import sys
-from unittest.mock import call, MagicMock
+from unittest.mock import MagicMock, call
 
 import pytest
 from yaspin.spinners import Spinners

@@ -12,7 +12,7 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.shortcuts import confirm
 
-from .providers import Provider, Setting, list_providers, get_provider
+from .providers import Provider, Setting, get_provider, list_providers
 from .settings import Settings
 
 

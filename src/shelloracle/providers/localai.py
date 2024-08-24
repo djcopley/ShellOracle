@@ -1,7 +1,6 @@
 from collections.abc import AsyncIterator
 
-from openai import APIError
-from openai import AsyncOpenAI
+from openai import APIError, AsyncOpenAI
 
 from . import Provider, ProviderError, Setting, system_prompt
 
