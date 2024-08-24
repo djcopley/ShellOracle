@@ -46,11 +46,47 @@ Issues = "https://github.com/djcopley/ShellOracle/issues"
 [tool.hatch.version]
 source = "vcs"
 
+[tool.hatch.envs.hatch-test]
+dependencies = [
+    "pytest",
+    "pytest-cov",
+    "pytest-sugar",
+    "pytest-xdist",
+    "pytest-asyncio",
+    "pytest-httpx",
+    "coverage[toml]",
+]
+
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.test.scripts]
+template = "hatch-test"
+cov = 'pytest --cov=src/ {args:tests}'
+
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+    "mypy~=1.0",
+]
+
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive --explicit-package-bases {args:src/shelloracle tests}"
+
 [tool.pytest.ini_options]
 pythonpath = "src"
 addopts = [
     "--import-mode=importlib",
 ]
 
-[tool.ruff]
-line-length = 120
+[tool.coverage.run]
+source = ["src/"]
+branch = true
+parallel = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "no cov",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
