@@ -48,13 +48,13 @@ source = "vcs"
 
 [tool.hatch.envs.hatch-test]
 dependencies = [
-    "pytest",
-    "pytest-cov",
-    "pytest-sugar",
-    "pytest-xdist",
-    "pytest-asyncio",
-    "pytest-httpx",
-    "coverage[toml]",
+    "pytest~=8.3",
+    "pytest-cov~=5.0",
+    "pytest-sugar~=1.0",
+    "pytest-xdist~=3.6",
+    "pytest-asyncio~=0.24",
+    "pytest-httpx~=0.30",
+    "coverage[toml]~=5.0",
 ]
 
 [[tool.hatch.envs.hatch-test.matrix]]
