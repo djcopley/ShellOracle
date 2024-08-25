@@ -2,7 +2,7 @@ from collections.abc import AsyncIterator
 
 from openai import APIError, AsyncOpenAI
 
-from . import Provider, ProviderError, Setting, system_prompt
+from shelloracle.providers import Provider, ProviderError, Setting, system_prompt
 
 
 class LocalAI(Provider):
@@ -24,14 +24,12 @@ class LocalAI(Provider):
         try:
             stream = await self.client.chat.completions.create(
                 model=self.model,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": prompt}
-                ],
+                messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": prompt}],
                 stream=True,
             )
             async for chunk in stream:
                 if chunk.choices[0].delta.content is not None:
                     yield chunk.choices[0].delta.content
         except APIError as e:
-            raise ProviderError(f"Something went wrong while querying LocalAI: {e}") from e
+            msg = f"Something went wrong while querying LocalAI: {e}"
+            raise ProviderError(msg) from e

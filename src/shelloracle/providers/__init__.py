@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from collections.abc import AsyncIterator
-from typing import Generic, Protocol, TypeVar, runtime_checkable
+from typing import TYPE_CHECKING, Generic, Protocol, TypeVar, runtime_checkable
 
-from ..config import get_config
+from shelloracle.config import get_config
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
 
 system_prompt = (
     "Based on the following user description, generate a corresponding Bash command. Focus solely "
@@ -27,6 +29,7 @@ class Provider(Protocol):
 
     All LLM backends must implement this interface.
     """
+
     name: str
 
     @abstractmethod
@@ -59,7 +62,8 @@ class Setting(Generic[T]):
         if instance is None:
             # Accessing settings as a class attribute is not supported because it prevents
             # inspect.get_members from determining the object type
-            raise AttributeError("Settings must be accessed through a provider instance.")
+            msg = "Settings must be accessed through a provider instance."
+            raise AttributeError(msg)
         config = get_config()
         try:
             return config["provider"][owner.name][self.name]
@@ -70,15 +74,11 @@ class Setting(Generic[T]):
 
 
 def _providers() -> dict[str, type[Provider]]:
-    from .localai import LocalAI
-    from .ollama import Ollama
-    from .openai import OpenAI
-    providers = {
-        Ollama.name: Ollama,
-        OpenAI.name: OpenAI,
-        LocalAI.name: LocalAI
-    }
-    return providers
+    from shelloracle.providers.localai import LocalAI
+    from shelloracle.providers.ollama import Ollama
+    from shelloracle.providers.openai import OpenAI
+
+    return {Ollama.name: Ollama, OpenAI.name: OpenAI, LocalAI.name: LocalAI}
 
 
 def get_provider(name: str) -> type[Provider]:

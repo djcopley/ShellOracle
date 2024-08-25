@@ -14,8 +14,8 @@ from prompt_toolkit.patch_stdout import patch_stdout
 from yaspin import yaspin
 from yaspin.spinners import Spinners
 
-from .config import get_config
-from .providers import get_provider
+from shelloracle.config import get_config
+from shelloracle.providers import get_provider
 
 if TYPE_CHECKING:
     from yaspin.core import Yaspin
@@ -41,7 +41,8 @@ def get_query_from_pipe() -> str | None:
     if os.isatty(0) or not (lines := sys.stdin.readlines()):  # Return 'None' if fd 0 is a tty (no pipe)
         return None
     if len(lines) > 1:
-        raise ValueError("Multi-line input is not supported")
+        msg = "Multi-line input is not supported"
+        raise ValueError(msg)
     logger.debug("using query from stdin: %s", lines)
     return lines[0].rstrip()
 
@@ -82,8 +83,7 @@ async def shelloracle() -> None:
     with create_app_session_from_tty(), patch_stdout(raw=True), spinner() as sp:
         async for token in provider.generate(prompt):
             # some models may erroneously return a newline, which causes issues with the status spinner
-            token = token.replace("\n", "")
-            shell_command += token
+            shell_command += token.replace("\n", "")
             sp.text = shell_command
     logger.info("generated shell command: %s", shell_command)
     sys.stdout.write(shell_command)
@@ -98,5 +98,5 @@ def cli() -> None:
         asyncio.run(shelloracle())
     except (KeyboardInterrupt, asyncio.exceptions.CancelledError):
         return
-    except Exception as err:
-        logger.error("An error occurred: %s", err)
+    except Exception:
+        logger.exception("An error occurred")

@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import inspect
 import shutil
-from collections.abc import Iterator, Sequence
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import tomlkit
 from prompt_toolkit import print_formatted_text, prompt
@@ -12,12 +11,14 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.shortcuts import confirm
 
-from .providers import Provider, Setting, get_provider, list_providers
-from .settings import Settings
+from shelloracle.providers import Provider, Setting, get_provider, list_providers
+from shelloracle.settings import Settings
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator, Sequence
 
 
-class UserError(Exception):
-    ...
+class UserError(Exception): ...
 
 
 def print_info(info: str) -> None:
@@ -41,33 +42,26 @@ supported_shells = ("zsh", "bash")
 
 
 def get_installed_shells() -> list[str]:
-    shells = []
-    for shell in supported_shells:
-        if shutil.which(shell):
-            shells.append(shell)
-    return shells
+    return [shell for shell in supported_shells if shutil.which(shell)]
 
 
 def get_bundled_script_path(shell: str) -> Path:
     shell_dir = Path(__file__).parent / "shell"
     if shell == "zsh":
         return shell_dir / "shelloracle.zsh"
-    else:
-        return shell_dir / "shelloracle.bash"
+    return shell_dir / "shelloracle.bash"
 
 
 def get_script_path(shell: str) -> Path:
     if shell == "zsh":
         return Path.home() / ".shelloracle.zsh"
-    else:
-        return Path.home() / ".shelloracle.bash"
+    return Path.home() / ".shelloracle.bash"
 
 
 def get_rc_path(shell: str) -> Path:
     if shell == "zsh":
         return Path.home() / ".zshrc"
-    else:
-        return Path.home() / ".bashrc"
+    return Path.home() / ".bashrc"
 
 
 def write_script_home(shell: str) -> None:
@@ -96,9 +90,7 @@ def get_settings(provider: type[Provider]) -> Iterator[tuple[str, Setting]]:
 
     def correct_name_setting():
         for name, setting in settings:
-            if setting.name:
-                name = setting.name
-            yield name, setting
+            yield setting.name or name, setting
 
     yield from correct_name_setting()
 
@@ -125,8 +117,10 @@ def write_shelloracle_config(provider: type[Provider], settings: dict[str, Any])
 
 def install_keybindings() -> None:
     if not (shells := get_installed_shells()):
-        print_warning("Cannot install keybindings: no compatible shells found. "
-                      f"Supported shells: {', '.join(supported_shells)}")
+        print_warning(
+            "Cannot install keybindings: no compatible shells found. "
+            f"Supported shells: {', '.join(supported_shells)}"
+        )
         return
     if confirm("Enable terminal keybindings and update rc?", suffix=" ([y]/n) ") is False:
         return
@@ -139,10 +133,7 @@ def user_configure_settings(provider: type[Provider]) -> dict[str, Any]:
     settings = {}
     for name, setting in get_settings(provider):
         user_input = prompt(f"{name}: ", default=str(setting.default))
-        if setting.default:
-            type_ = type(setting.default)
-        else:
-            type_ = str
+        type_ = type(setting.default) if setting.default else str
         value = type_(user_input)
         settings[name] = value
     return settings
@@ -160,9 +151,9 @@ def user_select_provider() -> type[Provider]:
     completer = WordCompleter(providers, ignore_case=True)
     user_selected_provider = prompt(f"Choose your LLM provider ({', '.join(providers)}): ", completer=completer)
     if (provider_name := case_correct_user_input(user_selected_provider, providers)) is None:
-        raise UserError(f"Invalid provider: {user_selected_provider or 'no input'}")
-    provider = get_provider(provider_name)
-    return provider
+        msg = f"Invalid provider: {user_selected_provider or 'no input'}"
+        raise UserError(msg)
+    return get_provider(provider_name)
 
 
 def bootstrap_shelloracle() -> None:

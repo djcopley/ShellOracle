@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import json
-from collections.abc import AsyncIterator
 from dataclasses import asdict, dataclass
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import httpx
 
-from . import Provider, ProviderError, Setting, system_prompt
+from shelloracle.providers import Provider, ProviderError, Setting, system_prompt
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
 
 
 def dataclass_to_json(obj: Any) -> dict[str, Any]:
@@ -39,13 +41,13 @@ class GenerateRequest:
     template: str | None = None
     """the full prompt or prompt template (overrides what is defined in the Modelfile)"""
     context: str | None = None
-    """the context parameter returned from a previous request to /generate, this can be used to keep a short 
+    """the context parameter returned from a previous request to /generate, this can be used to keep a short
     conversational memory"""
     stream: bool | None = None
     """if false the response will be returned as a single response object, rather than a stream of objects"""
     raw: bool | None = None
-    """if true no formatting will be applied to the prompt and no context will be returned. You may choose to use 
-    the raw parameter if you are specifying a full templated prompt in your request to the API, and are managing 
+    """if true no formatting will be applied to the prompt and no context will be returned. You may choose to use
+    the raw parameter if you are specifying a full templated prompt in your request to the API, and are managing
     history yourself. JSON mode"""
 
 
@@ -67,7 +69,7 @@ class Ollama(Provider):
         try:
             async with (
                 httpx.AsyncClient() as client,
-                client.stream("POST", self.endpoint, json=data, timeout=20.0) as stream
+                client.stream("POST", self.endpoint, json=data, timeout=20.0) as stream,
             ):
                 async for line in stream.aiter_lines():
                     response = json.loads(line)
@@ -75,4 +77,5 @@ class Ollama(Provider):
                         raise ProviderError(response["error"])
                     yield response["response"]
         except (httpx.HTTPError, httpx.StreamError) as e:
-            raise ProviderError(f"Something went wrong while querying Ollama: {e}") from e
+            msg = f"Something went wrong while querying Ollama: {e}"
+            raise ProviderError(msg) from e

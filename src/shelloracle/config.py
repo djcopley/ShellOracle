@@ -3,12 +3,14 @@ from __future__ import annotations
 import logging
 import sys
 from collections.abc import Iterator, Mapping
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from yaspin.spinners import SPINNERS_DATA
 
 from shelloracle.settings import Settings
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 if sys.version_info < (3, 11):
     import tomli as tomllib
@@ -19,7 +21,6 @@ logger = logging.getLogger(__name__)
 
 
 class Configuration(Mapping):
-
     def __init__(self, filepath: Path) -> None:
         """ShellOracle application configuration
 
@@ -69,9 +70,10 @@ def initialize_config() -> None:
     :raises RuntimeError: if the config is already initialized
     :raises FileNotFoundError: if the config file is not found
     """
-    global _config
+    global _config  # noqa: PLW0603
     if _config:
-        raise RuntimeError("Configuration already initialized")
+        msg = "Configuration already initialized"
+        raise RuntimeError(msg)
     filepath = Settings.shelloracle_home / "config.toml"
     _config = Configuration(filepath)
 
@@ -83,5 +85,6 @@ def get_config() -> Configuration:
     :raises RuntimeError: if the configuration is not initialized
     """
     if _config is None:
-        raise RuntimeError("Configuration not initialized")
+        msg = "Configuration not initialized"
+        raise RuntimeError(msg)
     return _config

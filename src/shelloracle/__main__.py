@@ -1,11 +1,12 @@
 import argparse
 import logging
+import sys
 from importlib.metadata import version
 
-from . import shelloracle
-from .config import initialize_config
-from .settings import Settings
-from .tty_log_handler import TtyLogHandler
+from shelloracle import shelloracle
+from shelloracle.config import initialize_config
+from shelloracle.settings import Settings
+from shelloracle.tty_log_handler import TtyLogHandler
 
 logger = logging.getLogger(__name__)
 
@@ -30,13 +31,14 @@ def configure_logging():
 
 def configure():
     # nest this import in a function to avoid expensive module loads
-    from .bootstrap import bootstrap_shelloracle
+    from shelloracle.bootstrap import bootstrap_shelloracle
+
     bootstrap_shelloracle()
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument('--version', action='version', version=f'{__package__} {version(__package__)}')
+    parser.add_argument("--version", action="version", version=f"{__package__} {version(__package__)}")
 
     subparsers = parser.add_subparsers()
     configure_subparser = subparsers.add_parser("configure", help=f"install {__package__} keybindings")
@@ -51,13 +53,13 @@ def main() -> None:
 
     if action := getattr(args, "action", None):
         action()
-        exit(0)
+        sys.exit(0)
 
     try:
         initialize_config()
     except FileNotFoundError:
         logger.warning("ShellOracle configuration not found. Run `shor configure` to initialize.")
-        exit(1)
+        sys.exit(1)
 
     shelloracle.cli()
 

@@ -24,7 +24,7 @@ def mock_config(monkeypatch):
     return config
 
 
-@pytest.mark.parametrize("spinner_style,expected", [(None, call()), ("earth", call(Spinners.earth))])
+@pytest.mark.parametrize(("spinner_style", "expected"), [(None, call()), ("earth", call(Spinners.earth))])
 def test_spinner(spinner_style, expected, mock_config, mock_yaspin):
     mock_config.spinner_style = spinner_style
     spinner()
@@ -37,9 +37,9 @@ def test_spinner_fail(mock_yaspin, mock_config):
         spinner()
 
 
-@pytest.mark.parametrize("isatty,readlines,expected", [
-    (True, None, None), (False, [], None), (False, ["what is up"], "what is up")
-])
+@pytest.mark.parametrize(
+    ("isatty", "readlines", "expected"), [(True, None, None), (False, [], None), (False, ["what is up"], "what is up")]
+)
 def test_get_query_from_pipe(isatty, readlines, expected, monkeypatch):
     monkeypatch.setattr(os, "isatty", lambda _: isatty)
     monkeypatch.setattr(sys.stdin, "readlines", lambda: readlines)
@@ -49,5 +49,5 @@ def test_get_query_from_pipe(isatty, readlines, expected, monkeypatch):
 def test_get_query_from_pipe_fail(monkeypatch):
     monkeypatch.setattr(os, "isatty", lambda _: False)
     monkeypatch.setattr(sys.stdin, "readlines", lambda: ["what is up", "what is down"])
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Multi-line input is not supported"):
         get_query_from_pipe()

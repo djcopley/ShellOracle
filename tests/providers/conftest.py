@@ -8,7 +8,7 @@ def split_with_delimiter(string, delim):
     last_split = 0
     for index, character in enumerate(string):
         if character == delim:
-            result.append(string[last_split:index + 1])
+            result.append(string[last_split : index + 1])
             last_split = index + 1
     if last_split != len(string):
         result.append(string[last_split:])
@@ -26,16 +26,15 @@ def mock_asyncopenai(monkeypatch):
             return self
 
         async def __anext__(self):
-            if self.answer_index < len(self.answer_deltas):
-                answer_chunk = self.answer_deltas[self.answer_index]
-                self.answer_index += 1
-                choice = MagicMock()
-                choice.delta.content = answer_chunk
-                chunk = MagicMock()
-                chunk.choices = [choice]
-                return chunk
-            else:
+            if self.answer_index >= len(self.answer_deltas):
                 raise StopAsyncIteration
+            answer_chunk = self.answer_deltas[self.answer_index]
+            self.answer_index += 1
+            choice = MagicMock()
+            choice.delta.content = answer_chunk
+            chunk = MagicMock()
+            chunk.choices = [choice]
+            return chunk
 
     async def mock_acreate(*args, **kwargs):
         return AsyncChatCompletionIterator("head -c 100 /dev/urandom | hexdump -C")

@@ -2,7 +2,7 @@ from collections.abc import AsyncIterator
 
 from openai import APIError, AsyncOpenAI
 
-from . import Provider, ProviderError, Setting, system_prompt
+from shelloracle.providers import Provider, ProviderError, Setting, system_prompt
 
 
 class OpenAI(Provider):
@@ -13,21 +13,20 @@ class OpenAI(Provider):
 
     def __init__(self):
         if not self.api_key:
-            raise ProviderError("No API key provided")
+            msg = "No API key provided"
+            raise ProviderError(msg)
         self.client = AsyncOpenAI(api_key=self.api_key)
 
     async def generate(self, prompt: str) -> AsyncIterator[str]:
         try:
             stream = await self.client.chat.completions.create(
                 model=self.model,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": prompt}
-                ],
+                messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": prompt}],
                 stream=True,
             )
             async for chunk in stream:
                 if chunk.choices[0].delta.content is not None:
                     yield chunk.choices[0].delta.content
         except APIError as e:
-            raise ProviderError(f"Something went wrong while querying OpenAI: {e}") from e
+            msg = f"Something went wrong while querying OpenAI: {e}"
+            raise ProviderError(msg) from e

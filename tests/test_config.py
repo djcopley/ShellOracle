@@ -8,8 +8,10 @@ from shelloracle.config import get_config, initialize_config
 class TestConfiguration:
     @pytest.fixture
     def default_config(self, set_config):
-        config = {'shelloracle': {'provider': 'Ollama', 'spinner_style': 'earth'},
-                  'provider': {'Ollama': {'host': 'localhost', 'port': 11434, 'model': 'dolphin-mistral'}}}
+        config = {
+            "shelloracle": {"provider": "Ollama", "spinner_style": "earth"},
+            "provider": {"Ollama": {"host": "localhost", "port": 11434, "model": "dolphin-mistral"}},
+        }
         set_config(config)
         return config
 
@@ -43,15 +45,19 @@ class TestConfiguration:
         assert get_config().spinner_style == "earth"
 
     def test_no_spinner_style(self, caplog, set_config):
-        config_dict = {'shelloracle': {'provider': 'Ollama'},
-                       'provider': {'Ollama': {'host': 'localhost', 'port': 11434, 'model': 'dolphin-mistral'}}}
+        config_dict = {
+            "shelloracle": {"provider": "Ollama"},
+            "provider": {"Ollama": {"host": "localhost", "port": 11434, "model": "dolphin-mistral"}},
+        }
         set_config(config_dict)
         assert get_config().spinner_style is None
         assert "invalid spinner style" not in caplog.text
 
     def test_invalid_spinner_style(self, caplog, set_config):
-        config_dict = {'shelloracle': {'provider': 'Ollama', 'spinner_style': 'invalid'},
-                       'provider': {'Ollama': {'host': 'localhost', 'port': 11434, 'model': 'dolphin-mistral'}}}
+        config_dict = {
+            "shelloracle": {"provider": "Ollama", "spinner_style": "invalid"},
+            "provider": {"Ollama": {"host": "localhost", "port": 11434, "model": "dolphin-mistral"}},
+        }
         set_config(config_dict)
         assert get_config().spinner_style is None
         assert "invalid spinner style" in caplog.text
