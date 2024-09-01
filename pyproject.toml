@@ -61,12 +61,16 @@ dependencies = [
 python = ["3.9", "3.10", "3.11", "3.12"]
 
 [tool.hatch.envs.types]
+template = "hatch-test"
 extra-dependencies = [
     "mypy~=1.0",
 ]
 
 [tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive --explicit-package-bases {args:src/shelloracle tests}"
+check = [
+    "mypy {args:src/shelloracle}",
+    "mypy --explicit-package-bases tests"
+]
 
 [tool.pytest.ini_options]
 pythonpath = "src"
