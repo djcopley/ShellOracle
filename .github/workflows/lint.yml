@@ -10,7 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: chartboost/ruff-action@v1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - uses: pypa/hatch@install
+      - name: Run ruff linter and formatter
+        run: hatch fmt --check
   mypy:
     runs-on: ubuntu-latest
     steps:
