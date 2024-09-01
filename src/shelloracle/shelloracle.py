@@ -71,13 +71,13 @@ async def shelloracle() -> None:
     :returns: None
     :raises KeyboardInterrupt: if the user presses CTRL+C
     """
-    config = get_config()
-    provider = get_provider(config.provider)()
-
     if not (prompt := get_query_from_pipe()):
         default_prompt = os.environ.get("SHOR_DEFAULT_PROMPT")
         prompt = await prompt_user(default_prompt)
     logger.info("user prompt: %s", prompt)
+
+    config = get_config()
+    provider = get_provider(config.provider)()
 
     shell_command = ""
     with create_app_session_from_tty(), patch_stdout(raw=True), spinner() as sp:
