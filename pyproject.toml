@@ -72,6 +72,9 @@ check = [
     "mypy --explicit-package-bases tests"
 ]
 
+[tool.hatch.envs.profile.scripts]
+importtime = "python -X importtime -m shelloracle 2> {args}"
+
 [tool.pytest.ini_options]
 pythonpath = "src"
 addopts = [
