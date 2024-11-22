@@ -5,18 +5,7 @@
 <h1 align="center">ShellOracle</h1>
 
 <p align="center">
-  <a href="https://github.com/djcopley/ShellOracle/actions/workflows/tests.yml">
-      <img src="https://github.com/djcopley/ShellOracle/actions/workflows/tests.yml/badge.svg?branch=main" alt="Tests">
-  </a>
-  <a href="https://badge.fury.io/py/shelloracle">
-      <img src="https://badge.fury.io/py/shelloracle.svg" alt="PyPI version">
-  </a>
-  <a href="https://pypi.python.org/pypi/shelloracle/">
-      <img src="https://img.shields.io/pypi/pyversions/shelloracle.svg" alt="PyPI Supported Python Versions">
-  </a>
-  <a href="https://pepy.tech/project/shelloracle">
-      <img src="https://static.pepy.tech/badge/shelloracle" alt="Downloads">
-  </a>
+<a href="https://github.com/djcopley/ShellOracle/actions/workflows/tests.yml"><img src="https://github.com/djcopley/ShellOracle/actions/workflows/tests.yml/badge.svg?branch=main" alt="Tests" /></a> <a href="https://badge.fury.io/py/shelloracle"><img src="https://badge.fury.io/py/shelloracle.svg" alt="PyPI version" /></a> <a href="https://pypi.python.org/pypi/shelloracle/"><img src="https://img.shields.io/pypi/pyversions/shelloracle.svg" alt="PyPI Supported Python Versions" /></a> <a href="https://pepy.tech/project/shelloracle"><img src="https://static.pepy.tech/badge/shelloracle" alt="Downloads" /></a>
 </p>
 
 ShellOracle is an innovative terminal utility designed for intelligent shell command generation, bringing a new level of
