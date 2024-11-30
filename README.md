@@ -95,12 +95,17 @@ Refer to the [Ollama docs](https://ollama.ai) for installation, available models
 
 ### OpenAI
 
-To use ShellOracle with the OpenAI provider, create an [API key](https://platform.openai.com/account/api-keys). Edit
+To use ShellOracle with OpenAI's models, create an [API key](https://platform.openai.com/account/api-keys). Edit
 your `~/.shelloracle/config.toml` to change your provider and enter your API key.
 
 ### LocalAI
 
 Refer to the [LocalAI docs](https://localai.io/) for installation, available models, and usage.
+
+### XAI
+
+To use ShellOracle with XAI's models, create an [API key](https://docs.x.ai/docs/quickstart#creating-an-api-key).
+Edit your `~/.shelloracle/config.toml` to change your provider and enter your API key.
 
 ## Configuration
 
