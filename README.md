@@ -9,7 +9,7 @@
 </p>
 
 ShellOracle is an innovative terminal utility designed for intelligent shell command generation, bringing a new level of
-efficiency to your command-line interactions. ShellOracle currently supports Ollama, LocalAI, and OpenAI!
+efficiency to your command-line interactions. ShellOracle currently supports Ollama, OpenAI, LocalAI, and Grok!
 
 ![ShellOracle](https://i.imgur.com/GJX3eEq.gif)
 
