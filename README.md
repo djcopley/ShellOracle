@@ -9,7 +9,7 @@
 </p>
 
 ShellOracle is an innovative terminal utility designed for intelligent shell command generation, bringing a new level of
-efficiency to your command-line interactions. ShellOracle currently supports Ollama, OpenAI, LocalAI, and Grok!
+efficiency to your command-line interactions. ShellOracle currently supports Ollama, OpenAI, Deepseek, LocalAI, and Grok!
 
 ![ShellOracle](https://i.imgur.com/lqTW1lO.gif)
 
@@ -96,6 +96,11 @@ Refer to the [Ollama docs](https://ollama.ai) for installation, available models
 ### OpenAI
 
 To use ShellOracle with OpenAI's models, create an [API key](https://platform.openai.com/account/api-keys). Edit
+your `~/.shelloracle/config.toml` to change your provider and enter your API key.
+
+### Deepseek
+
+To use ShellOracle with Deepseek's models, create an [API key](https://platform.deepseek.com/api_keys). Edit
 your `~/.shelloracle/config.toml` to change your provider and enter your API key.
 
 ### LocalAI
