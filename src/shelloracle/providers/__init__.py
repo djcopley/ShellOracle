@@ -79,8 +79,16 @@ def _providers() -> dict[str, type[Provider]]:
     from shelloracle.providers.ollama import Ollama
     from shelloracle.providers.openai import OpenAI
     from shelloracle.providers.xai import XAI
+    from shelloracle.providers.google import Google
 
-    return {Ollama.name: Ollama, OpenAI.name: OpenAI, LocalAI.name: LocalAI, XAI.name: XAI, Deepseek.name: Deepseek}
+    return {
+        Ollama.name: Ollama,
+        OpenAI.name: OpenAI,
+        LocalAI.name: LocalAI,
+        XAI.name: XAI,
+        Deepseek.name: Deepseek,
+        Google.name: Google,
+    }
 
 
 def get_provider(name: str) -> type[Provider]:
