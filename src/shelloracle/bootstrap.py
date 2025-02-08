@@ -126,11 +126,17 @@ def write_shelloracle_config(provider: type[Provider], settings: dict[str, Any])
 
 
 def install_keybindings() -> None:
+    if not (shells := get_installed_shells()):
+        print_warning(
+            "Cannot install keybindings: no compatible shells found. "
+            f"Supported shells: {' '.join(supported_shells)}"
+        )
+        return
+    if confirm("Enable terminal keybindings and update rc?", suffix=" ([y]/n) ") is False:
+        return
     for shell in get_installed_shells():
         write_script_home(shell)
         update_rc(shell)
-
-
 def user_configure_settings(provider: type[Provider]) -> dict[str, Any]:
     settings = {}
     for name, setting in get_settings(provider):
