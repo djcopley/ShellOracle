@@ -60,7 +60,7 @@ Upgrading to the latest version of ShellOracle is just as simple!
 
 ## Usage
 
-ShellOracle is designed to be used as a BASH/ZSH widget activated by the CTRL+F keyboard shortcut.
+ShellOracle is designed to be used as a BASH/ZSH/fish widget activated by the CTRL+F keyboard shortcut.
 
 1. Press CTRL+F
 2. Describe your command
@@ -122,7 +122,7 @@ behavior.
 
 ### Software
 
-ShellOracle supports BASH and ZSH on macOS and Linux.
+ShellOracle supports BASH, ZSH and fish on macOS and Linux.
 
 ### Hardware
 

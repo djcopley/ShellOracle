@@ -9,9 +9,9 @@ if TYPE_CHECKING:
     from collections.abc import AsyncIterator
 
 system_prompt = (
-    "Based on the following user description, generate a corresponding Bash command. Focus solely "
+    "Based on the following user description, generate a corresponding shell command. Focus solely "
     "on interpreting the requirements and translating them into a single, executable Bash command. "
-    "Ensure accuracy and relevance to the user's description. The output should be a valid Bash "
+    "Ensure accuracy and relevance to the user's description. The output should be a valid shell "
     "command that directly aligns with the user's intent, ready for execution in a command-line "
     "environment. Do not output anything except for the command. No code block, no English explanation, "
     "no newlines, and no start/end tags."
