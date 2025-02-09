@@ -14,7 +14,7 @@ class OpenAICompat(Provider):
 
     def __init__(self):
         if not self.api_key:
-            msg = "No API key provided"
+            msg = "No API key provided. Use a dummy placeholder if no key is required"
             raise ProviderError(msg)
         self.client = AsyncOpenAI(api_key=self.api_key, base_url=self.base_url)
 
