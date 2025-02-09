@@ -112,6 +112,11 @@ Refer to the [LocalAI docs](https://localai.io/) for installation, available mod
 To use ShellOracle with XAI's models, create an [API key](https://docs.x.ai/docs/quickstart#creating-an-api-key).
 Edit your `~/.shelloracle/config.toml` to change your provider and enter your API key.
 
+### Google
+
+To use ShellOracle with Google's models, create an [API key](https://aistudio.google.com/app/apikey).
+Edit your `~/.shelloracle/config.toml` to change your provider and enter your API key.
+
 ## Configuration
 
 ShellOracle's configuration is your gateway to tailoring the utility to match your preferences and requirements.
