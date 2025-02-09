@@ -3,6 +3,7 @@ from __future__ import annotations
 import inspect
 import shutil
 from pathlib import Path
+import os
 from typing import TYPE_CHECKING, Any
 
 import tomlkit
@@ -38,7 +39,7 @@ def replace_home_with_tilde(path: Path) -> Path:
     return Path("~") / relative_path
 
 
-supported_shells = ("zsh", "bash")
+supported_shells = ("zsh", "bash", "fish")
 
 
 def get_installed_shells() -> list[str]:
@@ -49,18 +50,24 @@ def get_bundled_script_path(shell: str) -> Path:
     shell_dir = Path(__file__).parent / "shell"
     if shell == "zsh":
         return shell_dir / "shelloracle.zsh"
+    if shell == "fish":
+        return shell_dir / "shelloracle.fish"
     return shell_dir / "shelloracle.bash"
 
 
 def get_script_path(shell: str) -> Path:
     if shell == "zsh":
         return Path.home() / ".shelloracle.zsh"
+    if shell == "fish":
+        return Path.home() / ".shelloracle.fish"
     return Path.home() / ".shelloracle.bash"
 
 
 def get_rc_path(shell: str) -> Path:
     if shell == "zsh":
         return Path.home() / ".zshrc"
+    if shell == "fish":
+        return Path.home() / ".config/fish/config.fish"
     return Path.home() / ".bashrc"
 
 
@@ -75,10 +82,13 @@ def update_rc(shell: str) -> None:
     rc_path = get_rc_path(shell)
     rc_path.touch(exist_ok=True)
     with rc_path.open("r") as file:
-        zshrc = file.read()
-    shelloracle_script = get_script_path(shell)
-    line = f"[ -f {shelloracle_script} ] && source {shelloracle_script}"
-    if line not in zshrc:
+        rc_content = file.read()
+    if shell == "fish":
+        line = f"source {get_script_path(shell)}"
+    else:
+        shelloracle_script = get_script_path(shell)
+        line = f"[ -f {shelloracle_script} ] && source {shelloracle_script}"
+    if line not in rc_content:
         with rc_path.open("a") as file:
             file.write("\n")
             file.write(line)
@@ -119,16 +129,14 @@ def install_keybindings() -> None:
     if not (shells := get_installed_shells()):
         print_warning(
             "Cannot install keybindings: no compatible shells found. "
-            f"Supported shells: {', '.join(supported_shells)}"
+            f"Supported shells: {' '.join(supported_shells)}"
         )
         return
     if confirm("Enable terminal keybindings and update rc?", suffix=" ([y]/n) ") is False:
         return
-    for shell in shells:
+    for shell in get_installed_shells():
         write_script_home(shell)
         update_rc(shell)
-
-
 def user_configure_settings(provider: type[Provider]) -> dict[str, Any]:
     settings = {}
     for name, setting in get_settings(provider):
