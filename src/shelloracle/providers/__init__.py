@@ -80,7 +80,6 @@ def _providers() -> dict[str, type[Provider]]:
     from shelloracle.providers.ollama import Ollama
     from shelloracle.providers.openai import OpenAI
     from shelloracle.providers.xai import XAI
-    from shelloracle.providers.google import Google
 
     return {
         Ollama.name: Ollama,
