@@ -75,6 +75,7 @@ class Setting(Generic[T]):
 
 def _providers() -> dict[str, type[Provider]]:
     from shelloracle.providers.deepseek import Deepseek
+    from shelloracle.providers.google import Google
     from shelloracle.providers.localai import LocalAI
     from shelloracle.providers.ollama import Ollama
     from shelloracle.providers.openai import OpenAI

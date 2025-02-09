@@ -18,7 +18,6 @@ class Google(Provider):
         genai.configure(api_key=self.api_key)
         self.model_instance = genai.GenerativeModel(self.model)
 
-
     async def generate(self, prompt: str) -> AsyncIterator[str]:
         try:
             response = await self.model_instance.generate_content_async(
@@ -27,7 +26,7 @@ class Google(Provider):
                     {"role": "model", "parts": ["Okay."]},  # Gemini requires a model response before user input
                     {"role": "user", "parts": [prompt]},
                 ],
-                stream=True
+                stream=True,
             )
 
             async for chunk in response:
