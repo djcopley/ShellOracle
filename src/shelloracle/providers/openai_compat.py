@@ -1,3 +1,4 @@
+import logging
 from collections.abc import AsyncIterator
 
 from openai import APIError, AsyncOpenAI
@@ -26,8 +27,12 @@ class OpenAICompat(Provider):
                 stream=True,
             )
             async for chunk in stream:
-                if chunk.choices[0].delta.content is not None:
-                    yield chunk.choices[0].delta.content
+                logging.getLogger(__name__).info(chunk)
+                try:
+                    if chunk.choices[0].delta.content is not None:
+                        yield chunk.choices[0].delta.content
+                except:
+                    logging.getLogger(__name__).exception("no choices")
         except APIError as e:
-            msg = f"Something went wrong while querying OpenAICompat: {e}"
+            msg = f"Something went wrong while querying OpenAI: {e}"
             raise ProviderError(msg) from e
