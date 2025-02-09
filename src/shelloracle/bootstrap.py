@@ -83,7 +83,7 @@ def update_rc(shell: str) -> None:
     with rc_path.open("r") as file:
         rc_content = file.read()
     if shell == "fish":
-        line = f"source {get_script_path(shell)}"
+        line = f"if test -f {get_script_path(shell)}; source {get_script_path(shell)}; end"
     else:
         shelloracle_script = get_script_path(shell)
         line = f"[ -f {shelloracle_script} ] && source {shelloracle_script}"
