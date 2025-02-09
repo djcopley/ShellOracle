@@ -79,11 +79,13 @@ def _providers() -> dict[str, type[Provider]]:
     from shelloracle.providers.localai import LocalAI
     from shelloracle.providers.ollama import Ollama
     from shelloracle.providers.openai import OpenAI
+    from shelloracle.providers.openai_compat import OpenAICompat
     from shelloracle.providers.xai import XAI
 
     return {
         Ollama.name: Ollama,
         OpenAI.name: OpenAI,
+        OpenAICompat.name: OpenAICompat,
         LocalAI.name: LocalAI,
         XAI.name: XAI,
         Deepseek.name: Deepseek,
