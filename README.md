@@ -97,11 +97,13 @@ Refer to the [Ollama docs](https://ollama.ai) for installation, available models
 
 To use ShellOracle with OpenAI's models, create an [API key](https://platform.openai.com/account/api-keys). Edit
 your `~/.shelloracle/config.toml` to change your provider and enter your API key.
+You can use `shor config edit` as a shorthand to edit this file.
 
 ### Deepseek
 
 To use ShellOracle with Deepseek's models, create an [API key](https://platform.deepseek.com/api_keys). Edit
 your `~/.shelloracle/config.toml` to change your provider and enter your API key.
+You can use `shor config edit` as a shorthand to edit this file.
 
 ### LocalAI
 
@@ -111,17 +113,19 @@ Refer to the [LocalAI docs](https://localai.io/) for installation, available mod
 
 To use ShellOracle with XAI's models, create an [API key](https://docs.x.ai/docs/quickstart#creating-an-api-key).
 Edit your `~/.shelloracle/config.toml` to change your provider and enter your API key.
+You can use `shor config edit` as a shorthand to edit this file.
 
 ### Google
 
 To use ShellOracle with Google's models, create an [API key](https://aistudio.google.com/app/apikey).
 Edit your `~/.shelloracle/config.toml` to change your provider and enter your API key.
+You can use `shor config edit` as a shorthand to edit this file.
 
 ## Configuration
 
 ShellOracle's configuration is your gateway to tailoring the utility to match your preferences and requirements.
 The `~/.shelloracle/config.toml` file serves as the control center for customizing various aspects of ShellOracle's
-behavior.
+behavior. You can quickly access and edit this file using the command `shor config edit`.
 
 ## System Requirements
 
