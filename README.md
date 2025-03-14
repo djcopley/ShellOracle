@@ -45,7 +45,7 @@ Installing ShellOracle is easy!
     ```
 2. Configure ShellOracle and follow the prompts
     ```shell
-    shor configure
+    shor config init
     ```
 3. Refer to the [providers](#providers) section for specific details regarding your chosen provider.
 
