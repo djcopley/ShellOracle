@@ -1871,6 +1871,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pygments"
+version = "2.19.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/7c/2d/c3338d48ea6cc0feb8446d8e6937e1408088a72a39937982cc6111d17f84/pygments-2.19.1.tar.gz", hash = "sha256:61c16d2a8576dc0649d9f39e089b5f02bcd27fba10d8fb4dcc28173f7a45151f", size = 4968581 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8a/0b/9fcc47d19c48b59121088dd6da2488a49d5f72dacf8262e2790a1d2c7d15/pygments-2.19.1-py3-none-any.whl", hash = "sha256:9ea1544ad55cecf4b8242fab6dd35a93bbce657034b0611ee383099054ab6d8c", size = 1225293 },
+]
+
+[[package]]
 name = "pyparsing"
 version = "3.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -2290,6 +2299,7 @@ dependencies = [
     { name = "httpx" },
     { name = "openai" },
     { name = "prompt-toolkit" },
+    { name = "pygments" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
     { name = "tomlkit" },
     { name = "yaspin" },
@@ -2314,6 +2324,7 @@ requires-dist = [
     { name = "httpx", specifier = "~=0.28" },
     { name = "openai", specifier = "~=1.66" },
     { name = "prompt-toolkit", specifier = "~=3.0" },
+    { name = "pygments", specifier = ">=2.19.1" },
     { name = "tomli", marker = "python_full_version < '3.11'", specifier = "~=2.1" },
     { name = "tomlkit", specifier = "~=0.13" },
     { name = "yaspin", specifier = "~=3.1" },
