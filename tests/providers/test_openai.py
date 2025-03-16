@@ -1,22 +1,23 @@
 import pytest
 
+from shelloracle.config import Configuration
 from shelloracle.providers.openai import OpenAI
 
 
 class TestOpenAI:
     @pytest.fixture
-    def openai_config(self, set_config):
+    def openai_config(self):
         config = {
             "shelloracle": {"provider": "OpenAI"},
             "provider": {
                 "OpenAI": {"api_key": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "model": "gpt-3.5-turbo"}
             },
         }
-        set_config(config)
+        return Configuration(config)
 
     @pytest.fixture
     def openai_instance(self, openai_config):
-        return OpenAI()
+        return OpenAI(openai_config)
 
     def test_name(self):
         assert OpenAI.name == "OpenAI"

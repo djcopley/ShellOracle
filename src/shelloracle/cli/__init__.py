@@ -1,24 +1,24 @@
 import logging
 import sys
-from importlib.metadata import version
+from pathlib import Path
 
 import click
 
 from shelloracle import shelloracle
+from shelloracle.cli.application import Application
 from shelloracle.cli.config import config
-from shelloracle.config import initialize_config
-from shelloracle.settings import Settings
+from shelloracle.config import Configuration
 from shelloracle.tty_log_handler import TtyLogHandler
 
 logger = logging.getLogger(__name__)
 
 
-def configure_logging():
+def configure_logging(log_path: Path):
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.DEBUG)
 
     file_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
-    file_handler = logging.FileHandler(Settings.shelloracle_home / "shelloracle.log")
+    file_handler = logging.FileHandler(log_path)
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(file_formatter)
 
@@ -32,21 +32,25 @@ def configure_logging():
 
 
 @click.group(invoke_without_command=True)
-@click.version_option(version=version("shelloracle"))
+@click.version_option()
 @click.pass_context
 def cli(ctx):
     """ShellOracle command line interface."""
-    configure_logging()
+    app = Application()
+    configure_logging(app.log_path)
+    ctx.obj = app
 
-    # If no subcommand is invoked, run the main CLI
-    if ctx.invoked_subcommand is None:
-        try:
-            initialize_config()
-        except FileNotFoundError:
-            logger.warning("ShellOracle configuration not found. Run `shor config init` to initialize.")
-            sys.exit(1)
+    if ctx.invoked_subcommand is not None:
+        # If no subcommand is invoked, run the main CLI
+        return
 
-        shelloracle.cli()
+    try:
+        app.configuration = Configuration.from_file(app.config_path)
+    except FileNotFoundError:
+        logger.warning("Configuration not found. Run `shor config init` to initialize.")
+        sys.exit(1)
+
+    shelloracle.cli(app)
 
 
 cli.add_command(config)

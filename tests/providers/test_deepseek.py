@@ -1,11 +1,12 @@
 import pytest
 
+from shelloracle.config import Configuration
 from shelloracle.providers.deepseek import Deepseek
 
 
 class TestOpenAI:
     @pytest.fixture
-    def deepseek_config(self, set_config):
+    def deepseek_config(self):
         config = {
             "shelloracle": {"provider": "Deepseek"},
             "provider": {
@@ -15,11 +16,11 @@ class TestOpenAI:
                 }
             },
         }
-        set_config(config)
+        return Configuration(config)
 
     @pytest.fixture
     def deepseek_instance(self, deepseek_config):
-        return Deepseek()
+        return Deepseek(deepseek_config)
 
     def test_name(self):
         assert Deepseek.name == "Deepseek"

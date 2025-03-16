@@ -17,24 +17,15 @@ def mock_yaspin(monkeypatch):
     return mock
 
 
-@pytest.fixture
-def mock_config(monkeypatch):
-    config = MagicMock()
-    monkeypatch.setattr("shelloracle.config._config", config)
-    return config
-
-
 @pytest.mark.parametrize(("spinner_style", "expected"), [(None, call()), ("earth", call(Spinners.earth))])
-def test_spinner(spinner_style, expected, mock_config, mock_yaspin):
-    mock_config.spinner_style = spinner_style
-    spinner()
+def test_spinner(spinner_style, expected, mock_yaspin):
+    spinner(spinner_style)
     assert mock_yaspin.call_args == expected
 
 
-def test_spinner_fail(mock_yaspin, mock_config):
-    mock_config.spinner_style = "not a spinner style"
+def test_spinner_fail(mock_yaspin):
     with pytest.raises(AttributeError):
-        spinner()
+        spinner("not a spinner style")
 
 
 @pytest.mark.parametrize(

@@ -1,11 +1,12 @@
 import pytest
 
+from shelloracle.config import Configuration
 from shelloracle.providers.xai import XAI
 
 
 class TestOpenAI:
     @pytest.fixture
-    def xai_config(self, set_config):
+    def xai_config(self):
         config = {
             "shelloracle": {"provider": "XAI"},
             "provider": {
@@ -15,11 +16,11 @@ class TestOpenAI:
                 }
             },
         }
-        set_config(config)
+        return Configuration(config)
 
     @pytest.fixture
     def xai_instance(self, xai_config):
-        return XAI()
+        return XAI(xai_config)
 
     def test_name(self):
         assert XAI.name == "XAI"

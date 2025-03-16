@@ -12,7 +12,8 @@ class OpenAICompat(Provider):
     api_key = Setting(default="")
     model = Setting(default="")
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         if not self.api_key:
             msg = "No API key provided. Use a dummy placeholder if no key is required"
             raise ProviderError(msg)

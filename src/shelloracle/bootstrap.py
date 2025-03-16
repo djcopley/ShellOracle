@@ -12,7 +12,6 @@ from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.shortcuts import confirm
 
 from shelloracle.providers import Provider, Setting, get_provider, list_providers
-from shelloracle.settings import Settings
 
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence
@@ -104,7 +103,7 @@ def get_settings(provider: type[Provider]) -> Iterator[tuple[str, Setting]]:
     yield from correct_name_setting()
 
 
-def write_shelloracle_config(provider: type[Provider], settings: dict[str, Any]) -> None:
+def write_shelloracle_config(provider: type[Provider], settings: dict[str, Any], config_path: Path) -> None:
     config = tomlkit.document()
 
     shor_table = tomlkit.table()
@@ -119,8 +118,7 @@ def write_shelloracle_config(provider: type[Provider], settings: dict[str, Any])
         provider_configuration_table.add(setting, value)
     provider_table.add(provider.name, provider_configuration_table)
 
-    filepath = Settings.shelloracle_home / "config.toml"
-    with filepath.open("w") as config_file:
+    with config_path.open("w") as config_file:
         tomlkit.dump(config, config_file)
 
 
@@ -164,7 +162,7 @@ def user_select_provider() -> type[Provider]:
     return get_provider(provider_name)
 
 
-def bootstrap_shelloracle() -> None:
+def bootstrap_shelloracle(config_path: Path) -> None:
     try:
         provider = user_select_provider()
         settings = user_configure_settings(provider)
@@ -173,5 +171,5 @@ def bootstrap_shelloracle() -> None:
         return
     except KeyboardInterrupt:
         return
-    write_shelloracle_config(provider, settings)
+    write_shelloracle_config(provider, settings, config_path)
     install_keybindings()

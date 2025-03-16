@@ -14,11 +14,12 @@ from prompt_toolkit.patch_stdout import patch_stdout
 from yaspin import yaspin
 from yaspin.spinners import Spinners
 
-from shelloracle.config import get_config
 from shelloracle.providers import get_provider
 
 if TYPE_CHECKING:
     from yaspin.core import Yaspin
+
+    from shelloracle.cli import Application
 
 logger = logging.getLogger(__name__)
 
@@ -47,19 +48,19 @@ def get_query_from_pipe() -> str | None:
     return lines[0].rstrip()
 
 
-def spinner() -> Yaspin:
+def spinner(style: str | None) -> Yaspin:
     """Get the correct spinner based on the user's configuration
 
+    :param style: The spinner style
     :returns: yaspin object
     """
-    config = get_config()
-    if not config.spinner_style:
-        return yaspin()
-    style = getattr(Spinners, config.spinner_style)
-    return yaspin(style)
+    if style:
+        style = getattr(Spinners, style)
+        return yaspin(style)
+    return yaspin()
 
 
-async def shelloracle() -> None:
+async def shelloracle(app: Application) -> None:
     """ShellOracle program entrypoint
 
     If there is a query from the input pipe, it processes the query to generate a response.
@@ -76,11 +77,10 @@ async def shelloracle() -> None:
         prompt = await prompt_user(default_prompt)
     logger.info("user prompt: %s", prompt)
 
-    config = get_config()
-    provider = get_provider(config.provider)()
+    provider = get_provider(app.configuration.provider)(app.configuration)
 
     shell_command = ""
-    with create_app_session_from_tty(), patch_stdout(raw=True), spinner() as sp:
+    with create_app_session_from_tty(), patch_stdout(raw=True), spinner(app.configuration.spinner_style) as sp:
         async for token in provider.generate(prompt):
             # some models may erroneously return a newline, which causes issues with the status spinner
             shell_command += token.replace("\n", "")
@@ -89,13 +89,13 @@ async def shelloracle() -> None:
     sys.stdout.write(shell_command)
 
 
-def cli() -> None:
+def cli(app: Application) -> None:
     """Run the ShellOracle command line interface
 
     :returns: None
     """
     try:
-        asyncio.run(shelloracle())
+        asyncio.run(shelloracle(app))
     except (KeyboardInterrupt, asyncio.exceptions.CancelledError):
         return
     except Exception:

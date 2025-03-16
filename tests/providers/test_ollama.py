@@ -1,21 +1,22 @@
 import pytest
 from pytest_httpx import IteratorStream
 
+from shelloracle.config import Configuration
 from shelloracle.providers.ollama import Ollama
 
 
 class TestOllama:
     @pytest.fixture
-    def ollama_config(self, set_config):
+    def ollama_config(self):
         config = {
             "shelloracle": {"provider": "Ollama"},
             "provider": {"Ollama": {"host": "localhost", "port": 11434, "model": "dolphin-mistral"}},
         }
-        set_config(config)
+        return Configuration(config)
 
     @pytest.fixture
     def ollama_instance(self, ollama_config):
-        return Ollama()
+        return Ollama(ollama_config)
 
     def test_name(self):
         assert Ollama.name == "Ollama"

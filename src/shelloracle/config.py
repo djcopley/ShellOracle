@@ -7,10 +7,9 @@ from typing import TYPE_CHECKING, Any
 
 from yaspin.spinners import SPINNERS_DATA
 
-from shelloracle.settings import Settings
-
 if TYPE_CHECKING:
     from pathlib import Path
+
 
 if sys.version_info < (3, 11):
     import tomli as tomllib
@@ -21,15 +20,13 @@ logger = logging.getLogger(__name__)
 
 
 class Configuration(Mapping):
-    def __init__(self, filepath: Path) -> None:
+    def __init__(self, config: dict[str, Any]) -> None:
         """ShellOracle application configuration
 
-        :param filepath: Path to the configuration file
+        :param config: configuration dict
         :raises FileNotFoundError: if the configuration file does not exist
         """
-        self.filepath = filepath
-        with filepath.open("rb") as config_file:
-            self._config = tomllib.load(config_file)
+        self._config = config
 
     def __getitem__(self, key: str) -> Any:
         return self._config[key]
@@ -47,6 +44,10 @@ class Configuration(Mapping):
         return str(self)
 
     @property
+    def raw_config(self) -> dict[str, Any]:
+        return self._config
+
+    @property
     def provider(self) -> str:
         return self["shelloracle"]["provider"]
 
@@ -60,31 +61,8 @@ class Configuration(Mapping):
             return None
         return style
 
-
-_config: Configuration | None = None
-
-
-def initialize_config() -> None:
-    """Initialize the configuration file
-
-    :raises RuntimeError: if the config is already initialized
-    :raises FileNotFoundError: if the config file is not found
-    """
-    global _config  # noqa: PLW0603
-    if _config:
-        msg = "Configuration already initialized"
-        raise RuntimeError(msg)
-    filepath = Settings.shelloracle_home / "config.toml"
-    _config = Configuration(filepath)
-
-
-def get_config() -> Configuration:
-    """Returns the global configuration object.
-
-    :return: the global configuration
-    :raises RuntimeError: if the configuration is not initialized
-    """
-    if _config is None:
-        msg = "Configuration not initialized"
-        raise RuntimeError(msg)
-    return _config
+    @classmethod
+    def from_file(cls, filepath: Path):
+        with filepath.open("rb") as config_file:
+            config = tomllib.load(config_file)
+        return cls(config)

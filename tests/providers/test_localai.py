@@ -5,16 +5,15 @@ from shelloracle.providers.localai import LocalAI
 
 class TestOpenAI:
     @pytest.fixture
-    def localai_config(self, set_config):
-        config = {
+    def localai_config(self):
+        return {
             "shelloracle": {"provider": "LocalAI"},
             "provider": {"LocalAI": {"host": "localhost", "port": 8080, "model": "mistral-openorca"}},
         }
-        set_config(config)
 
     @pytest.fixture
     def localai_instance(self, localai_config):
-        return LocalAI()
+        return LocalAI(localai_config)
 
     def test_name(self):
         assert LocalAI.name == "LocalAI"

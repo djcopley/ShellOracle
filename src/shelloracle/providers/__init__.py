@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import TYPE_CHECKING, Generic, Protocol, TypeVar, runtime_checkable
-
-from shelloracle.config import get_config
+from typing import TYPE_CHECKING, Generic, Protocol, TypeVar
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
+
+    from shelloracle.config import Configuration
 
 system_prompt = (
     "Based on the following user description, generate a corresponding shell command. Focus solely "
@@ -22,7 +22,6 @@ class ProviderError(Exception):
     """LLM providers raise this error to gracefully indicate something has gone wrong."""
 
 
-@runtime_checkable
 class Provider(Protocol):
     """
     LLM Provider Protocol
@@ -31,6 +30,10 @@ class Provider(Protocol):
     """
 
     name: str
+    config: Configuration
+
+    def __init__(self, config: Configuration) -> None:
+        self.config = config
 
     @abstractmethod
     def generate(self, prompt: str) -> AsyncIterator[str]:
@@ -64,9 +67,8 @@ class Setting(Generic[T]):
             # inspect.get_members from determining the object type
             msg = "Settings must be accessed through a provider instance."
             raise AttributeError(msg)
-        config = get_config()
         try:
-            return config["provider"][owner.name][self.name]
+            return instance.config["provider"][owner.name][self.name]
         except KeyError:
             if self.default is None:
                 raise
