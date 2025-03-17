@@ -1,8 +1,15 @@
-from collections.abc import AsyncIterator
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from openai import APIError, AsyncOpenAI
 
 from shelloracle.providers import Provider, ProviderError, Setting, system_prompt
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
+    from shelloracle.config import Configuration
 
 
 class Deepseek(Provider):
@@ -11,8 +18,8 @@ class Deepseek(Provider):
     api_key = Setting(default="")
     model = Setting(default="deepseek-chat")
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, config: Configuration) -> None:
+        self.config = config
         if not self.api_key:
             msg = "No API key provided"
             raise ProviderError(msg)
@@ -22,7 +29,10 @@ class Deepseek(Provider):
         try:
             stream = await self.client.chat.completions.create(
                 model=self.model,
-                messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": prompt}],
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": prompt},
+                ],
                 stream=True,
             )
             async for chunk in stream:

@@ -31,4 +31,4 @@ jobs:
         with:
           python-version: ${{ matrix.py }}
       - name: Run test suite
-        run: hatch test
+        run: hatch test -py=${{ matrix.py }}

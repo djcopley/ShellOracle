@@ -1,6 +1,10 @@
+from __future__ import annotations
+
+import typing
 from pathlib import Path
 
-from shelloracle.config import Configuration
+if typing.TYPE_CHECKING:
+    from shelloracle.config import Configuration
 
 shelloracle_home = Path.home() / ".shelloracle"
 shelloracle_home.mkdir(exist_ok=True)

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 
 from prompt_toolkit import print_formatted_text
@@ -6,7 +8,7 @@ from prompt_toolkit.formatted_text import FormattedText
 
 
 class TtyLogHandler(logging.Handler):
-    def emit(self, record):
+    def emit(self, record: logging.LogRecord):
         if record.levelno >= logging.ERROR:
             color = "ansired"
         elif record.levelno == logging.WARNING:

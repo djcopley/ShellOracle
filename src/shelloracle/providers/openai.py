@@ -1,8 +1,15 @@
-from collections.abc import AsyncIterator
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from openai import APIError, AsyncOpenAI
 
 from shelloracle.providers import Provider, ProviderError, Setting, system_prompt
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
+    from shelloracle.config import Configuration
 
 
 class OpenAI(Provider):
@@ -11,8 +18,8 @@ class OpenAI(Provider):
     api_key = Setting(default="")
     model = Setting(default="gpt-3.5-turbo")
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, config: Configuration) -> None:
+        self.config = config
         if not self.api_key:
             msg = "No API key provided"
             raise ProviderError(msg)

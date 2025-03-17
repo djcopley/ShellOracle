@@ -28,14 +28,26 @@ classifiers = [
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 ]
 dependencies = [
-    "httpx",
-    "openai",
-    "prompt-toolkit",
-    "yaspin",
-    "tomlkit",
-    "tomli >= 1.1.0; python_version < '3.11'",
-    "google-generativeai",
-    "click>=8.1.8",
+    "tomli ~= 2.1; python_version < '3.11'",
+    "click~=8.1",
+    "dspy~=2.6",
+    "httpx~=0.28",
+    "openai~=1.66",
+    "prompt-toolkit~=3.0",
+    "yaspin~=3.1",
+    "tomlkit~=0.13",
+    "google-generativeai~=0.8",
+]
+
+[dependency-groups]
+test = [
+    "pytest~=8.3",
+    "pytest-cov~=5.0",
+    "pytest-sugar~=1.0",
+    "pytest-xdist~=3.6",
+    "pytest-asyncio~=0.24",
+    "pytest-httpx~=0.30",
+    "tomli-w~=1.2.0",
 ]
 
 [project.scripts]

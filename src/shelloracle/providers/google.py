@@ -1,8 +1,15 @@
-from collections.abc import AsyncIterator
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import google.generativeai as genai
 
 from shelloracle.providers import Provider, ProviderError, Setting, system_prompt
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
+    from shelloracle.config import Configuration
 
 
 class Google(Provider):
@@ -11,8 +18,8 @@ class Google(Provider):
     api_key = Setting(default="")
     model = Setting(default="gemini-2.0-flash")  # Assuming a default model name
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, config: Configuration) -> None:
+        self.config = config
         if not self.api_key:
             msg = "No API key provided"
             raise ProviderError(msg)

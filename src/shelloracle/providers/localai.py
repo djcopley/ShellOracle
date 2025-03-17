@@ -1,8 +1,15 @@
-from collections.abc import AsyncIterator
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from openai import APIError, AsyncOpenAI
 
 from shelloracle.providers import Provider, ProviderError, Setting, system_prompt
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
+    from shelloracle.config import Configuration
 
 
 class LocalAI(Provider):
@@ -16,8 +23,8 @@ class LocalAI(Provider):
     def endpoint(self) -> str:
         return f"http://{self.host}:{self.port}"
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, config: Configuration) -> None:
+        self.config = config
         # Use a placeholder API key so the client will work
         self.client = AsyncOpenAI(api_key="sk-xxx", base_url=self.endpoint)
 

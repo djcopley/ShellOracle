@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import logging
 import sys
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 import click
 
@@ -9,6 +11,9 @@ from shelloracle.cli.application import Application
 from shelloracle.cli.config import config
 from shelloracle.config import Configuration
 from shelloracle.tty_log_handler import TtyLogHandler
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +39,7 @@ def configure_logging(log_path: Path):
 @click.group(invoke_without_command=True)
 @click.version_option()
 @click.pass_context
-def cli(ctx):
+def cli(ctx: click.Context):
     """ShellOracle command line interface."""
     app = Application()
     configure_logging(app.log_path)

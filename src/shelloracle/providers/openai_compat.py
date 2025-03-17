@@ -1,8 +1,15 @@
-from collections.abc import AsyncIterator
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from openai import APIError, AsyncOpenAI
 
 from shelloracle.providers import Provider, ProviderError, Setting, system_prompt
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
+    from shelloracle.config import Configuration
 
 
 class OpenAICompat(Provider):
@@ -12,8 +19,8 @@ class OpenAICompat(Provider):
     api_key = Setting(default="")
     model = Setting(default="")
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, config: Configuration) -> None:
+        self.config = config
         if not self.api_key:
             msg = "No API key provided. Use a dummy placeholder if no key is required"
             raise ProviderError(msg)

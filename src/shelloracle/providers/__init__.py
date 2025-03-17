@@ -33,7 +33,11 @@ class Provider(Protocol):
     config: Configuration
 
     def __init__(self, config: Configuration) -> None:
-        self.config = config
+        """Initialize the provider with the given configuration.
+
+        :param config: the configuration object
+        :return: none
+        """
 
     @abstractmethod
     def generate(self, prompt: str) -> AsyncIterator[str]:
