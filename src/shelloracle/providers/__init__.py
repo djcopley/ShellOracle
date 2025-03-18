@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import abc
 from abc import abstractmethod
-from typing import TYPE_CHECKING, Generic, Protocol, TypeVar
+from typing import TYPE_CHECKING, Generic, TypeVar
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
@@ -22,7 +23,7 @@ class ProviderError(Exception):
     """LLM providers raise this error to gracefully indicate something has gone wrong."""
 
 
-class Provider(Protocol):
+class Provider(abc.ABC):
     """
     LLM Provider Protocol
 
@@ -38,6 +39,7 @@ class Provider(Protocol):
         :param config: the configuration object
         :return: none
         """
+        self.config = config
 
     @abstractmethod
     def generate(self, prompt: str) -> AsyncIterator[str]:

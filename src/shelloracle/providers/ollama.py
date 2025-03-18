@@ -11,8 +11,6 @@ from shelloracle.providers import Provider, ProviderError, Setting, system_promp
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
 
-    from shelloracle.config import Configuration
-
 
 def dataclass_to_json(obj: Any) -> dict[str, Any]:
     """Convert dataclass to a json dict
@@ -59,9 +57,6 @@ class Ollama(Provider):
     host = Setting(default="localhost")
     port = Setting(default=11434)
     model = Setting(default="dolphin-mistral")
-
-    def __init__(self, config: Configuration) -> None:
-        self.config = config
 
     @property
     def endpoint(self) -> str:

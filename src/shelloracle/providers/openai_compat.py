@@ -9,8 +9,6 @@ from shelloracle.providers import Provider, ProviderError, Setting, system_promp
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
 
-    from shelloracle.config import Configuration
-
 
 class OpenAICompat(Provider):
     name = "OpenAICompat"
@@ -19,8 +17,8 @@ class OpenAICompat(Provider):
     api_key = Setting(default="")
     model = Setting(default="")
 
-    def __init__(self, config: Configuration) -> None:
-        self.config = config
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
         if not self.api_key:
             msg = "No API key provided. Use a dummy placeholder if no key is required"
             raise ProviderError(msg)

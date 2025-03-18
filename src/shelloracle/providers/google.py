@@ -9,8 +9,6 @@ from shelloracle.providers import Provider, ProviderError, Setting, system_promp
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
 
-    from shelloracle.config import Configuration
-
 
 class Google(Provider):
     name = "Google"
@@ -18,8 +16,8 @@ class Google(Provider):
     api_key = Setting(default="")
     model = Setting(default="gemini-2.0-flash")  # Assuming a default model name
 
-    def __init__(self, config: Configuration) -> None:
-        self.config = config
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
         if not self.api_key:
             msg = "No API key provided"
             raise ProviderError(msg)

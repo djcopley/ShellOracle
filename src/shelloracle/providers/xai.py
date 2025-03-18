@@ -9,8 +9,6 @@ from shelloracle.providers import Provider, ProviderError, Setting, system_promp
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
 
-    from shelloracle.config import Configuration
-
 
 class XAI(Provider):
     name = "XAI"
@@ -18,8 +16,8 @@ class XAI(Provider):
     api_key = Setting(default="")
     model = Setting(default="grok-beta")
 
-    def __init__(self, config: Configuration) -> None:
-        self.config = config
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
         if not self.api_key:
             msg = "No API key provided"
             raise ProviderError(msg)

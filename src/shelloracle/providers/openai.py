@@ -9,8 +9,6 @@ from shelloracle.providers import Provider, ProviderError, Setting, system_promp
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
 
-    from shelloracle.config import Configuration
-
 
 class OpenAI(Provider):
     name = "OpenAI"
@@ -18,8 +16,8 @@ class OpenAI(Provider):
     api_key = Setting(default="")
     model = Setting(default="gpt-3.5-turbo")
 
-    def __init__(self, config: Configuration) -> None:
-        self.config = config
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
         if not self.api_key:
             msg = "No API key provided"
             raise ProviderError(msg)
