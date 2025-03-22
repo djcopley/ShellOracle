@@ -80,6 +80,7 @@ python = ["3.9", "3.10", "3.11", "3.12", "3.13"]
 template = "hatch-test"
 extra-dependencies = [
     "mypy~=1.0",
+    "types-Pygments",
 ]
 
 [tool.hatch.envs.types.scripts]
