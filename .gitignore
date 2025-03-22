@@ -163,4 +163,9 @@ demo/
 
 # Experimental scripts
 experiments/
+
+# Jujutsu VCS
 /.jj/
+
+# macos
+.DS_Store
