@@ -38,6 +38,7 @@ dependencies = [
     "tomlkit~=0.13",
     "google-generativeai~=0.8",
     "pygments~=2.19",
+    "rich>=13.9.4",
 ]
 
 [dependency-groups]

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 import logging
 import os
 import sys
@@ -87,16 +86,3 @@ async def shelloracle(app: Application) -> None:
             sp.text = shell_command
     logger.info("generated shell command: %s", shell_command)
     sys.stdout.write(shell_command)
-
-
-def cli(app: Application) -> None:
-    """Run the ShellOracle command line interface
-
-    :returns: None
-    """
-    try:
-        asyncio.run(shelloracle(app))
-    except (KeyboardInterrupt, asyncio.exceptions.CancelledError):
-        return
-    except Exception:
-        logger.exception("An error occurred")

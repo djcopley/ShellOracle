@@ -1,15 +1,17 @@
 from __future__ import annotations
 
+import asyncio
 import logging
+import os
 import sys
 from typing import TYPE_CHECKING
 
 import click
 
-from shelloracle import shelloracle
 from shelloracle.cli.application import Application
 from shelloracle.cli.config import config
 from shelloracle.config import Configuration
+from shelloracle.shelloracle import shelloracle
 from shelloracle.tty_log_handler import TtyLogHandler
 
 if TYPE_CHECKING:
@@ -55,11 +57,21 @@ def cli(ctx: click.Context):
         logger.warning("Configuration not found. Run `shor config init` to initialize.")
         sys.exit(1)
 
-    shelloracle.cli(app)
+    asyncio.run(shelloracle(app))
 
 
 cli.add_command(config)
 
 
 def main():
-    cli()
+    try:
+        cli()
+    except Exception:  # noqa: BLE001
+        import sys
+
+        from rich.console import Console
+
+        console = Console(stderr=True)
+        shor_debug = os.getenv("SHOR_DEBUG") in {"1", "true"}
+        console.print_exception(suppress=[click, asyncio], show_locals=shor_debug)
+        sys.exit(1)
