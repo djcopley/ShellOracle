@@ -109,6 +109,23 @@ You can use `shor config edit` as a shorthand to edit this file.
 
 Refer to the [LocalAI docs](https://localai.io/) for installation, available models, and usage.
 
+### LM Studio
+
+To use ShellOracle with [LM Studio](https://lmstudio.ai/), you will first need to run a model and start the server.
+For macOS users, it's recommended to utillize a model that is using the MLX runtime.
+
+Here is an example configuration:
+
+```toml
+[shelloracle]
+provider = "OpenAICompat"
+
+[provider.OpenAICompat]
+base_url = "http://localhost:1234/v1"
+api_key = "lm-studio"
+model = "mistralai/devstral-small-2507"
+```
+
 ### XAI
 
 To use ShellOracle with XAI's models, create an [API key](https://docs.x.ai/docs/quickstart#creating-an-api-key).
