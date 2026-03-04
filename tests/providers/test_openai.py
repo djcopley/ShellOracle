@@ -10,7 +10,10 @@ class TestOpenAI:
         config = {
             "shelloracle": {"provider": "OpenAI"},
             "provider": {
-                "OpenAI": {"api_key": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "model": "gpt-3.5-turbo"}
+                "OpenAI": {
+                    "api_key": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                    "model": "gpt-3.5-turbo",
+                }
             },
         }
         return Configuration(config)
@@ -23,7 +26,10 @@ class TestOpenAI:
         assert OpenAI.name == "OpenAI"
 
     def test_api_key(self, openai_instance):
-        assert openai_instance.api_key == "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        assert (
+            openai_instance.api_key
+            == "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        )
 
     def test_model(self, openai_instance):
         assert openai_instance.model == "gpt-3.5-turbo"

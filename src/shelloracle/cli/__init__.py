@@ -24,7 +24,9 @@ def configure_logging(log_path: Path):
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.DEBUG)
 
-    file_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
+    file_formatter = logging.Formatter(
+        "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
+    )
     file_handler = logging.FileHandler(log_path)
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(file_formatter)

@@ -56,7 +56,7 @@ Upgrading to the latest version of ShellOracle is just as simple!
    pipx upgrade shelloracle
    ```
 
-*Installation with `pip` is supported, however, `pipx` is preferred for its automatic environment isolation.*
+*Installation with `pip` is supported; however, `pipx` is preferred for its automatic environment isolation.*
 
 ## Usage
 

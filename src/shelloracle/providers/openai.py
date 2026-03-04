@@ -27,7 +27,10 @@ class OpenAI(Provider):
         try:
             stream = await self.client.chat.completions.create(
                 model=self.model,
-                messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": prompt}],
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": prompt},
+                ],
                 stream=True,
             )
             async for chunk in stream:

@@ -17,7 +17,9 @@ def mock_yaspin(monkeypatch):
     return mock
 
 
-@pytest.mark.parametrize(("spinner_style", "expected"), [(None, call()), ("earth", call(Spinners.earth))])
+@pytest.mark.parametrize(
+    ("spinner_style", "expected"), [(None, call()), ("earth", call(Spinners.earth))]
+)
 def test_spinner(spinner_style, expected, mock_yaspin):
     spinner(spinner_style)
     assert mock_yaspin.call_args == expected
@@ -29,7 +31,8 @@ def test_spinner_fail(mock_yaspin):
 
 
 @pytest.mark.parametrize(
-    ("isatty", "readlines", "expected"), [(True, None, None), (False, [], None), (False, ["what is up"], "what is up")]
+    ("isatty", "readlines", "expected"),
+    [(True, None, None), (False, [], None), (False, ["what is up"], "what is up")],
 )
 def test_get_query_from_pipe(isatty, readlines, expected, monkeypatch):
     monkeypatch.setattr(os, "isatty", lambda _: isatty)

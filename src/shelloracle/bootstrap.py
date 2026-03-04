@@ -73,7 +73,9 @@ def write_script_home(shell: str) -> None:
     shelloracle = get_bundled_script_path(shell).read_bytes()
     destination = get_script_path(shell)
     destination.write_bytes(shelloracle)
-    print_info(f"Successfully wrote key bindings to {replace_home_with_tilde(destination)}")
+    print_info(
+        f"Successfully wrote key bindings to {replace_home_with_tilde(destination)}"
+    )
 
 
 def update_rc(shell: str) -> None:
@@ -82,7 +84,9 @@ def update_rc(shell: str) -> None:
     with rc_path.open("r") as file:
         rc_content = file.read()
     if shell == "fish":
-        line = f"if test -f {get_script_path(shell)}; source {get_script_path(shell)}; end"
+        line = (
+            f"if test -f {get_script_path(shell)}; source {get_script_path(shell)}; end"
+        )
     else:
         shelloracle_script = get_script_path(shell)
         line = f"[ -f {shelloracle_script} ] && source {shelloracle_script}"
@@ -103,7 +107,9 @@ def get_settings(provider: type[Provider]) -> Iterator[tuple[str, Setting]]:
     yield from correct_name_setting()
 
 
-def write_shelloracle_config(provider: type[Provider], settings: dict[str, Any], config_path: Path) -> None:
+def write_shelloracle_config(
+    provider: type[Provider], settings: dict[str, Any], config_path: Path
+) -> None:
     config = tomlkit.document()
 
     shor_table = tomlkit.table()
@@ -125,10 +131,14 @@ def write_shelloracle_config(provider: type[Provider], settings: dict[str, Any],
 def install_keybindings() -> None:
     if not (shells := get_installed_shells()):
         print_warning(
-            "Cannot install keybindings: no compatible shells found. " f"Supported shells: {' '.join(supported_shells)}"
+            "Cannot install keybindings: no compatible shells found. "
+            f"Supported shells: {' '.join(supported_shells)}"
         )
         return
-    if confirm("Enable terminal keybindings and update rc?", suffix=" ([y]/n) ") is False:
+    if (
+        confirm("Enable terminal keybindings and update rc?", suffix=" ([y]/n) ")
+        is False
+    ):
         return
     for shell in shells:
         write_script_home(shell)
@@ -155,8 +165,12 @@ def case_correct_user_input(user_input: str, options: Sequence[str]) -> str | No
 def user_select_provider() -> type[Provider]:
     providers = list_providers()
     completer = WordCompleter(providers, ignore_case=True)
-    user_selected_provider = prompt(f"Choose your LLM provider ({', '.join(providers)}): ", completer=completer)
-    if (provider_name := case_correct_user_input(user_selected_provider, providers)) is None:
+    user_selected_provider = prompt(
+        f"Choose your LLM provider ({', '.join(providers)}): ", completer=completer
+    )
+    if (
+        provider_name := case_correct_user_input(user_selected_provider, providers)
+    ) is None:
         msg = f"Invalid provider: {user_selected_provider or 'no input'}"
         raise UserError(msg)
     return get_provider(provider_name)

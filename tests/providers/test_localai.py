@@ -8,7 +8,13 @@ class TestOpenAI:
     def localai_config(self):
         return {
             "shelloracle": {"provider": "LocalAI"},
-            "provider": {"LocalAI": {"host": "localhost", "port": 8080, "model": "mistral-openorca"}},
+            "provider": {
+                "LocalAI": {
+                    "host": "localhost",
+                    "port": 8080,
+                    "model": "mistral-openorca",
+                }
+            },
         }
 
     @pytest.fixture

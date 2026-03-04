@@ -10,7 +10,13 @@ class TestOllama:
     def ollama_config(self):
         config = {
             "shelloracle": {"provider": "Ollama"},
-            "provider": {"Ollama": {"host": "localhost", "port": 11434, "model": "dolphin-mistral"}},
+            "provider": {
+                "Ollama": {
+                    "host": "localhost",
+                    "port": 11434,
+                    "model": "dolphin-mistral",
+                }
+            },
         }
         return Configuration(config)
 
