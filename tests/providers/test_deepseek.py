@@ -4,7 +4,7 @@ from shelloracle.config import Configuration
 from shelloracle.providers.deepseek import Deepseek
 
 
-class TestOpenAI:
+class TestDeepseek:
     @pytest.fixture
     def deepseek_config(self):
         config = {
@@ -12,7 +12,7 @@ class TestOpenAI:
             "provider": {
                 "Deepseek": {
                     "api_key": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-                    "model": "grok-beta",
+                    "model": "deepseek-chat",
                 }
             },
         }
@@ -32,7 +32,7 @@ class TestOpenAI:
         )
 
     def test_model(self, deepseek_instance):
-        assert deepseek_instance.model == "grok-beta"
+        assert deepseek_instance.model == "deepseek-chat"
 
     @pytest.mark.asyncio
     async def test_generate(self, mock_asyncopenai, deepseek_instance):

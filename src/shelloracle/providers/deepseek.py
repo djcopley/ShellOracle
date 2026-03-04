@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-
 from openai import APIError, AsyncOpenAI
 
 from shelloracle.providers import Provider, ProviderError, Setting, system_prompt
@@ -21,7 +20,9 @@ class Deepseek(Provider):
         if not self.api_key:
             msg = "No API key provided"
             raise ProviderError(msg)
-        self.client = AsyncOpenAI(base_url="https://api.deepseek.com/v1", api_key=self.api_key)
+        self.client = AsyncOpenAI(
+            base_url="https://api.deepseek.com/v1", api_key=self.api_key
+        )
 
     async def generate(self, prompt: str) -> AsyncIterator[str]:
         try:
