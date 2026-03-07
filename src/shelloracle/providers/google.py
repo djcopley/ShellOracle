@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 from shelloracle.providers import Provider, ProviderError, Setting, system_prompt
 
@@ -14,25 +15,28 @@ class Google(Provider):
     name = "Google"
 
     api_key = Setting(default="")
-    model = Setting(default="gemini-2.0-flash")  # Assuming a default model name
+    model = Setting(default="gemini-2.5-flash-lite")  # Default model to use
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         if not self.api_key:
             msg = "No API key provided"
             raise ProviderError(msg)
-        genai.configure(api_key=self.api_key)
-        self.model_instance = genai.GenerativeModel(self.model, system_instruction=system_prompt)
+        self.client = genai.Client(api_key=self.api_key)
 
     async def generate(self, prompt: str) -> AsyncIterator[str]:
         try:
-            response = await self.model_instance.generate_content_async(
-                [prompt],
-                stream=True,
+            response_stream = await self.client.aio.models.generate_content_stream(
+                model=self.model,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_prompt,
+                )
             )
 
-            async for chunk in response:
-                yield chunk.text
+            async for chunk in response_stream:
+                if chunk.text:
+                    yield chunk.text
         except Exception as e:
             msg = f"Something went wrong while querying Google Gemini: {e}"
             raise ProviderError(msg) from e

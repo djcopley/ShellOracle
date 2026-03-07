@@ -36,7 +36,7 @@ dependencies = [
     "prompt-toolkit~=3.0",
     "yaspin~=3.1",
     "tomlkit~=0.13",
-    "google-generativeai~=0.8",
+    "google-genai>=0.3.0",
     "pygments~=2.19",
     "rich>=13.9.4",
 ]
