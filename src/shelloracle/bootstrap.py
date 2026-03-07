@@ -125,7 +125,7 @@ def write_shelloracle_config(provider: type[Provider], settings: dict[str, Any],
 def install_keybindings() -> None:
     if not (shells := get_installed_shells()):
         print_warning(
-            "Cannot install keybindings: no compatible shells found. " f"Supported shells: {' '.join(supported_shells)}"
+            f"Cannot install keybindings: no compatible shells found. Supported shells: {' '.join(supported_shells)}"
         )
         return
     if confirm("Enable terminal keybindings and update rc?", suffix=" ([y]/n) ") is False:

@@ -31,7 +31,7 @@ class Google(Provider):
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     system_instruction=system_prompt,
-                )
+                ),
             )
 
             async for chunk in response_stream:

@@ -113,4 +113,5 @@ exclude_lines = [
 ]
 
 [tool.ruff.lint.extend-per-file-ignores]
+"src/shelloracle/*" = ["PLC0415"]
 "tests/*" = ["INP001", "ARG"]
