@@ -10,7 +10,7 @@ class TestOllama:
     def ollama_config(self):
         config = {
             "shelloracle": {"provider": "Ollama"},
-            "provider": {"Ollama": {"host": "localhost", "port": 11434, "model": "dolphin-mistral"}},
+            "provider": {"Ollama": {"host": "localhost", "port": 11434, "model": "qwen2.5-coder"}},
         }
         return Configuration(config)
 
@@ -28,7 +28,7 @@ class TestOllama:
         assert ollama_instance.port == 11434
 
     def test_model(self, ollama_instance):
-        assert ollama_instance.model == "dolphin-mistral"
+        assert ollama_instance.model == "qwen2.5-coder"
 
     def test_endpoint(self, ollama_instance):
         assert ollama_instance.endpoint == "http://localhost:11434/api/generate"

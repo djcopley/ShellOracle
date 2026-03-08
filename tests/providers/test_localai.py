@@ -8,7 +8,7 @@ class TestOpenAI:
     def localai_config(self):
         return {
             "shelloracle": {"provider": "LocalAI"},
-            "provider": {"LocalAI": {"host": "localhost", "port": 8080, "model": "mistral-openorca"}},
+            "provider": {"LocalAI": {"host": "localhost", "port": 8080, "model": "mistral"}},
         }
 
     @pytest.fixture
@@ -19,7 +19,7 @@ class TestOpenAI:
         assert LocalAI.name == "LocalAI"
 
     def test_model(self, localai_instance):
-        assert localai_instance.model == "mistral-openorca"
+        assert localai_instance.model == "mistral"
 
     @pytest.mark.asyncio
     async def test_generate(self, mock_asyncopenai, localai_instance):

@@ -85,10 +85,10 @@ running ShellOracle with this method will not automatically insert the result in
 ### Ollama
 
 Before using ShellOracle with Ollama, pull the model you chose in the configure step.
-For example, if you chose `dolphin-mistral`, run:
+For example, if you chose `qwen2.5-coder`, run:
 
 ```shell
-ollama pull dolphin-mistral
+ollama pull qwen2.5-coder
 ```
 
 Refer to the [Ollama docs](https://ollama.ai) for installation, available models, and usage.

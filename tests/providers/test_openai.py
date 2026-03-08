@@ -10,7 +10,7 @@ class TestOpenAI:
         config = {
             "shelloracle": {"provider": "OpenAI"},
             "provider": {
-                "OpenAI": {"api_key": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "model": "gpt-3.5-turbo"}
+                "OpenAI": {"api_key": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "model": "gpt-4.1-mini"}
             },
         }
         return Configuration(config)
@@ -26,7 +26,7 @@ class TestOpenAI:
         assert openai_instance.api_key == "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
     def test_model(self, openai_instance):
-        assert openai_instance.model == "gpt-3.5-turbo"
+        assert openai_instance.model == "gpt-4.1-mini"
 
     @pytest.mark.asyncio
     async def test_generate(self, mock_asyncopenai, openai_instance):

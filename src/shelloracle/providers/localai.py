@@ -15,7 +15,7 @@ class LocalAI(Provider):
 
     host = Setting(default="localhost")
     port = Setting(default=8080)
-    model = Setting(default="mistral-openorca")
+    model = Setting(default="mistral")
 
     @property
     def endpoint(self) -> str:

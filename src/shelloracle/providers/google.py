@@ -15,7 +15,7 @@ class Google(Provider):
     name = "Google"
 
     api_key = Setting(default="")
-    model = Setting(default="gemini-2.5-flash-lite")  # Default model to use
+    model = Setting(default="gemini-2.5-flash")  # Default model to use
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)

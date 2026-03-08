@@ -12,7 +12,7 @@ class TestConfiguration:
         return Configuration(
             {
                 "shelloracle": {"provider": "Ollama", "spinner_style": "earth"},
-                "provider": {"Ollama": {"host": "localhost", "port": 11434, "model": "dolphin-mistral"}},
+                "provider": {"Ollama": {"host": "localhost", "port": 11434, "model": "qwen2.5-coder"}},
             }
         )
 
@@ -42,7 +42,7 @@ class TestConfiguration:
         config = Configuration(
             {
                 "shelloracle": {"provider": "Ollama"},
-                "provider": {"Ollama": {"host": "localhost", "port": 11434, "model": "dolphin-mistral"}},
+                "provider": {"Ollama": {"host": "localhost", "port": 11434, "model": "qwen2.5-coder"}},
             }
         )
         assert config.spinner_style is None
@@ -52,7 +52,7 @@ class TestConfiguration:
         config = Configuration(
             {
                 "shelloracle": {"provider": "Ollama", "spinner_style": "invalid"},
-                "provider": {"Ollama": {"host": "localhost", "port": 11434, "model": "dolphin-mistral"}},
+                "provider": {"Ollama": {"host": "localhost", "port": 11434, "model": "qwen2.5-coder"}},
             }
         )
         assert config.spinner_style is None
