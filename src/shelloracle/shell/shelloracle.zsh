@@ -25,5 +25,9 @@ shelloracle-widget() {
 # Register the function as a ZLE widget
 zle -N shelloracle-widget
 
-# Install the ZLE widget as a keyboard shortcut Ctrl+F
-bindkey '^F' shelloracle-widget
+# Install the ZLE widget as a keyboard shortcut Ctrl+F in every keymap, so it
+# works in both emacs mode and vi mode (insert and command), regardless of
+# whether `bindkey -v` runs before or after this file is sourced.
+bindkey -M emacs '^F' shelloracle-widget
+bindkey -M viins '^F' shelloracle-widget
+bindkey -M vicmd '^F' shelloracle-widget
