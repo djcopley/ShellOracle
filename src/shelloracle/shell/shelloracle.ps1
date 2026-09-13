@@ -8,7 +8,7 @@ Set-PSReadLineKeyHandler -Key Ctrl+f -ScriptBlock {
     $env:SHOR_DEFAULT_PROMPT = $null
     $env:SHOR_SHELL = $null
     if ($LASTEXITCODE -eq 0) {
-        [Microsoft.PowerShell.PSConsoleReadLine]::ReplaceLine($output)
-        [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
+        [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
+        [Microsoft.PowerShell.PSConsoleReadLine]::Insert($output)
     }
 }

@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import inspect
+import os
 import platform
 import shutil
+import subprocess
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -66,15 +68,40 @@ def get_script_path(shell: str) -> Path:
     return Path.home() / ".shelloracle.bash"
 
 
+def query_pwsh_profile_path() -> Path | None:
+    if not (pwsh := shutil.which("pwsh")):
+        return None
+    try:
+        result = subprocess.run(
+            [pwsh, "-NoProfile", "-NonInteractive", "-Command", "$PROFILE.CurrentUserCurrentHost"],
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=30,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if profile := result.stdout.strip():
+        return Path(profile)
+    return None
+
+
+def get_pwsh_profile_path() -> Path:
+    if profile := query_pwsh_profile_path():
+        return profile
+    if platform.system() == "Windows":
+        return Path.home() / "Documents" / "PowerShell" / "Microsoft.PowerShell_profile.ps1"
+    config_home = Path(os.environ.get("XDG_CONFIG_HOME") or Path.home() / ".config")
+    return config_home / "powershell" / "Microsoft.PowerShell_profile.ps1"
+
+
 def get_rc_path(shell: str) -> Path:
     if shell == "zsh":
         return Path.home() / ".zshrc"
     if shell == "fish":
         return Path.home() / ".config/fish/config.fish"
     if shell == "pwsh":
-        if platform.system() == "Windows":
-            return Path.home() / "Documents" / "PowerShell" / "Microsoft.PowerShell_profile.ps1"
-        return Path.home() / ".config" / "powershell" / "Microsoft.PowerShell_profile.ps1"
+        return get_pwsh_profile_path()
     return Path.home() / ".bashrc"
 
 
@@ -94,8 +121,8 @@ def update_rc(shell: str) -> None:
     if shell == "fish":
         line = f"if test -f {get_script_path(shell)}; source {get_script_path(shell)}; end"
     elif shell == "pwsh":
-        shelloracle_script = get_script_path(shell)
-        line = f". {shelloracle_script}"
+        quoted_script = str(get_script_path(shell)).replace("'", "''")
+        line = f"if (Test-Path '{quoted_script}') {{ . '{quoted_script}' }}"
     else:
         shelloracle_script = get_script_path(shell)
         line = f"[ -f {shelloracle_script} ] && source {shelloracle_script}"
