@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import inspect
+import platform
 import shutil
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -37,7 +38,7 @@ def replace_home_with_tilde(path: Path) -> Path:
     return Path("~") / relative_path
 
 
-supported_shells = ("zsh", "bash", "fish")
+supported_shells = ("zsh", "bash", "fish", "pwsh")
 
 
 def get_installed_shells() -> list[str]:
@@ -50,6 +51,8 @@ def get_bundled_script_path(shell: str) -> Path:
         return shell_dir / "shelloracle.zsh"
     if shell == "fish":
         return shell_dir / "shelloracle.fish"
+    if shell == "pwsh":
+        return shell_dir / "shelloracle.ps1"
     return shell_dir / "shelloracle.bash"
 
 
@@ -58,6 +61,8 @@ def get_script_path(shell: str) -> Path:
         return Path.home() / ".shelloracle.zsh"
     if shell == "fish":
         return Path.home() / ".shelloracle.fish"
+    if shell == "pwsh":
+        return Path.home() / ".shelloracle.ps1"
     return Path.home() / ".shelloracle.bash"
 
 
@@ -66,6 +71,10 @@ def get_rc_path(shell: str) -> Path:
         return Path.home() / ".zshrc"
     if shell == "fish":
         return Path.home() / ".config/fish/config.fish"
+    if shell == "pwsh":
+        if platform.system() == "Windows":
+            return Path.home() / "Documents" / "PowerShell" / "Microsoft.PowerShell_profile.ps1"
+        return Path.home() / ".config" / "powershell" / "Microsoft.PowerShell_profile.ps1"
     return Path.home() / ".bashrc"
 
 
@@ -78,11 +87,15 @@ def write_script_home(shell: str) -> None:
 
 def update_rc(shell: str) -> None:
     rc_path = get_rc_path(shell)
+    rc_path.parent.mkdir(parents=True, exist_ok=True)
     rc_path.touch(exist_ok=True)
     with rc_path.open("r") as file:
         rc_content = file.read()
     if shell == "fish":
         line = f"if test -f {get_script_path(shell)}; source {get_script_path(shell)}; end"
+    elif shell == "pwsh":
+        shelloracle_script = get_script_path(shell)
+        line = f". {shelloracle_script}"
     else:
         shelloracle_script = get_script_path(shell)
         line = f"[ -f {shelloracle_script} ] && source {shelloracle_script}"
