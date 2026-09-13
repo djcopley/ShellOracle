@@ -9,7 +9,7 @@
 </p>
 
 ShellOracle is an innovative terminal utility designed for intelligent shell command generation, bringing a new level of
-efficiency to your command-line interactions. ShellOracle currently supports Ollama, OpenAI, Deepseek, LocalAI, and Grok!
+efficiency to your command-line interactions. ShellOracle currently supports Ollama, llmman, OpenAI, Deepseek, LocalAI, and Grok!
 
 ![ShellOracle](https://i.imgur.com/lqTW1lO.gif)
 
@@ -92,6 +92,16 @@ ollama pull qwen2.5-coder
 ```
 
 Refer to the [Ollama docs](https://ollama.ai) for installation, available models, and usage.
+
+### llmman
+
+[llmman](https://github.com/llmmanorg/llmman) serves the Ollama API on port 17434. Start it and pull the model you
+chose in the configure step. For example, if you chose `gemma4`, run:
+
+```shell
+llmman serve
+llmman pull gemma4
+```
 
 ### OpenAI
 

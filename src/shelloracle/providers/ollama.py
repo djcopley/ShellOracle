@@ -77,5 +77,5 @@ class Ollama(Provider):
                         raise ProviderError(response["error"])
                     yield response["response"]
         except (httpx.HTTPError, httpx.StreamError) as e:
-            msg = f"Something went wrong while querying Ollama: {e}"
+            msg = f"Something went wrong while querying {self.name}: {e}"
             raise ProviderError(msg) from e
