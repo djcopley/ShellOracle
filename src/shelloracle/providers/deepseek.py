@@ -14,7 +14,7 @@ class Deepseek(Provider):
     name = "Deepseek"
 
     api_key = Setting(default="")
-    model = Setting(default="deepseek-chat")
+    model = Setting(default="deepseek-flash")
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)

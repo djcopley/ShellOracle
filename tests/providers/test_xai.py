@@ -12,7 +12,7 @@ class TestOpenAI:
             "provider": {
                 "XAI": {
                     "api_key": "xai-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-                    "model": "grok-3-mini-fast",
+                    "model": "grok-4.20-0309-non-reasoning",
                 }
             },
         }
@@ -32,7 +32,7 @@ class TestOpenAI:
         )
 
     def test_model(self, xai_instance):
-        assert xai_instance.model == "grok-3-mini-fast"
+        assert xai_instance.model == "grok-4.20-0309-non-reasoning"
 
     @pytest.mark.asyncio
     async def test_generate(self, mock_asyncopenai, xai_instance):

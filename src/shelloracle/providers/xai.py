@@ -14,7 +14,7 @@ class XAI(Provider):
     name = "XAI"
 
     api_key = Setting(default="")
-    model = Setting(default="grok-3-mini-fast")
+    model = Setting(default="grok-4.20-0309-non-reasoning")
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)

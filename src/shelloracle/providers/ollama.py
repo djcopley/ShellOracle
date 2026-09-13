@@ -56,7 +56,7 @@ class Ollama(Provider):
 
     host = Setting(default="localhost")
     port = Setting(default=11434)
-    model = Setting(default="qwen2.5-coder")
+    model = Setting(default="gemma4:12b")
 
     @property
     def endpoint(self) -> str:

@@ -15,7 +15,7 @@ class LocalAI(Provider):
 
     host = Setting(default="localhost")
     port = Setting(default=8080)
-    model = Setting(default="mistral")
+    model = Setting(default="qwen3.8-9b-q4")
 
     @property
     def endpoint(self) -> str:
