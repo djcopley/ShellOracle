@@ -12,7 +12,7 @@ dynamic = ["version"]
 authors = [
     { name = "Daniel Copley", email = "djcopley@proton.me" },
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
@@ -20,36 +20,35 @@ classifiers = [
     "Operating System :: POSIX :: Linux",
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 ]
 dependencies = [
-    "tomli ~= 2.1; python_version < '3.11'",
-    "click~=8.1",
-    "dspy~=2.6",
+    "tomli ~= 2.4; python_version < '3.11'",
+    "click~=8.5",
     "httpx~=0.28",
-    "openai~=1.66",
+    "openai~=3.13",
     "prompt-toolkit~=3.0",
-    "yaspin~=3.1",
-    "tomlkit~=0.13",
-    "google-genai>=0.3.0",
-    "pygments~=2.19",
-    "rich>=13.9.4",
+    "yaspin~=3.5",
+    "tomlkit~=0.15",
+    "google-genai>=2.23",
+    "pygments~=2.21",
+    "rich>=15.0",
 ]
 
 [dependency-groups]
 test = [
-    "pytest~=8.3",
-    "pytest-cov~=5.0",
-    "pytest-sugar~=1.0",
-    "pytest-xdist~=3.6",
-    "pytest-asyncio~=0.24",
-    "pytest-httpx~=0.30",
-    "tomli-w~=1.2.0",
+    "pytest~=9.1",
+    "pytest-cov~=7.1",
+    "pytest-sugar~=1.1",
+    "pytest-xdist~=3.8",
+    "pytest-asyncio~=1.4",
+    "pytest-httpx~=0.36",
+    "tomli-w~=1.2",
 ]
 
 [project.scripts]
@@ -65,22 +64,22 @@ source = "vcs"
 
 [tool.hatch.envs.hatch-test]
 dependencies = [
-    "pytest~=8.3",
-    "pytest-cov~=5.0",
-    "pytest-sugar~=1.0",
-    "pytest-xdist~=3.6",
-    "pytest-asyncio~=0.24",
-    "pytest-httpx~=0.30",
-    "tomli-w>=1.2.0",
+    "pytest~=9.1",
+    "pytest-cov~=7.1",
+    "pytest-sugar~=1.1",
+    "pytest-xdist~=3.8",
+    "pytest-asyncio~=1.4",
+    "pytest-httpx~=0.36",
+    "tomli-w~=1.2",
 ]
 
 [[tool.hatch.envs.hatch-test.matrix]]
-python = ["3.9", "3.10", "3.11", "3.12", "3.13"]
+python = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
 [tool.hatch.envs.types]
 template = "hatch-test"
 extra-dependencies = [
-    "mypy~=1.0",
+    "mypy~=2.3",
     "types-Pygments",
 ]
 
