@@ -1,10 +1,7 @@
 from __future__ import annotations
 
 import platform
-from pathlib import Path
 from unittest.mock import patch
-
-import pytest
 
 from shelloracle.bootstrap import (
     get_bundled_script_path,
