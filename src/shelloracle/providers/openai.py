@@ -14,7 +14,7 @@ class OpenAI(Provider):
     name = "OpenAI"
 
     api_key = Setting(default="")
-    model = Setting(default="gpt-4.1-mini")
+    model = Setting(default="gpt-5.6-luna")
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)

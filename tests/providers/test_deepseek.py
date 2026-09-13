@@ -12,7 +12,7 @@ class TestOpenAI:
             "provider": {
                 "Deepseek": {
                     "api_key": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-                    "model": "deepseek-chat",
+                    "model": "deepseek-flash",
                 }
             },
         }
@@ -32,7 +32,7 @@ class TestOpenAI:
         )
 
     def test_model(self, deepseek_instance):
-        assert deepseek_instance.model == "deepseek-chat"
+        assert deepseek_instance.model == "deepseek-flash"
 
     @pytest.mark.asyncio
     async def test_generate(self, mock_asyncopenai, deepseek_instance):
