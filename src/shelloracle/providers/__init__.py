@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import abc
+import os
 from abc import abstractmethod
 from typing import TYPE_CHECKING, Generic, TypeVar
 
@@ -9,14 +10,30 @@ if TYPE_CHECKING:
 
     from shelloracle.config import Configuration
 
-system_prompt = (
+_SYSTEM_PROMPT_TEMPLATE = (
     "Based on the following user description, generate a corresponding shell command. Focus solely "
-    "on interpreting the requirements and translating them into a single, executable Bash command. "
+    "on interpreting the requirements and translating them into a single, executable {shell} command. "
     "Ensure accuracy and relevance to the user's description. The output should be a valid shell "
     "command that directly aligns with the user's intent, ready for execution in a command-line "
     "environment. Do not output anything except for the command. No code block, no English explanation, "
     "no newlines, and no start/end tags."
 )
+
+
+def get_system_prompt() -> str:
+    """Return the system prompt, adjusted for the active shell.
+
+    The shell integration scripts set the SHOR_SHELL environment variable so
+    that the generated command matches the syntax of the calling shell.
+
+    :return: system prompt string
+    """
+    shell = os.environ.get("SHOR_SHELL", "Bash")
+    shell_name = "PowerShell" if shell.lower() == "powershell" else "Bash"
+    return _SYSTEM_PROMPT_TEMPLATE.format(shell=shell_name)
+
+
+system_prompt = get_system_prompt()
 
 
 class ProviderError(Exception):
